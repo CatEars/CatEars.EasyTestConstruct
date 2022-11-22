@@ -1,5 +1,5 @@
 ﻿using System;
-using Catears.EasyTestConstruct;
+using Catears.EasyConstruct;
 using FakeItEasy;
 using JungleAnimals.Animals;
 using JungleAnimals.Food;

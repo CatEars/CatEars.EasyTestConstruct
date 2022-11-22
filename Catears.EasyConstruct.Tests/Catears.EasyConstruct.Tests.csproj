@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>Catears.EasyConstruct.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,12 +20,6 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\Catears.EasyConstruct.FakeItEasy\Catears.EasyConstruct.FakeItEasy.csproj" />
-      <ProjectReference Include="..\..\Catears.EasyConstruct\Catears.EasyConstruct.csproj" />
-      <ProjectReference Include="..\JungleAnimals\JungleAnimals.csproj" />
     </ItemGroup>
 
 </Project>

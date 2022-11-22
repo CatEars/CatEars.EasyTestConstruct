@@ -1,4 +1,4 @@
-﻿using Catears.EasyTestConstruct;
+﻿using Catears.EasyConstruct;
 using JungleAnimals.Animals;
 using Xunit;
 

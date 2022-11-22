@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Catears.EasyTestConstruct;
+using Catears.EasyConstruct;
 using JungleAnimals.Animals;
 using JungleAnimals.Food;
 using JungleAnimals.Test.Fixtures;
