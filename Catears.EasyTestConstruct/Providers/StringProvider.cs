@@ -13,9 +13,9 @@ public class StringProvider
         return string.Join("-", strings);
     }
 
-    private string GenerateId()
+    private static string GenerateId()
     {
-        return Guid.NewGuid().ToString();
+        return Nanoid.Nanoid.Generate();
     }
 
     private void AddIfNotNullOrEmpty(List<string> strings, string? candidate)
