@@ -18,5 +18,5 @@ internal class SingleConstructorServiceRegistrator : IServiceRegistrator
         return true;
     }
 
-    public string AlgorithmPrerequisiteAsDescribedToHuman => "Use exactly one constructor";
+    public string AlgorithmPrerequisiteAsDescribedToHuman => "Use exactly one constructor, or have the compiler generate a constructor for you";
 }

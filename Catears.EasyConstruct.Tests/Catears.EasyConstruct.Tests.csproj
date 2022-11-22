@@ -22,4 +22,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Catears.EasyConstruct\Catears.EasyConstruct.csproj" />
+    </ItemGroup>
+
 </Project>
