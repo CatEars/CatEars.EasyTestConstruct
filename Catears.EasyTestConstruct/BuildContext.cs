@@ -1,6 +1,5 @@
-﻿using System.Reflection;
-using Catears.EasyTestConstruct.Providers;
-using Catears.EasyTestConstruct.ResolverFactories;
+﻿using Catears.EasyTestConstruct.Providers;
+using Catears.EasyTestConstruct.Registrators;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -17,20 +16,8 @@ public class BuildContext
 
     public void Register<T>() where T : class
     {
-        var typeDescriptor = typeof(T);
-        var constructors = typeDescriptor.GetConstructors();
-        if (constructors.Length == 0)
-        {
-            ServiceCollection.AddScoped<T>();
-        }
-        else if (constructors.Length == 1)
-        {
-            RegisterAdvancedBuilder<T>(constructors[0]);
-        }
-        else
-        {
-            throw new NotImplementedException("Objects with multiple constructors are not supported");
-        }
+        var registrationContext = ServiceRegistrationContext.FromType(typeof(T));
+        DefaultServiceRegistratorChain.FirstLink.TryRegisterService(ServiceCollection, registrationContext);
     }
 
     public void Register<T>(Func<IServiceProvider, T> builder) where T : class
@@ -41,21 +28,6 @@ public class BuildContext
     public void Register<T>(Func<T> builder) where T : class
     {
         Register(_ => builder());
-    }
-
-    private void RegisterAdvancedBuilder<T>(ConstructorInfo constructor) where T : class
-    {
-        var parameterDescriptors = constructor.GetParameters();
-        var sortedByPosition = parameterDescriptors.OrderBy(paramInfo => paramInfo.Position);
-        var parameterResolvers = sortedByPosition
-            .Select(DefaultParameterResolverFactoryChain.FirstLink.CreateParameterResolverOrThrow)
-            .ToList();
-
-        ServiceCollection.AddScoped(services =>
-        {
-            var parameters = parameterResolvers.Select(resolver => resolver.ResolveParameter(services));
-            return (T)constructor.Invoke(parameters.ToArray());
-        });
     }
 
     public IBuildScope Scope()
