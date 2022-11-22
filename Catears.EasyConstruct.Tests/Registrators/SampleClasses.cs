@@ -1,5 +1,10 @@
 ﻿namespace Catears.EasyConstruct.Tests.Registrators;
 
+public enum TestEnum
+{
+    A, B, C, D, E
+}
+
 [TestableForRegistration]
 public static class ClassThatIsStatic {}
 
@@ -31,6 +36,9 @@ public record RecordWithSingleMarkedConstructorAmongMultipleConstructors(string 
     [EasyConstruct.PreferredConstructor]
     public RecordWithSingleMarkedConstructorAmongMultipleConstructors() : this("Sample Value") {}
 }
+
+[TestableForRegistration]
+public record RecordWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue, TestEnum EnumValue);
 
 [TestableForRegistration]
 public class ClassWithSingleConstructor {}
@@ -82,6 +90,16 @@ public class ClassWithSingleMarkedConstructorAmongMultipleConstructors
 }
 
 [TestableForRegistration]
+public class ClassWithSingleConstructorWithMultiplePrimitiveParameters
+{
+    public ClassWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue,
+        TestEnum EnumValue)
+    {
+        
+    }
+}
+
+[TestableForRegistration]
 public struct StructWithNoConstructor {}
 
 [TestableForRegistration]
@@ -128,5 +146,15 @@ public struct StructWithSingleMarkedConstructorAmongMultipleConstructors
     public StructWithSingleMarkedConstructorAmongMultipleConstructors(string value)
     {
         Value = value;
+    }
+}
+
+[TestableForRegistration]
+public struct StructWithSingleConstructorWithMultiplePrimitiveParameters
+{
+    public StructWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue,
+        TestEnum EnumValue)
+    {
+        
     }
 }

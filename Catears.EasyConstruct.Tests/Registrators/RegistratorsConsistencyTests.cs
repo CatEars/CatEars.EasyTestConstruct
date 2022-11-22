@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Catears.EasyConstruct.Tests.Registrators;
 
-public class SelfConsistencyTests
+public class RegistratorsConsistencyTests
 {
 
     [Fact]

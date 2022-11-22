@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Catears.EasyConstruct.Providers;
 using Catears.EasyConstruct.Registrators;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -17,17 +18,20 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(ClassWithSingleMarkedConstructor), true)]
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleMarkedConstructorAmongMultipleConstructors), true)]
+    [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     [InlineData(typeof(RecordWithSingleConstructor), true)]
     [InlineData(typeof(RecordThatIsAbstract), false)]
     [InlineData(typeof(RecordThatIsSealed), true)]
     [InlineData(typeof(RecordWithSingleMarkedConstructor), true)]
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleMarkedConstructorAmongMultipleConstructors), true)]
+    [InlineData(typeof(RecordWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     [InlineData(typeof(StructWithNoConstructor), false)]
     [InlineData(typeof(StructWithSingleConstructor), true)]
     [InlineData(typeof(StructWithSingleMarkedConstructor), true)]
     [InlineData(typeof(StructWithMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructorAmongMultipleConstructors), true)]
+    [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     public void TryRegisterService_WithType_RegistersUnlessImpossibleToConstruct(Type type, bool shouldSucceed)
     {
         var serviceCollection = new ServiceCollection();
@@ -58,22 +62,26 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(ClassWithSingleMarkedConstructor), true)]
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleMarkedConstructorAmongMultipleConstructors), true)]
+    [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     [InlineData(typeof(RecordWithSingleConstructor), true)]
     [InlineData(typeof(RecordThatIsAbstract), false)]
     [InlineData(typeof(RecordThatIsSealed), true)]
     [InlineData(typeof(RecordWithSingleMarkedConstructor), true)]
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleMarkedConstructorAmongMultipleConstructors), true)]
+    [InlineData(typeof(RecordWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     [InlineData(typeof(StructWithNoConstructor), false)]
     [InlineData(typeof(StructWithSingleConstructor), true)]
     [InlineData(typeof(StructWithSingleMarkedConstructor), true)]
     [InlineData(typeof(StructWithMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructorAmongMultipleConstructors), true)]
+    [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     public void
         GetRequiredService_WhenRegisteredUsingDefaultServiceRegistratorChain_CanConstructClassesPossibleToConstruct(
             Type type, bool shouldSucceed)
     {
         var serviceCollection = new ServiceCollection();
+        serviceCollection.RegisterBasicValueProviders();
         var sut = DefaultServiceRegistratorChain.FirstLink;
 
         var registrationContext = ServiceRegistrationContext.FromType(type);
