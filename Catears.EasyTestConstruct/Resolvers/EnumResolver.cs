@@ -8,7 +8,8 @@ public class EnumResolver : IParameterResolver
     {
         if (!enumType.IsEnum)
         {
-            throw new ArgumentException();
+            var message = $"Cannot create an EnumResolver for type '{enumType.Name}' as it is not an Enum";
+            throw new ArgumentException(message);
         }
 
         EnumType = enumType;
@@ -16,8 +17,6 @@ public class EnumResolver : IParameterResolver
 
     public object ResolveParameter(IServiceProvider provider)
     {
-        var values = Enum.GetValues(EnumType);
-        var random = new Random();
-        return values.GetValue(random.Next(values.Length))!;
+        return provider.RandomEnum(EnumType);
     }
 }

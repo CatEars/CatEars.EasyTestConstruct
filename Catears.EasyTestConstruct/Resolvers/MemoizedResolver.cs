@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
+﻿
 namespace Catears.EasyTestConstruct.Resolvers;
 
 public class MemoizedResolver : IParameterResolver
 {
     private Func<IServiceProvider, object> Resolver { get; }
 
-    private Func<object>? Closure { get; set; }
+    private Func<object>? CapturingClosure { get; set; }
 
     public MemoizedResolver(Func<IServiceProvider, object> resolver)
     {
@@ -15,9 +14,17 @@ public class MemoizedResolver : IParameterResolver
     
     public object ResolveParameter(IServiceProvider provider)
     {
-        if (Closure != null) return Closure!();
+        if (CapturingClosure != null)
+        {
+            return CapturingClosure();
+        }
+        return ResolveAndSaveValue(provider);
+    }
+
+    private object ResolveAndSaveValue(IServiceProvider provider)
+    {
         var value = Resolver(provider);
-        Closure = () => value;
+        CapturingClosure = () => value;
         return value;
     }
 }

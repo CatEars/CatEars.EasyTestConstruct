@@ -2,11 +2,11 @@
 
 namespace Catears.EasyTestConstruct.Resolvers;
 
-public class RecursiveResolver : IParameterResolver
+public class DelegatingResolver : IParameterResolver
 {
     private Type WantedType { get; }
     
-    public RecursiveResolver(Type wantedType)
+    public DelegatingResolver(Type wantedType)
     {
         WantedType = wantedType;
     }

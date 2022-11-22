@@ -2,9 +2,9 @@
 
 public class IntProvider
 {
-    public int AnyInt()
+    public int RandomInt(int low=0, int high=10000)
     {
         var random = new Random();
-        return random.Next(0, 10000);
+        return random.Next(low, high);
     }
 }

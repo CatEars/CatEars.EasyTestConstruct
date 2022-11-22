@@ -1,17 +1,20 @@
-﻿namespace Catears.EasyTestConstruct.Resolvers;
+﻿using Catears.EasyTestConstruct.Providers;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Catears.EasyTestConstruct.Resolvers;
 
 public class StringResolver : IParameterResolver
 {
-    private string Prefix { get; }
+    private StringProviderOptions StringProviderOptions { get; }
     
-    public StringResolver(string prefix)
+    public StringResolver(StringProviderOptions stringProviderOptions)
     {
-        Prefix = prefix;
+        StringProviderOptions = stringProviderOptions;
     }
     
-    public object ResolveParameter(IServiceProvider _)
+    public object ResolveParameter(IServiceProvider provider)
     {
-        var id = Guid.NewGuid().ToString();
-        return $"{Prefix}-{id}";
+        var stringProvider = provider.GetRequiredService<StringProvider>();
+        return stringProvider.RandomString(StringProviderOptions);
     }
 }

@@ -46,37 +46,42 @@ public class BuildContext
     private void RegisterAdvancedBuilder<T>(ConstructorInfo constructor) where T : class
     {
         var parameterDescriptors = constructor.GetParameters();
-        var parameterResolvers = Enumerable.Range(0, parameterDescriptors.Length)
-            .Select(x => (IParameterResolver) new NullResolver())
+        var sortedByPosition = parameterDescriptors.OrderBy(paramInfo => paramInfo.Position);
+        var parameterResolvers = sortedByPosition
+            .Select(CreateResolverForParameter)
             .ToList();
-        
-        foreach (var parameter in constructor.GetParameters())
-        {
-            var type = parameter.ParameterType;
-            if (type == typeof(int) || type == typeof(Int32))
-            {
-                parameterResolvers[parameter.Position] = new IntResolver();
-            }
-            else if (type == typeof(string))
-            {
-                var prefix = $"{parameter.Name}-{type.Name}";
-                parameterResolvers[parameter.Position] = new StringResolver(prefix);
-            }
-            else if (type.IsEnum)
-            {
-                parameterResolvers[parameter.Position] = new EnumResolver(type);
-            }
-            else
-            {
-                parameterResolvers[parameter.Position] = new RecursiveResolver(type);
-            }
-        }
-        
+
         ServiceCollection.AddScoped(services =>
         {
             var parameters = parameterResolvers.Select(resolver => resolver.ResolveParameter(services));
             return (T)constructor.Invoke(parameters.ToArray());
         });
+    }
+
+    private IParameterResolver CreateResolverForParameter(ParameterInfo parameter)
+    {
+        var type = parameter.ParameterType;
+        if (type == typeof(int) || type == typeof(Int32))
+        {
+            return new IntResolver();
+        }
+
+        if (type == typeof(string))
+        {
+            var options = StringProviderOptions.Default with
+            {
+                VariableName = parameter.Name,
+                VariableType = type.Name
+            };
+            return new StringResolver(options);
+        }
+
+        if (type.IsEnum)
+        {
+            return new EnumResolver(type);
+        }
+
+        return new DelegatingResolver(type);
     }
 
     public IBuildScope Scope()
