@@ -1,5 +1,4 @@
-﻿
-namespace Catears.EasyTestConstruct.Resolvers;
+﻿namespace Catears.EasyTestConstruct.Resolvers;
 
 internal class MemoizedResolver : IParameterResolver
 {
@@ -11,13 +10,14 @@ internal class MemoizedResolver : IParameterResolver
     {
         Resolver = resolver;
     }
-    
+
     public object ResolveParameter(IServiceProvider provider)
     {
         if (CapturingClosure != null)
         {
             return CapturingClosure();
         }
+
         return ResolveAndSaveValue(provider);
     }
 

@@ -2,7 +2,6 @@
 
 internal static class DefaultParameterResolverFactoryChain
 {
-
     public static AggregateParameterResolverFactory FirstLink = new(new List<IParameterResolverFactory>()
     {
         new IntParameterResolverFactory(),
@@ -10,5 +9,4 @@ internal static class DefaultParameterResolverFactoryChain
         new EnumParameterResolverFactory(),
         new DelegatingParameterResolverFactory()
     });
-
 }

@@ -17,7 +17,7 @@ public static class BuildScopeExtensions
     {
         return scope.UseAndResolve(_ => obj);
     }
-    
+
     public static T UseAndResolve<T>(this IBuildScope scope, Func<T> builder) where T : class
     {
         return scope.UseAndResolve(_ => builder());

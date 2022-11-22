@@ -2,7 +2,6 @@
 
 public class StringProvider
 {
-
     public string RandomString(StringProviderOptions? options = null)
     {
         options ??= StringProviderOptions.Default;
@@ -20,10 +19,7 @@ public class StringProvider
 
     private void AddIfNotNullOrEmpty(List<string> strings, string? candidate)
     {
-        if (string.IsNullOrEmpty(candidate))
-        {
-            return;
-        }
+        if (string.IsNullOrEmpty(candidate)) return;
         strings.Add(candidate);
     }
 }

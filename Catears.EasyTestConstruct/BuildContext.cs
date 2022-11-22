@@ -8,13 +8,13 @@ namespace Catears.EasyTestConstruct;
 
 public class BuildContext
 {
-    private ServiceCollection ServiceCollection { get; } =  new();
+    private ServiceCollection ServiceCollection { get; } = new();
 
     public BuildContext()
     {
         ServiceCollection.RegisterBasicValueProviders();
     }
-    
+
     public void Register<T>() where T : class
     {
         var typeDescriptor = typeof(T);

@@ -12,13 +12,14 @@ internal class AggregateParameterResolverFactory : IParameterResolverFactory
         factories ??= new List<IParameterResolverFactory>();
         Factories = factories;
     }
-    
+
     public IParameterResolver CreateParameterResolverOrThrow(ParameterInfo info)
     {
         if (TryCreateParameterResolver(info, out var resolver))
         {
             return resolver!;
         }
+
         throw new InvalidOperationException(
             "Tried to create a resolver for parameter but there was no matching factory");
     }
