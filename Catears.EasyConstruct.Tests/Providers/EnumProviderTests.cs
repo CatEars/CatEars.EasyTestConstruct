@@ -26,7 +26,7 @@ public class EnumProviderTests
         var generatedEnums = new HashSet<TestableEnum>();
         var sut = new EnumProvider();
         
-        for (var idx = 0; idx < iterations; ++idx)
+        foreach (var _ in Enumerable.Range(0, iterations))
         {
             generatedEnums.Add((TestableEnum) sut.RandomEnum<TestableEnum>());
         }
