@@ -6,7 +6,6 @@ namespace Catears.EasyConstruct.Registrators;
 
 internal static class AdvancedConstructorRegistrationMethod
 {
-
     public static void Register(IServiceCollection serviceCollection, Type serviceType, ConstructorInfo constructor)
     {
         var parameterDescriptors = constructor.GetParameters();
@@ -21,5 +20,4 @@ internal static class AdvancedConstructorRegistrationMethod
             return constructor.Invoke(parameters.ToArray());
         });
     }
-    
 }
