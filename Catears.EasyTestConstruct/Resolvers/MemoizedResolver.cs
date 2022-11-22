@@ -1,7 +1,7 @@
 ﻿
 namespace Catears.EasyTestConstruct.Resolvers;
 
-public class MemoizedResolver : IParameterResolver
+internal class MemoizedResolver : IParameterResolver
 {
     private Func<IServiceProvider, object> Resolver { get; }
 

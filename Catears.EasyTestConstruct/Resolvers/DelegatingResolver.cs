@@ -2,7 +2,7 @@
 
 namespace Catears.EasyTestConstruct.Resolvers;
 
-public class DelegatingResolver : IParameterResolver
+internal class DelegatingResolver : IParameterResolver
 {
     private Type WantedType { get; }
     

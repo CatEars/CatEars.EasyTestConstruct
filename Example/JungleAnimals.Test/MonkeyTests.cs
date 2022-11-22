@@ -44,7 +44,7 @@ public class MonkeyTests : IClassFixture<BuildContextFixture>
     public void TryFeed_WithGreenBanana_ReturnsTrue()
     {
         using var scope = Fixture.Context.Scope();
-        var banana = scope.UseAndResolve(provider => new Banana(provider.AnyInt(), Banana.Color.Green));
+        var banana = scope.UseAndResolve(provider => new Banana(provider.RandomInt(), Banana.Color.Green));
         var monkey = scope.Resolve<Monkey>();
 
         var result = monkey.TryEat(banana);

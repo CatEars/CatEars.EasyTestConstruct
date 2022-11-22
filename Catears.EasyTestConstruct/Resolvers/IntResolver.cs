@@ -1,6 +1,6 @@
 ﻿namespace Catears.EasyTestConstruct.Resolvers;
 
-public class IntResolver : IParameterResolver
+internal class IntResolver : IParameterResolver
 {
     public object ResolveParameter(IServiceProvider provider)
     {

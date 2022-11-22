@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyTestConstruct.Resolvers;
 
-public class StringResolver : IParameterResolver
+internal class StringResolver : IParameterResolver
 {
     private StringProviderOptions StringProviderOptions { get; }
     

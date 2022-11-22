@@ -1,6 +1,6 @@
 ﻿namespace Catears.EasyTestConstruct.Resolvers;
 
-public class EnumResolver : IParameterResolver
+internal class EnumResolver : IParameterResolver
 {
     private Type EnumType { get; }
 
