@@ -12,6 +12,12 @@ internal class EnumResolver : IParameterResolver
             throw new ArgumentException(message);
         }
 
+        if (Enum.GetValues(enumType).Length == 0)
+        {
+            throw new ArgumentException(
+                $"Cannot create EnumResolver for '{enumType.Name}' as it does not contain any values");
+        }
+
         EnumType = enumType;
     }
 
