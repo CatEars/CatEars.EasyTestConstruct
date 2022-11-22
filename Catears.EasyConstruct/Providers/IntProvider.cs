@@ -1,5 +1,6 @@
 ﻿namespace Catears.EasyConstruct.Providers;
 
+[BasicValueProvider]
 public class IntProvider
 {
     public int RandomInt(int low = 0, int high = 10000)
