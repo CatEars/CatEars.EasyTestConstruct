@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Catears.EasyTestConstruct.Providers;
-using Catears.EasyTestConstruct.Resolvers;
+using Catears.EasyTestConstruct.ResolverFactories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -48,7 +48,7 @@ public class BuildContext
         var parameterDescriptors = constructor.GetParameters();
         var sortedByPosition = parameterDescriptors.OrderBy(paramInfo => paramInfo.Position);
         var parameterResolvers = sortedByPosition
-            .Select(CreateResolverForParameter)
+            .Select(DefaultParameterResolverFactoryChain.FirstLink.CreateParameterResolverOrThrow)
             .ToList();
 
         ServiceCollection.AddScoped(services =>
@@ -56,32 +56,6 @@ public class BuildContext
             var parameters = parameterResolvers.Select(resolver => resolver.ResolveParameter(services));
             return (T)constructor.Invoke(parameters.ToArray());
         });
-    }
-
-    private IParameterResolver CreateResolverForParameter(ParameterInfo parameter)
-    {
-        var type = parameter.ParameterType;
-        if (type == typeof(int) || type == typeof(Int32))
-        {
-            return new IntResolver();
-        }
-
-        if (type == typeof(string))
-        {
-            var options = StringProviderOptions.Default with
-            {
-                VariableName = parameter.Name,
-                VariableType = type.Name
-            };
-            return new StringResolver(options);
-        }
-
-        if (type.IsEnum)
-        {
-            return new EnumResolver(type);
-        }
-
-        return new DelegatingResolver(type);
     }
 
     public IBuildScope Scope()
