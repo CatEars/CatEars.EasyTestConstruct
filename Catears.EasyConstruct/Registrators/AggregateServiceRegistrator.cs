@@ -27,12 +27,18 @@ internal class AggregateServiceRegistrator : IServiceRegistrator
 
     private bool ThrowNoMatchingServiceRegistratorFound(ServiceRegistrationContext serviceToRegister)
     {
-        var descriptions = Registrators.Select(x => x.AlgorithmPrerequisiteAsDescribedToHuman);
-        var fullDescription = string.Join(", ", descriptions);
         var message = $"Could not find any suitable constructor for type {serviceToRegister.ServiceToRegister.Name}. " +
-                      $"Try one of: {fullDescription}";
+                      AlgorithmPrerequisiteAsDescribedToHuman;
         throw new ArgumentException(message);
     }
 
-    public string AlgorithmPrerequisiteAsDescribedToHuman => "";
+    public string AlgorithmPrerequisiteAsDescribedToHuman => GeneratePrerequisiteDescription();
+
+    private string GeneratePrerequisiteDescription()
+    {
+        var descriptions = Registrators.Select(x => x.AlgorithmPrerequisiteAsDescribedToHuman);
+        var fullDescription = string.Join(", ", descriptions);
+        var message = $"Try one of: {fullDescription}";
+        return message;
+    }
 }
