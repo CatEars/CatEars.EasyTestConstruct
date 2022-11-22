@@ -66,10 +66,16 @@ internal class BuildScope : IBuildScope
 
         var resolver = new MemoizedResolver(builder);
         Collection.AddScoped(provider => (T)resolver.ResolveParameter(provider));
+        InvalidateCurrentProvider();
     }
 
     public void Use<T>(Func<T> builder) where T : class
     {
         Use(_ => builder());
+    }
+    
+    private void InvalidateCurrentProvider()
+    {
+        _provider = null;
     }
 }
