@@ -12,7 +12,7 @@ public class BuildContext
 
     public BuildContext()
     {
-        ServiceCollection.AddScoped<IntProvider>();
+        ServiceCollection.RegisterBasicValueProviders();
     }
     
     public void Register<T>() where T : class
