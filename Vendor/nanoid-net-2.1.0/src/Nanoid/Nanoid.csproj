@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <TargetFrameworks>$(TargetFrameworks);net45</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Version>2.1.0</Version>
+    <authors>codeyu</authors>
+    <AssemblyName>Nanoid</AssemblyName>
+    <PackageId>Nanoid</PackageId>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Copyright>Copyright 2020 © codeyu</Copyright>
+    <title>.NET Nanoid</title>
+    <owners>codeyu</owners>
+    <Description>A tiny, secure, URL-friendly, unique string ID generator for .NET Core.</Description>
+    <PackageTags>Nanoid UUID</PackageTags>
+    <PackageReleaseNotes>
+      2.1.0
+      - perfomance improve. by @plaptov and @shadow-cs.
+    </PackageReleaseNotes>
+    <PackageLicense>https://github.com/codeyu/nanoid-net/master/LICENSE</PackageLicense>
+    <PackageProjectUrl>https://github.com/codeyu/nanoid-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/codeyu/nanoid-net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+</Project>
