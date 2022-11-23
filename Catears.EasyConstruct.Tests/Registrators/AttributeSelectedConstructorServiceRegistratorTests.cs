@@ -18,6 +18,7 @@ public class AttributeSelectedConstructorServiceRegistratorTests
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), false)]
+    [InlineData(typeof(ClassWithSingleConstructorContainingComplexParameter), false)]
     [InlineData(typeof(RecordWithSingleConstructor), false)]
     [InlineData(typeof(RecordThatIsAbstract), false)]
     [InlineData(typeof(RecordThatIsSealed), false)]
@@ -25,12 +26,14 @@ public class AttributeSelectedConstructorServiceRegistratorTests
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(RecordWithSingleConstructorWithMultiplePrimitiveParameters), false)]
+    [InlineData(typeof(RecordWithSingleConstructorContainingComplexParameter), false)]
     [InlineData(typeof(StructWithNoConstructor), false)]
     [InlineData(typeof(StructWithSingleConstructor), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructor), true)]
     [InlineData(typeof(StructWithMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), false)]
+    [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), false)]
     public void TryRegisterService_WithType_RegistersWhenAttributeMarkedConstructor(Type type, bool shouldSucceed)
     {
         var serviceCollection = new ServiceCollection();

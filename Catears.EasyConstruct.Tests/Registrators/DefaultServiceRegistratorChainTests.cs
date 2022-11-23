@@ -19,6 +19,7 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(ClassWithSingleConstructorContainingComplexParameter), true)]
     [InlineData(typeof(RecordWithSingleConstructor), true)]
     [InlineData(typeof(RecordThatIsAbstract), false)]
     [InlineData(typeof(RecordThatIsSealed), true)]
@@ -26,12 +27,14 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(RecordWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(RecordWithSingleConstructorContainingComplexParameter), true)]
     [InlineData(typeof(StructWithNoConstructor), false)]
     [InlineData(typeof(StructWithSingleConstructor), true)]
     [InlineData(typeof(StructWithSingleMarkedConstructor), true)]
     [InlineData(typeof(StructWithMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true)]
     public void TryRegisterService_WithType_RegistersUnlessImpossibleToConstruct(Type type, bool shouldSucceed)
     {
         var serviceCollection = new ServiceCollection();
@@ -63,6 +66,7 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(ClassWithSingleConstructorContainingComplexParameter), true, typeof(RecordWithSingleConstructor))]
     [InlineData(typeof(RecordWithSingleConstructor), true)]
     [InlineData(typeof(RecordThatIsAbstract), false)]
     [InlineData(typeof(RecordThatIsSealed), true)]
@@ -70,20 +74,28 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(RecordWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(RecordWithSingleConstructorContainingComplexParameter), true, typeof(RecordWithSingleConstructor))]
     [InlineData(typeof(StructWithNoConstructor), false)]
     [InlineData(typeof(StructWithSingleConstructor), true)]
     [InlineData(typeof(StructWithSingleMarkedConstructor), true)]
     [InlineData(typeof(StructWithMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true, typeof(RecordWithSingleConstructor))]
     public void
         GetRequiredService_WhenRegisteredUsingDefaultServiceRegistratorChain_CanConstructClassesPossibleToConstruct(
-            Type type, bool shouldSucceed)
+            Type type, bool shouldSucceed, params Type[] extraTypesToRegister)
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.RegisterBasicValueProviders();
         var sut = DefaultServiceRegistratorChain.FirstLink;
 
+        foreach (var extraType in extraTypesToRegister)
+        {
+            var context = ServiceRegistrationContext.FromType(extraType);
+            sut.TryRegisterService(serviceCollection, context);
+        }
+        
         var registrationContext = ServiceRegistrationContext.FromType(type);
         if (shouldSucceed)
         {

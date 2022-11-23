@@ -40,6 +40,10 @@ public record RecordWithSingleMarkedConstructorAmongMultipleConstructors(string 
 [TestableForRegistration]
 public record RecordWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue, TestEnum EnumValue);
 
+
+[TestableForRegistration]
+public record RecordWithSingleConstructorContainingComplexParameter(RecordWithSingleConstructor _);
+
 [TestableForRegistration]
 public class ClassWithSingleConstructor {}
 
@@ -96,6 +100,15 @@ public class ClassWithSingleConstructorWithMultiplePrimitiveParameters
         TestEnum EnumValue)
     {
         
+    }
+}
+
+
+[TestableForRegistration]
+public class ClassWithSingleConstructorContainingComplexParameter
+{
+    public ClassWithSingleConstructorContainingComplexParameter(RecordWithSingleConstructor _)
+    {
     }
 }
 
@@ -156,5 +169,13 @@ public struct StructWithSingleConstructorWithMultiplePrimitiveParameters
         TestEnum EnumValue)
     {
         
+    }
+}
+
+[TestableForRegistration]
+public struct StructWithSingleConstructorContainingComplexParameter
+{
+    public StructWithSingleConstructorContainingComplexParameter(RecordWithSingleConstructor _)
+    {
     }
 }

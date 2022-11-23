@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Catears.EasyConstruct.Registrators;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -20,6 +19,7 @@ public class SingleConstructorServiceRegistratorTests
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleMarkedConstructorAmongMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(ClassWithSingleConstructorContainingComplexParameter), true)]
     [InlineData(typeof(RecordWithSingleConstructor), true)]
     [InlineData(typeof(RecordThatIsAbstract), false)]
     [InlineData(typeof(RecordThatIsSealed), true)]
@@ -27,12 +27,14 @@ public class SingleConstructorServiceRegistratorTests
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleMarkedConstructorAmongMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(RecordWithSingleConstructorContainingComplexParameter), true)]
     [InlineData(typeof(StructWithNoConstructor), false)]
     [InlineData(typeof(StructWithSingleConstructor), true)]
     [InlineData(typeof(StructWithSingleMarkedConstructor), true)]
     [InlineData(typeof(StructWithMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructorAmongMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), true)]
+    [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true)]
     public void TryRegisterService_WithType_RegistersWhenSingleConstructor(Type type, bool shouldSucceed)
     {
         var serviceCollection = new ServiceCollection();
