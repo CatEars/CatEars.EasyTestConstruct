@@ -104,6 +104,81 @@ public class BuildScopeExtensionTests
 
         Assert.Equal(3, count);
     }
+
+    [Fact]
+    public void UseAndResolve_CalledAfterResolve_WillCallProvidedBuilderFunction()
+    {
+        using var scope = CreateSampleBuildScope();
+        var count = 0;
+
+        scope.Resolve<SampleRecord>();
+        scope.UseAndResolve(provider =>
+        {
+            ++count;
+            return new SampleRecord(provider.RandomString());
+        });
+        
+        Assert.Equal(1, count);
+    }
+
+    [Fact]
+    public void UseAndResolve_CalledTwice_WillUseProvidedBuilderFunctionRespectively()
+    {
+        using var scope = CreateSampleBuildScope();
+        var firstCount = 0;
+        var secondCount = 0;
+
+        scope.Resolve<SampleRecord>();
+        scope.UseAndResolve(provider =>
+        {
+            ++firstCount;
+            return new SampleRecord(provider.RandomString());
+        });
+        scope.UseAndResolve(provider =>
+        {
+            ++secondCount;
+            return new SampleRecord(provider.RandomString());
+        });
+        
+        Assert.Equal(1, firstCount);
+        Assert.Equal(1, secondCount);
+    }
+
+    [Fact]
+    public void UseAndResolve_CalledWithObject_WillReturnSameObject()
+    {
+        var obj = new object();
+        using var scope = CreateSampleBuildScope();
+        
+        var resolvedObj = scope.UseAndResolve(obj);
+        
+        Assert.Same(obj, resolvedObj);
+    }
+    
+    [Fact]
+    public void UseAndResolve_CalledMultipleTimesWithObject_WillReturnSameObject()
+    {
+        var obj = new object();
+        using var scope = CreateSampleBuildScope();
+        
+        var resolvedObj1 = scope.UseAndResolve(obj);
+        var resolvedObj2 = scope.Resolve<object>();
+        
+        Assert.Same(obj, resolvedObj1);
+        Assert.Same(obj, resolvedObj2);
+    }
+
+    [Fact]
+    public void UseAndResolve_CanBeCalledWithBasicBuilder()
+    {
+        using var scope = CreateSampleBuildScope();
+
+        var result = scope.UseAndResolve(() => new SampleRecord("123"));
+        
+        Assert.NotNull(result);
+        Assert.IsType<SampleRecord>(result);
+        Assert.Equal("123", result.StringValue);
+    }
     
     private static IBuildScope CreateSampleBuildScope()
     {
