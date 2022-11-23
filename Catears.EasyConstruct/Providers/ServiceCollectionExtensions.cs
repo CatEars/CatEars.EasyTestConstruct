@@ -9,5 +9,6 @@ internal static class ServiceCollectionExtensions
         collection.AddScoped<EnumProvider>();
         collection.AddScoped<StringProvider>();
         collection.AddScoped<IntProvider>();
+        collection.AddScoped<FloatProvider>();
     }
 }

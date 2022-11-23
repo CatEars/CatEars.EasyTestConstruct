@@ -19,4 +19,7 @@ public static class ServiceProviderExtensions
 
     public static object RandomEnum(this IServiceProvider provider, Type enumType) =>
         provider.GetRequiredService<EnumProvider>().RandomEnum(enumType);
+    
+    public static object RandomFloat(this IServiceProvider provider) =>
+        provider.GetRequiredService<FloatProvider>().RandomFloat();
 }

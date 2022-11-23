@@ -38,7 +38,8 @@ public record RecordWithSingleMarkedConstructorAmongMultipleConstructors(string 
 }
 
 [TestableForRegistration]
-public record RecordWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue, TestEnum EnumValue);
+public record RecordWithSingleConstructorWithMultiplePrimitiveParameters(
+    string StringValue, int IntValue, TestEnum EnumValue, float FloatValue);
 
 
 [TestableForRegistration]
@@ -97,7 +98,7 @@ public class ClassWithSingleMarkedConstructorAmongMultipleConstructors
 public class ClassWithSingleConstructorWithMultiplePrimitiveParameters
 {
     public ClassWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue,
-        TestEnum EnumValue)
+        TestEnum EnumValue, float FloatValue)
     {
         
     }
@@ -166,7 +167,7 @@ public struct StructWithSingleMarkedConstructorAmongMultipleConstructors
 public struct StructWithSingleConstructorWithMultiplePrimitiveParameters
 {
     public StructWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue,
-        TestEnum EnumValue)
+        TestEnum EnumValue, float FloatValue)
     {
         
     }

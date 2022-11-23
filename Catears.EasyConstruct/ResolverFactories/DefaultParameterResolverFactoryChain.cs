@@ -8,6 +8,7 @@ internal static class DefaultParameterResolverFactoryChain
         new List<IParameterResolverFactory>()
         {
             new IntParameterResolverFactory(),
+            new FloatParameterResolverFactory()
         });
 
     public static AggregateParameterResolverFactory FirstLink { get; } = new(
