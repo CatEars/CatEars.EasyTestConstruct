@@ -1,4 +1,6 @@
-﻿namespace Catears.EasyConstruct.ResolverFactories;
+﻿using Catears.EasyConstruct.ResolverFactories.PrimitiveResolvers;
+
+namespace Catears.EasyConstruct.ResolverFactories;
 
 internal static class DefaultParameterResolverFactoryChain
 {
