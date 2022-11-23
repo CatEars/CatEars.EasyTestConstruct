@@ -2,11 +2,19 @@
 
 internal static class DefaultParameterResolverFactoryChain
 {
-    public static AggregateParameterResolverFactory FirstLink { get; } = new(new List<IParameterResolverFactory>()
-    {
-        new IntParameterResolverFactory(),
-        new StringParameterResolverFactory(),
-        new EnumParameterResolverFactory(),
-        new DelegatingParameterResolverFactory()
-    });
+    private static AggregateParameterResolverFactory PrimitiveResolverFactory { get; } = new(
+        new List<IParameterResolverFactory>()
+        {
+            new IntParameterResolverFactory(),
+        });
+
+    public static AggregateParameterResolverFactory FirstLink { get; } = new(
+        new List<IParameterResolverFactory>()
+        {
+            new PredicateSelectorWrappingResolverFactory(info => info.ParameterType.IsPrimitive, PrimitiveResolverFactory),
+            new EnumParameterResolverFactory(),
+            new StringParameterResolverFactory(),
+            new DelegatingParameterResolverFactory()
+        });
+
 }
