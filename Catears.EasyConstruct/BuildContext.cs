@@ -22,7 +22,7 @@ public class BuildContext
 
     public void Register<T>(Func<IServiceProvider, T> builder) where T : class
     {
-        ServiceCollection.AddScoped(builder);
+        ServiceCollection.AddTransient(builder);
     }
 
     public void Register<T>(Func<T> builder) where T : class

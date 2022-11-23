@@ -14,7 +14,7 @@ internal static class AdvancedConstructorRegistrationMethod
             .Select(DefaultParameterResolverFactoryChain.FirstLink.CreateParameterResolverOrThrow)
             .ToList();
 
-        serviceCollection.AddScoped(serviceType, services =>
+        serviceCollection.AddTransient(serviceType, services =>
         {
             var parameters = parameterResolvers.Select(resolver => resolver.ResolveParameter(services));
             return constructor.Invoke(parameters.ToArray());
