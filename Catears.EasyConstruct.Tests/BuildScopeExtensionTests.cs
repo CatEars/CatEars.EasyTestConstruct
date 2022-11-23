@@ -69,6 +69,41 @@ public class BuildScopeExtensionTests
         Assert.NotSame(newThirdRecord.SecondRecord, fourthRecord.ThirdRecord.SecondRecord);
         Assert.NotSame(newThirdRecord.SecondRecord.FirstRecord, fourthRecord.ThirdRecord.SecondRecord.FirstRecord);
     }
+
+    [Fact]
+    public void UseAndResolve_WhenCalled_WillResolveAValidObject()
+    {
+        using var scope = CreateSampleBuildScope();
+        var isCalled = false;
+
+        var result = scope.UseAndResolve(provider =>
+        {
+            isCalled = true;
+            return new SampleRecord(provider.RandomString());
+        });
+
+        Assert.True(isCalled);
+        Assert.NotNull(result);
+        Assert.IsType<SampleRecord>(result);
+        Assert.NotEmpty(result.StringValue);
+    }
+    
+    [Fact]
+    public void UseAndResolve_WhenCalledMultipleTimes_WillUseProvidedBuildFunction()
+    {
+        using var scope = CreateSampleBuildScope();
+        var count = 0;
+        
+        scope.UseAndResolve(provider =>
+        {
+            ++count;
+            return new SampleRecord(provider.RandomString());
+        });
+        scope.Resolve<SampleRecord>();
+        scope.Resolve<SampleRecord>();
+
+        Assert.Equal(3, count);
+    }
     
     private static IBuildScope CreateSampleBuildScope()
     {

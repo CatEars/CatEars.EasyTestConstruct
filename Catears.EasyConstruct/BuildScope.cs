@@ -53,7 +53,8 @@ internal class BuildScope : IBuildScope
             priorFactory = _ => currentImplementation.ImplementationInstance;
         }
 
-        Use(type, provider => priorFactory(provider));
+        var resolver = new MemoizedResolver(provider => priorFactory(provider));
+        Use(type, provider => resolver.ResolveParameter(provider));
     }
 
     private void Use<T>(Type builtType, Func<IServiceProvider, T> builder) where T : class
@@ -64,8 +65,7 @@ internal class BuildScope : IBuildScope
             Collection.Remove(currentImplementation);
         }
 
-        var resolver = new MemoizedResolver(builder);
-        Collection.AddTransient(builtType, provider => resolver.ResolveParameter(provider));
+        Collection.AddTransient(builtType, builder);
         InvalidateCurrentProvider();
     }
     
