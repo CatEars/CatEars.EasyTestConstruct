@@ -1,5 +1,4 @@
 ﻿using Catears.EasyConstruct.Providers;
-using Catears.EasyConstruct.Registrators;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -17,7 +16,7 @@ public class BuildContext
     public void Register<T>() where T : class
     {
         var registrationContext = ServiceRegistrationContext.FromType(typeof(T));
-        DefaultServiceRegistratorChain.FirstLink.TryRegisterService(ServiceCollection, registrationContext);
+        ServiceRegistrator.RegisterServiceOrThrow(ServiceCollection, registrationContext);
     }
 
     public void Register<T>(Func<IServiceProvider, T> builder) where T : class

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Catears.EasyConstruct.Registrators;
+namespace Catears.EasyConstruct;
 
 internal record ServiceRegistrationContext(Type ServiceToRegister, ConstructorInfo[] Constructors)
 {

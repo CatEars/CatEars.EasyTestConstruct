@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Catears.EasyConstruct.Providers;
-using Catears.EasyConstruct.Registrators;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -38,21 +37,19 @@ public class DefaultServiceRegistratorChainTests
     public void TryRegisterService_WithType_RegistersUnlessImpossibleToConstruct(Type type, bool shouldSucceed)
     {
         var serviceCollection = new ServiceCollection();
-        var sut = DefaultServiceRegistratorChain.FirstLink;
 
         var registrationContext = ServiceRegistrationContext.FromType(type);
         if (shouldSucceed)
         {
-            var didSucceed = sut.TryRegisterService(serviceCollection, registrationContext);
+            ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
 
             var expectedRegisteredServices = 1;
-            Assert.Equal(shouldSucceed, didSucceed);
             Assert.Equal(expectedRegisteredServices, serviceCollection.Count);
             Assert.True(serviceCollection.All(descriptor => descriptor.ImplementationFactory != null || descriptor.ImplementationInstance != null));
         }
         else
         {
-            Assert.Throws<ArgumentException>(() => sut.TryRegisterService(serviceCollection, registrationContext));
+            Assert.Throws<ArgumentException>(() => ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext));
         }
     }
 
@@ -88,28 +85,26 @@ public class DefaultServiceRegistratorChainTests
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.RegisterBasicValueProviders();
-        var sut = DefaultServiceRegistratorChain.FirstLink;
 
         foreach (var extraType in extraTypesToRegister)
         {
             var context = ServiceRegistrationContext.FromType(extraType);
-            sut.TryRegisterService(serviceCollection, context);
+            ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, context);
         }
         
         var registrationContext = ServiceRegistrationContext.FromType(type);
         if (shouldSucceed)
         {
-            var didSucceed = sut.TryRegisterService(serviceCollection, registrationContext);
+            ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
             using var provider = serviceCollection.BuildServiceProvider();
             var resolvedObject = provider.GetService(type);
             
-            Assert.True(didSucceed);
             Assert.NotNull(resolvedObject);
             Assert.IsType(type, resolvedObject);
         }
         else
         {
-            Assert.Throws<ArgumentException>(() => sut.TryRegisterService(serviceCollection, registrationContext));
+            Assert.Throws<ArgumentException>(() => ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext));
         }
     }
 }
