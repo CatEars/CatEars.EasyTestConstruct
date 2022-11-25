@@ -11,7 +11,7 @@ internal static class AdvancedConstructorRegistrationMethod
         var parameterDescriptors = constructor.GetParameters();
         var sortedByPosition = parameterDescriptors.OrderBy(paramInfo => paramInfo.Position);
         var parameterResolvers = sortedByPosition
-            .Select(DefaultParameterResolverFactoryChain.FirstLink.CreateParameterResolverOrThrow)
+            .Select(ParameterResolverFactory.GetResolverForType)
             .ToList();
 
         serviceCollection.AddTransient(serviceType, services =>

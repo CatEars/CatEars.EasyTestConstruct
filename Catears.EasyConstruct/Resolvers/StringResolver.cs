@@ -1,4 +1,5 @@
-﻿using Catears.EasyConstruct.Providers;
+﻿using System.Reflection;
+using Catears.EasyConstruct.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyConstruct.Resolvers;
@@ -16,5 +17,14 @@ internal class StringResolver : IParameterResolver
     {
         var stringProvider = provider.GetRequiredService<StringProvider>();
         return stringProvider.RandomString(StringProviderOptions);
+    }
+
+    public static StringResolver CreateFromParamInfo(ParameterInfo info)
+    {
+        return new StringResolver(StringProviderOptions.Default with
+        {
+            VariableName = info.Name,
+            VariableType = info.ParameterType.Name
+        });
     }
 }
