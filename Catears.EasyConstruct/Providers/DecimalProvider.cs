@@ -1,5 +1,6 @@
 ﻿namespace Catears.EasyConstruct.Providers;
 
+[BasicValueProvider]
 public class DecimalProvider
 {
     public decimal RandomDecimal()

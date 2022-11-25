@@ -1,5 +1,6 @@
 ﻿namespace Catears.EasyConstruct.Providers;
 
+[BasicValueProvider]
 public class ULongProvider
 {
     public ulong RandomULong()
