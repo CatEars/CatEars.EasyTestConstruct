@@ -10,5 +10,16 @@ internal static class ServiceCollectionExtensions
         collection.AddScoped<StringProvider>();
         collection.AddScoped<IntProvider>();
         collection.AddScoped<FloatProvider>();
+        collection.AddScoped<BoolProvider>();
+        collection.AddScoped<ByteProvider>();
+        collection.AddScoped<SByteProvider>();
+        collection.AddScoped<CharProvider>();
+        collection.AddScoped<DecimalProvider>();
+        collection.AddScoped<DoubleProvider>();
+        collection.AddScoped<UIntProvider>();
+        collection.AddScoped<LongProvider>();
+        collection.AddScoped<ULongProvider>();
+        collection.AddScoped<ShortProvider>();
+        collection.AddScoped<UShortProvider>();
     }
 }
