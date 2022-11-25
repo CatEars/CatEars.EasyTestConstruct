@@ -1,15 +1,17 @@
 ﻿using System.Reflection;
 using Catears.EasyConstruct.Resolvers;
 
-namespace Catears.EasyConstruct.ResolverFactories;
+namespace Catears.EasyConstruct;
 
 internal static class ParameterResolverFactory
 {
+    private  record AdvancedResolver(Predicate<ParameterInfo> Predicate, Func<ParameterInfo, IParameterResolver> Builder);
+    
     private static Dictionary<Type, Func<ParameterInfo, IParameterResolver>> RegisteredResolvers { get; } = new()
     {
-        { typeof(int), _ => new IntResolver() },
+        { typeof(int), _ => new FuncResolver(provider => provider.RandomInt()) },
         { typeof(string), StringResolver.CreateFromParamInfo },
-        { typeof(float), _ => new FloatResolver() },
+        { typeof(float), _ => new FuncResolver(provider => provider.RandomFloat()) },
     };
 
     private static bool IsEnum(ParameterInfo paramInfo)

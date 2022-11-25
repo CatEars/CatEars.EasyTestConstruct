@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Catears.EasyConstruct.ResolverFactories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyConstruct.Registrators;
