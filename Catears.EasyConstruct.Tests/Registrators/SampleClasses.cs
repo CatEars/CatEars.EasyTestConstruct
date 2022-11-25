@@ -39,7 +39,10 @@ public record RecordWithSingleMarkedConstructorAmongMultipleConstructors(string 
 
 [TestableForRegistration]
 public record RecordWithSingleConstructorWithMultiplePrimitiveParameters(
-    string StringValue, int IntValue, TestEnum EnumValue, float FloatValue);
+    string StringValue, int IntValue, TestEnum EnumValue, float FloatValue,
+    bool BoolValue, byte ByteValue, char CharValue, decimal DecimalValue,
+    double DoubleValue, long LongValue, sbyte SByteValue, short ShortValue,
+    uint UIntValue, ulong ULongValue, ushort UShortValue);
 
 
 [TestableForRegistration]
@@ -97,8 +100,11 @@ public class ClassWithSingleMarkedConstructorAmongMultipleConstructors
 [TestableForRegistration]
 public class ClassWithSingleConstructorWithMultiplePrimitiveParameters
 {
-    public ClassWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue,
-        TestEnum EnumValue, float FloatValue)
+    public ClassWithSingleConstructorWithMultiplePrimitiveParameters(
+        string StringValue, int IntValue, TestEnum EnumValue, float FloatValue,
+        bool BoolValue, byte ByteValue, char CharValue, decimal DecimalValue,
+        double DoubleValue, long LongValue, sbyte SByteValue, short ShortValue,
+        uint UIntValue, ulong ULongValue, ushort UShortValue)
     {
         
     }
@@ -166,8 +172,11 @@ public struct StructWithSingleMarkedConstructorAmongMultipleConstructors
 [TestableForRegistration]
 public struct StructWithSingleConstructorWithMultiplePrimitiveParameters
 {
-    public StructWithSingleConstructorWithMultiplePrimitiveParameters(string StringValue, int IntValue,
-        TestEnum EnumValue, float FloatValue)
+    public StructWithSingleConstructorWithMultiplePrimitiveParameters(
+        string StringValue, int IntValue, TestEnum EnumValue, float FloatValue,
+        bool BoolValue, byte ByteValue, char CharValue, decimal DecimalValue,
+        double DoubleValue, long LongValue, sbyte SByteValue, short ShortValue,
+        uint UIntValue, ulong ULongValue, ushort UShortValue)
     {
         
     }
