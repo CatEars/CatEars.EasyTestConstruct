@@ -3,7 +3,7 @@
 [BasicValueProvider]
 public class SByteProvider
 {
-    public sbyte GetSByte()
+    public sbyte RandomSByte()
     {
         var random = new Random();
         return (sbyte)random.Next();
