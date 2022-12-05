@@ -180,7 +180,7 @@ public class BuildScopeExtensionTests
         Assert.Equal("123", result.StringValue);
     }
     
-    private static IBuildScope CreateSampleBuildScope()
+    private static BuildScope CreateSampleBuildScope()
     {
         var buildContext = new BuildContext();
         buildContext.Register<SampleRecord>();

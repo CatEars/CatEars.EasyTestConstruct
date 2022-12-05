@@ -81,7 +81,7 @@ public class BuildScopeTests
         Assert.Throws<InvalidOperationException>(() => buildScope.Memoize<SampleAbstractClass>());
     }
     
-    private static IBuildScope CreateSampleBuildScope()
+    private static BuildScope CreateSampleBuildScope()
     {
         var buildContext = new BuildContext();
         buildContext.Register<SampleRecord>();

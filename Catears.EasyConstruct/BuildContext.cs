@@ -29,7 +29,7 @@ public class BuildContext
         Register(_ => builder());
     }
 
-    public IBuildScope Scope()
+    public BuildScope Scope()
     {
         return new BuildScope(CopyOf(ServiceCollection));
     }

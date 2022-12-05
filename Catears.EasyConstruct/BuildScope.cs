@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyConstruct;
 
-internal class BuildScope : IBuildScope
+public class BuildScope : IDisposable
 {
     private IServiceCollection Collection { get; }
 
