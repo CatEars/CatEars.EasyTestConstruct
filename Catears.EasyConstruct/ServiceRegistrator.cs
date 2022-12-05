@@ -7,6 +7,15 @@ internal static class ServiceRegistrator
 {
     public static void RegisterServiceOrThrow(IServiceCollection collection, ServiceRegistrationContext context)
     {
+        if (context.IsOpenGenericType)
+        {
+            // Services that are open and generic (like `typeof(MyTypeWithUnspecifiedParameters<>)`
+            // will only be constructed if they have a specific implementation type. The object will not be built
+            // with a factory method.
+            collection.AddTransient(context.ServiceToRegister, context.ServiceToRegister);
+            return;
+        }
+        
         // Most user-defined objects in C# will have a constructor. For most classes and records this is automatically generated.
         // However, for static classes and structs they are not. In those cases you should not be able to register
         // without a builder function so we do not allow automatic service registration for types without a constructor.

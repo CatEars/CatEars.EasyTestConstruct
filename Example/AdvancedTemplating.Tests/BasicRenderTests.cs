@@ -13,10 +13,14 @@ public class BasicRenderTests
         Context.Register<P>();
         Context.Register<B>();
         Context.Register<I>();
-        Context.Register<Template<P>>();
-        Context.Register<Template<B>>();
-        Context.Register<Template<I>>();
+        var mySpecifiedGenericType = typeof(Template<P>);
+        var myOpenGenericType = typeof(Template<>);
         
+        Context.Register(typeof(Template<>));
+        //Context.Register(typeof(Template<>), typeof(Template<>));
+        /*Context.Register<Template<P>>();
+        Context.Register<Template<B>>();
+        Context.Register<Template<I>>();*/
     }
     
     [Fact]
