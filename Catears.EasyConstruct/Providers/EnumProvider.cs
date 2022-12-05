@@ -1,6 +1,5 @@
 ﻿namespace Catears.EasyConstruct.Providers;
 
-[BasicValueProvider]
 public class EnumProvider
 {
     public object RandomEnum<T>()

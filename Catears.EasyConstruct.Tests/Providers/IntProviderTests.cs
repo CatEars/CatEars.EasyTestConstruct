@@ -13,7 +13,7 @@ public class IntProviderTests
         const int iterations = 1000;
         const int minimumExpectedUniqueInts = 100;
         var uniqueIds = new HashSet<int>();
-        var sut = new IntProvider();
+        var sut = new PrimitiveValueProvider();
 
         foreach (var _ in Enumerable.Range(0, iterations))
         {
@@ -31,7 +31,7 @@ public class IntProviderTests
         const int high = 5;
         var expectedResults = Enumerable.Range(low, high - low).ToHashSet();
         var actualResults = new HashSet<int>();
-        var sut = new IntProvider();
+        var sut = new PrimitiveValueProvider();
 
         foreach (var _ in Enumerable.Range(0, iterations))
         {

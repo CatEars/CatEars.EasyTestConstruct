@@ -1,6 +1,5 @@
 ﻿namespace Catears.EasyConstruct.Providers;
 
-[BasicValueProvider]
 public class StringProvider
 {
     public string RandomString(StringProviderOptions? options = null)
