@@ -18,7 +18,7 @@ public class RecordTests : IClassFixture<BuildContextFixture>
     [Fact]
     public void CSharpRecord_WhenResolved_ReturnsInstanceOfRecord()
     {
-        using var scope = Fixture.Context.Scope();
+        var scope = Fixture.Context.Scope();
         var record = scope.Resolve<MyTestRecord>();
 
         Assert.IsType<MyTestRecord>(record);

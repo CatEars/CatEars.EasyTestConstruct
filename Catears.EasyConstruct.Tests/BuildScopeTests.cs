@@ -11,7 +11,7 @@ public class BuildScopeTests
     [Fact]
     public void Memoize_WithTypeParameter_MemoizesThatClass()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         scope.Memoize<SampleRecord>();
 
         var firstResult = scope.Resolve<SampleRecord>();
@@ -23,7 +23,7 @@ public class BuildScopeTests
     [Fact]
     public void Memoize_CalledMultipleTimes_WillStillMemoize()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         scope.Memoize<SampleRecord>();
         scope.Memoize<SampleRecord>();
         scope.Memoize<SampleRecord>();
@@ -39,7 +39,7 @@ public class BuildScopeTests
     [Fact]
     public void Use_CalledWithBasicBuilderFunction_UsesBasicBuilderFunction()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         var count = 0;
         scope.Use(() =>
         {
@@ -57,7 +57,7 @@ public class BuildScopeTests
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton(new object());
-        using var buildScope = new BuildScope(serviceCollection);
+        var buildScope = new BuildScope(serviceCollection);
         buildScope.Memoize<object>();
         
         var firstResult = buildScope.Resolve<object>();
@@ -76,7 +76,7 @@ public class BuildScopeTests
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton<SampleAbstractClass>();
-        using var buildScope = new BuildScope(serviceCollection);
+        var buildScope = new BuildScope(serviceCollection);
 
         Assert.Throws<InvalidOperationException>(() => buildScope.Memoize<SampleAbstractClass>());
     }

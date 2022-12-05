@@ -11,7 +11,7 @@ public class BuildScopeExtensionTests
     {
         var buildContext = new BuildContext();
         buildContext.Register<SampleRecord>();
-        using var scope = buildContext.Scope();
+        var scope = buildContext.Scope();
         
         var firstSampleRecord = scope.MemoizeAndResolve<SampleRecord>();
         var secondSampleRecord = scope.Resolve<SampleRecord>();
@@ -24,7 +24,7 @@ public class BuildScopeExtensionTests
     {
         var buildContext = new BuildContext();
         buildContext.Register<SampleRecord>();
-        using var scope = buildContext.Scope();
+        var scope = buildContext.Scope();
         
         var firstSampleRecord = scope.Resolve<SampleRecord>();
         var secondSampleRecord = scope.MemoizeAndResolve<SampleRecord>();
@@ -35,7 +35,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void MemoizeAndResolve_ReturnsValidObject()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
 
         var sampleRecord = scope.MemoizeAndResolve<SampleRecord>();
         
@@ -60,7 +60,7 @@ public class BuildScopeExtensionTests
         buildContext.Register<SecondRecord>();
         buildContext.Register<ThirdRecord>();
         buildContext.Register<FourthRecord>();
-        using var scope = buildContext.Scope();
+        var scope = buildContext.Scope();
         
         var fourthRecord = scope.MemoizeAndResolve<FourthRecord>();
         var newThirdRecord = scope.Resolve<ThirdRecord>();
@@ -73,7 +73,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void UseAndResolve_WhenCalled_WillResolveAValidObject()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         var isCalled = false;
 
         var result = scope.UseAndResolve(provider =>
@@ -91,7 +91,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void UseAndResolve_WhenCalledMultipleTimes_WillUseProvidedBuildFunction()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         var count = 0;
         
         scope.UseAndResolve(provider =>
@@ -108,7 +108,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void UseAndResolve_CalledAfterResolve_WillCallProvidedBuilderFunction()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         var count = 0;
 
         scope.Resolve<SampleRecord>();
@@ -124,7 +124,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void UseAndResolve_CalledTwice_WillUseProvidedBuilderFunctionRespectively()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         var firstCount = 0;
         var secondCount = 0;
 
@@ -148,7 +148,7 @@ public class BuildScopeExtensionTests
     public void UseAndResolve_CalledWithObject_WillReturnSameObject()
     {
         var obj = new object();
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         
         var resolvedObj = scope.UseAndResolve(obj);
         
@@ -159,7 +159,7 @@ public class BuildScopeExtensionTests
     public void UseAndResolve_CalledMultipleTimesWithObject_WillReturnSameObject()
     {
         var obj = new object();
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
         
         var resolvedObj1 = scope.UseAndResolve(obj);
         var resolvedObj2 = scope.Resolve<object>();
@@ -171,7 +171,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void UseAndResolve_CanBeCalledWithBasicBuilder()
     {
-        using var scope = CreateSampleBuildScope();
+        var scope = CreateSampleBuildScope();
 
         var result = scope.UseAndResolve(() => new SampleRecord("123"));
         

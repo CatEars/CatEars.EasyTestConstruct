@@ -13,10 +13,15 @@ public class BuildContext
         ServiceCollection.RegisterBasicValueProviders();
     }
 
+    public void Register(Type type)
+    {
+        var registrationContext = ServiceRegistrationContext.FromType(type);
+        ServiceRegistrator.RegisterServiceOrThrow(ServiceCollection, registrationContext);
+    }
+    
     public void Register<T>() where T : class
     {
-        var registrationContext = ServiceRegistrationContext.FromType(typeof(T));
-        ServiceRegistrator.RegisterServiceOrThrow(ServiceCollection, registrationContext);
+        Register(typeof(T));
     }
 
     public void Register<T>(Func<IServiceProvider, T> builder) where T : class

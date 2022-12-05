@@ -16,12 +16,13 @@ public class BasicRenderTests
         Context.Register<Template<P>>();
         Context.Register<Template<B>>();
         Context.Register<Template<I>>();
+        
     }
     
     [Fact]
     public void CanRenderAParagraphTag()
     {
-        using var scope = Context.Scope();
+        var scope = Context.Scope();
         var sut = scope.Resolve<Template<P>>();
 
         var value = sut.Render();
@@ -33,7 +34,7 @@ public class BasicRenderTests
     [Fact]
     public void CanRenderATextWithEmphasisTag()
     {
-        using var scope = Context.Scope();
+        var scope = Context.Scope();
         var sut = scope.Resolve<Template<B>>();
 
         var value = sut.Render();
@@ -45,7 +46,7 @@ public class BasicRenderTests
     [Fact]
     public void CanRenderAnItalizisedTextTag()
     {
-        using var scope = Context.Scope();
+        var scope = Context.Scope();
         var sut = scope.Resolve<Template<I>>();
 
         var value = sut.Render();

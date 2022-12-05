@@ -17,7 +17,7 @@ public class MemoizeTests : IClassFixture<BuildContextFixture>
     [Fact]
     public void Memoize_WhenRunAHundredTimes_AlwaysReturnsSameObject()
     {
-        using var scope = Fixture.Context.Scope();
+        var scope = Fixture.Context.Scope();
         scope.Memoize<Banana>();
 
         var firstBanana = scope.Resolve<Banana>();

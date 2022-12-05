@@ -24,7 +24,7 @@ public class AnimalFeederTests : IClassFixture<BuildContextFixture>
     [InlineData(typeof(Bird), typeof(Nectar))]
     public void CanBeFed_WithCompatibleAnimals_FeedsAnimals(Type animalType, Type foodType)
     {
-        using var scope = Fixture.Context.Scope();
+        var scope = Fixture.Context.Scope();
         var animal = (IJungleAnimal)scope.MemoizeAndResolve(animalType);
         var food = (IAnimalFood)scope.MemoizeAndResolve(foodType);
         var repository = scope.MemoizeAndResolve<IAnimalFoodCompatibilityRepository>();

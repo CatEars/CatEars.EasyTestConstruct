@@ -14,7 +14,7 @@ public class BuildContextTests
         
         buildContext.Register(() => new SampleRecord(""));
 
-        using var scope = buildContext.Scope();
+        var scope = buildContext.Scope();
         Assert.Equal(new SampleRecord(""), scope.Resolve<SampleRecord>());
     }
     
@@ -25,7 +25,7 @@ public class BuildContextTests
         
         buildContext.Register(_ => new SampleRecord(""));
 
-        using var scope = buildContext.Scope();
+        var scope = buildContext.Scope();
         Assert.Equal(new SampleRecord(""), scope.Resolve<SampleRecord>());
     }
     

@@ -12,7 +12,7 @@ public class RegisterTests
     {
         var buildContext = new BuildContext();
         buildContext.Register<Monkey>();
-        using var scope = buildContext.Scope();
+        var scope = buildContext.Scope();
         scope.Memoize<Monkey>();
 
         var bird = scope.Resolve<Monkey>();

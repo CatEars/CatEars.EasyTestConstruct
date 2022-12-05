@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyConstruct;
 
-public class BuildScope : IDisposable
+public class BuildScope
 {
     private IServiceCollection Collection { get; }
 
@@ -17,11 +17,6 @@ public class BuildScope : IDisposable
     public BuildScope(IServiceCollection serviceCollection)
     {
         Collection = serviceCollection;
-    }
-
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
     }
 
     public T Resolve<T>() where T : class
