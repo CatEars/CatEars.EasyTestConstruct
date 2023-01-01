@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Catears.EasyConstruct.FakeItEasy\Catears.EasyConstruct.FakeItEasy.csproj" />
       <ProjectReference Include="..\Catears.EasyConstruct\Catears.EasyConstruct.csproj" />
     </ItemGroup>
 

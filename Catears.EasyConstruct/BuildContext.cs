@@ -7,16 +7,45 @@ namespace Catears.EasyConstruct;
 
 public class BuildContext
 {
+
+    public record Options(
+        RegistrationMode RegistrationMode, 
+        Action<BuildContext, Type> MockRegistrationMethod)
+    {
+        public static Options Default { get; } = new(RegistrationMode.Basic, (_, type) =>
+        {
+            InternalOptions.Default.MockRegistrationMethod(type);
+        });
+    }
+
+    internal record InternalOptions(RegistrationMode RegistrationMode, Action<Type> MockRegistrationMethod)
+    {
+        internal static InternalOptions Default { get; } = new(RegistrationMode.Basic, type =>
+        {
+            var msg = $"Trying to register abstract type or interface '{type.Name}' without any " +
+                      $"defined function that handles such types. Add a `{nameof(Options.MockRegistrationMethod)}` " +
+                      "when creating your build context to register mocks for these kinds of types when they " +
+                      "are encountered.";
+            throw new ArgumentException(msg);
+        });
+    }
+
     private ServiceCollection ServiceCollection { get; } = new();
 
-    public BuildContext()
+    private InternalOptions BuildOptions { get; }
+    
+    public BuildContext(Options? options = null)
     {
+        options ??= Options.Default;
+        BuildOptions = new InternalOptions(
+            options.RegistrationMode, 
+            type => options.MockRegistrationMethod(this, type));
         ServiceCollection.RegisterBasicValueProviders();
     }
 
     public void Register(Type type)
     {
-        var registrationContext = ServiceRegistrationContext.FromType(type);
+        var registrationContext = ServiceRegistrationContext.FromTypeAndBuildOptions(type, BuildOptions);
         ServiceRegistrator.RegisterServiceOrThrow(ServiceCollection, registrationContext);
     }
     
@@ -25,6 +54,11 @@ public class BuildContext
         Register(typeof(T));
     }
 
+    public void Register(Type type, Func<IServiceProvider, object> builder)
+    {
+        ServiceCollection.AddTransient(type, builder);
+    }
+    
     public void Register<T>(Func<IServiceProvider, T> builder) where T : class
     {
         ServiceCollection.AddTransient(builder);

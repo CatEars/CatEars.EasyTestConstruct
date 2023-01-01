@@ -81,7 +81,7 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true, typeof(RecordWithSingleConstructor))]
     public void
-        GetRequiredService_WhenRegisteredUsingDefaultServiceRegistratorChain_CanConstructClassesPossibleToConstruct(
+        GetRequiredService_WhenDefaultRegistered_CanConstructElseNot(
             Type type, bool shouldSucceed, params Type[] extraTypesToRegister)
     {
         var serviceCollection = new ServiceCollection();
