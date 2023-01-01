@@ -3,9 +3,9 @@ using Catears.EasyConstruct.Resolvers;
 
 namespace Catears.EasyConstruct;
 
-internal static class ParameterResolverFactory
+internal static class ParameterResolverCollection
 {
-    private record AdvancedResolver(Predicate<ParameterInfo> Predicate,
+    private record PredicateResolver(Predicate<ParameterInfo> Predicate,
         Func<ParameterInfo, IParameterResolver> Builder);
 
     private static Dictionary<Type, Func<ParameterInfo, IParameterResolver>> RegisteredResolvers { get; } = new()
@@ -26,16 +26,16 @@ internal static class ParameterResolverFactory
         { typeof(ushort), _ => new FuncResolver(provider => provider.RandomUShort()) }
     };
 
+    private static IEnumerable<PredicateResolver> RegisteredPredicateResolvers { get; } = new List<PredicateResolver>()
+    {
+        new(IsEnum, info => new EnumResolver(info.ParameterType))
+    };
+    
     private static bool IsEnum(ParameterInfo paramInfo)
     {
         return paramInfo.ParameterType.IsEnum;
     }
-
-    private static IEnumerable<AdvancedResolver> AdvancedRegisteredResolvers { get; } = new List<AdvancedResolver>()
-    {
-        new(IsEnum, info => new EnumResolver(info.ParameterType))
-    };
-
+    
     public static IParameterResolver GetResolverForType(ParameterInfo info)
     {
         var type = info.ParameterType;
@@ -44,7 +44,7 @@ internal static class ParameterResolverFactory
             return resolverBuilder(info);
         }
 
-        foreach (var advancedResolver in AdvancedRegisteredResolvers)
+        foreach (var advancedResolver in RegisteredPredicateResolvers)
         {
             if (advancedResolver.Predicate(info))
             {

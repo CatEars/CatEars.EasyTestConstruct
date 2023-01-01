@@ -47,7 +47,7 @@ internal static class ServiceRegistrator
         var parameterDescriptors = constructor.GetParameters();
         var sortedByPosition = parameterDescriptors.OrderBy(paramInfo => paramInfo.Position);
         var parameterResolvers = sortedByPosition
-            .Select(ParameterResolverFactory.GetResolverForType)
+            .Select(ParameterResolverCollection.GetResolverForType)
             .ToList();
 
         serviceCollection.AddTransient(serviceType, services =>
