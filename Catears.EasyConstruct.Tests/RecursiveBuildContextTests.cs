@@ -40,7 +40,7 @@ public class RecursiveBuildContextTests
     [Fact]
     public void RecursiveRegister_WithComplexRecord_IsAbleToResolveRecordWithHierarchy()
     {
-        var buildContext = new BuildContext(BuildContext.Options.Default with
+        var buildContext = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive
         });
@@ -58,7 +58,7 @@ public class RecursiveBuildContextTests
     public void RecursiveRegister_WithInterfaceRegistrar_CallsUserDefinedMockRegistrationMethod()
     {
         Type? wasCalledWithType = null;
-        var context = new BuildContext(BuildContext.Options.Default with
+        var context = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
             MockRegistrationMethod = (_, type) =>
@@ -75,7 +75,7 @@ public class RecursiveBuildContextTests
     [Fact]
     public void RecursiveRegister_WithClassPrimitiveAndInterface_IsAbleToResolveClass()
     {
-        var buildContext = new BuildContext(BuildContext.Options.Default with
+        var buildContext = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
             MockRegistrationMethod = BuildContextExtensions.RegisterFake
@@ -93,7 +93,7 @@ public class RecursiveBuildContextTests
     [Fact]
     public void RecursiveRegister_WithFakedInterface_CanMockBehavior()
     {
-        var buildContext = new BuildContext(BuildContext.Options.Default with
+        var buildContext = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
             MockRegistrationMethod = BuildContextExtensions.RegisterFake

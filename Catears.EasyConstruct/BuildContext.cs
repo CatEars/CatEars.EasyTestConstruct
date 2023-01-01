@@ -8,14 +8,16 @@ namespace Catears.EasyConstruct;
 public class BuildContext
 {
 
-    public record Options(
-        RegistrationMode RegistrationMode, 
-        Action<BuildContext, Type> MockRegistrationMethod)
+    public class Options
     {
-        public static Options Default { get; } = new(RegistrationMode.Basic, (_, type) =>
+        public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Basic;
+
+        public Action<BuildContext, Type> MockRegistrationMethod { get; set; } = (_, type) =>
         {
             InternalOptions.Default.MockRegistrationMethod(type);
-        });
+        };
+
+        public static Options Default { get; } = new();
     }
 
     internal record InternalOptions(RegistrationMode RegistrationMode, Action<Type> MockRegistrationMethod)

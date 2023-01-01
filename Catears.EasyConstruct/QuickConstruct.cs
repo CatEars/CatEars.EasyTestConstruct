@@ -5,7 +5,7 @@ public static class QuickConstruct
 
     public static BuildScope AutoScope<T>() where T : class
     {
-        var context = new BuildContext(BuildContext.Options.Default with
+        var context = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive
         });
@@ -15,7 +15,7 @@ public static class QuickConstruct
 
     public static BuildScope AutoScopeWithMockFactory<T>(Action<BuildContext, Type> mockRegistrationMethod) where T : class
     {
-        var context = new BuildContext(BuildContext.Options.Default with
+        var context = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
             MockRegistrationMethod = mockRegistrationMethod
