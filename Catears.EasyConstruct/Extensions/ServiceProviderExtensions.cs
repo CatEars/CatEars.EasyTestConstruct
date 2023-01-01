@@ -1,7 +1,7 @@
 ﻿using Catears.EasyConstruct.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Catears.EasyConstruct;
+namespace Catears.EasyConstruct.Extensions;
 
 public static class ServiceProviderExtensions
 {

@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 
-namespace Catears.EasyConstruct;
+namespace Catears.EasyConstruct.Registration;
 
 internal record ServiceRegistrationContext(
     Type ServiceToRegister, 
     ConstructorInfo[] Constructors,
     bool IsOpenGenericType)
 {
-    public static ServiceRegistrationContext FromType(Type service) =>
+    internal static ServiceRegistrationContext FromType(Type service) =>
         new(service, service.GetConstructors(), service.ContainsGenericParameters);
 }

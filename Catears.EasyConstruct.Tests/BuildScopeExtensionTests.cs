@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Catears.EasyConstruct.Extensions;
+using Xunit;
 
 namespace Catears.EasyConstruct.Tests;
 

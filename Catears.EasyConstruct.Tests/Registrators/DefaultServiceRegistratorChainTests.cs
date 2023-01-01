@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Catears.EasyConstruct.Providers;
+using Catears.EasyConstruct.Registration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 

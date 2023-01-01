@@ -1,4 +1,4 @@
-﻿namespace Catears.EasyConstruct;
+﻿namespace Catears.EasyConstruct.Extensions;
 
 public static class BuildScopeExtensions
 {

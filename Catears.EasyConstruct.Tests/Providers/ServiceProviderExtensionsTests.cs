@@ -1,4 +1,5 @@
-﻿using Catears.EasyConstruct.Providers;
+﻿using Catears.EasyConstruct.Extensions;
+using Catears.EasyConstruct.Providers;
 using Catears.EasyConstruct.Tests.Providers.Fixtures;
 using Xunit;
 

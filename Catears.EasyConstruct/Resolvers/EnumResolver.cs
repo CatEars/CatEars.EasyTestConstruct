@@ -1,4 +1,6 @@
-﻿namespace Catears.EasyConstruct.Resolvers;
+﻿using Catears.EasyConstruct.Extensions;
+
+namespace Catears.EasyConstruct.Resolvers;
 
 internal class EnumResolver : IParameterResolver
 {

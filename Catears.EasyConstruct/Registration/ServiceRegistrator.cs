@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
+using Catears.EasyConstruct.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Catears.EasyConstruct;
+namespace Catears.EasyConstruct.Registration;
 
 internal static class ServiceRegistrator
 {
-    public static void RegisterServiceOrThrow(IServiceCollection collection, ServiceRegistrationContext context)
+    internal static void RegisterServiceOrThrow(IServiceCollection collection, ServiceRegistrationContext context)
     {
         if (context.IsOpenGenericType)
         {

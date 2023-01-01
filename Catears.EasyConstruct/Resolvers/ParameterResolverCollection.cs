@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Catears.EasyConstruct.Resolvers;
+using Catears.EasyConstruct.Extensions;
 
-namespace Catears.EasyConstruct;
+namespace Catears.EasyConstruct.Resolvers;
 
 internal static class ParameterResolverCollection
 {
@@ -36,7 +36,7 @@ internal static class ParameterResolverCollection
         return paramInfo.ParameterType.IsEnum;
     }
     
-    public static IParameterResolver GetResolverForType(ParameterInfo info)
+    internal static IParameterResolver GetResolverForType(ParameterInfo info)
     {
         var type = info.ParameterType;
         if (RegisteredResolvers.TryGetValue(type, out var resolverBuilder))
