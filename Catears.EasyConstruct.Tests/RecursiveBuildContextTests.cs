@@ -1,5 +1,7 @@
 ﻿using System;
+using Catears.EasyConstruct.Extensions;
 using Catears.EasyConstruct.FakeItEasy;
+using FakeItEasy;
 using Xunit;
 
 namespace Catears.EasyConstruct.Tests;
@@ -53,7 +55,7 @@ public class RecursiveBuildContextTests
     }
 
     [Fact]
-    public void RegisterDependencyTree_WithInterfaceRegistrar_CallsUserDefinedMockRegistrationMethod()
+    public void RecursiveRegister_WithInterfaceRegistrar_CallsUserDefinedMockRegistrationMethod()
     {
         Type? wasCalledWithType = null;
         var context = new BuildContext(BuildContext.Options.Default with
@@ -71,7 +73,7 @@ public class RecursiveBuildContextTests
     
  
     [Fact]
-    public void RegisterDependencyTree_WithClassPrimitiveAndInterface_IsAbleToResolveClass()
+    public void RecursiveRegister_WithClassPrimitiveAndInterface_IsAbleToResolveClass()
     {
         var buildContext = new BuildContext(BuildContext.Options.Default with
         {
@@ -89,8 +91,21 @@ public class RecursiveBuildContextTests
     }
 
     [Fact]
-    public void RegisterDependencyTree_WithFakedInterface_CanMockBehavior()
+    public void RecursiveRegister_WithFakedInterface_CanMockBehavior()
     {
-        throw new NotImplementedException();
+        var buildContext = new BuildContext(BuildContext.Options.Default with
+        {
+            RegistrationMode = RegistrationMode.Recursive,
+            MockRegistrationMethod = BuildContextExtensions.RegisterFake
+        });
+        buildContext.Register<ComplexRecord>();
+        var scope = buildContext.Scope();
+        var mock = scope.MemoizeAndResolve<SampleInterface>();
+        A.CallTo(() => mock.GetValue()).Returns("42");
+        var resolved = scope.Resolve<ComplexRecord>();
+
+        var result = resolved.SampleInterface.GetValue();
+        
+        Assert.Equal("42", result);
     }
 }
