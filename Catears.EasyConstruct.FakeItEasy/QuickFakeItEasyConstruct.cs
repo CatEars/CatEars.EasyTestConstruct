@@ -5,8 +5,8 @@ namespace Catears.EasyConstruct.FakeItEasy;
 
 public static class QuickFakeItEasyConstruct
 {
-    public static BuildScope AutoScope<T>() where T : class
+    public static BuildScope AutoScope()
     {
-        return QuickConstruct.AutoScopeWithMockFactory<T>(Create.Fake);
+        return QuickConstruct.AutoScopeWithMockFactory(Create.Fake);
     }
 }

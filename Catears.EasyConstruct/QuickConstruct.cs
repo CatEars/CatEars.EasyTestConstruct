@@ -2,25 +2,22 @@
 
 public static class QuickConstruct
 {
-    public static BuildScope AutoScope<T>() where T : class
+    public static BuildScope AutoScope()
     {
         var context = new BuildContext(new()
         {
-            RegistrationMode = RegistrationMode.Recursive
+            RegistrationMode = RegistrationMode.Dynamic
         });
-        context.Register<T>();
         return context.Scope();
     }
 
-    public static BuildScope AutoScopeWithMockFactory<T>(Func<Type, object> mockFactory)
-        where T : class
+    public static BuildScope AutoScopeWithMockFactory(Func<Type, object> mockFactory)
     {
         var context = new BuildContext(new()
         {
-            RegistrationMode = RegistrationMode.Recursive,
+            RegistrationMode = RegistrationMode.Dynamic,
             MockFactoryMethod = mockFactory
         });
-        context.Register<T>();
         return context.Scope();
     }
 }

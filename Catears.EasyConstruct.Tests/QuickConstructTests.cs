@@ -22,7 +22,7 @@ public class QuickConstructTests
     [Fact]
     public void AutoScope_WithComplexType_BuildsScopeThatCanResolveType()
     {
-        var scope = QuickConstruct.AutoScope<RecordWithSingleConstructorContainingComplexParameter>();
+        var scope = QuickConstruct.AutoScope();
 
         var resolved = scope.Resolve<RecordWithSingleConstructorContainingComplexParameter>();
 
@@ -33,7 +33,7 @@ public class QuickConstructTests
     [Fact]
     public void AutoScopeWithFakeItEasy_WithInterfaceInHierarchy_CanMockInterface()
     {
-        var scope = QuickFakeItEasyConstruct.AutoScope<TestInterfaceWrapper>();
+        var scope = QuickFakeItEasyConstruct.AutoScope();
         var mock = scope.MemoizeAndResolve<TestInterface>();
         A.CallTo(() => mock.GetValue()).Returns("42");
 
