@@ -1,5 +1,4 @@
-﻿using FakeItEasy;
-using FakeItEasy.Sdk;
+﻿using FakeItEasy.Sdk;
 
 namespace Catears.EasyConstruct.FakeItEasy;
 

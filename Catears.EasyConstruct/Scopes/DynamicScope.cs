@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyConstruct.Scopes;
 
-public class DynamicScope : BuildScope
+internal class DynamicScope : BuildScope
 {
     private Func<Type, object>? MockFactoryMethod { get; }
 
@@ -13,7 +13,8 @@ public class DynamicScope : BuildScope
         Func<Type, object>? mockFactoryMethod) : base(serviceCollection)
     {
         MockFactoryMethod = mockFactoryMethod;
-        RegisteredTypes = new HashSet<Type>(serviceCollection.Select(descriptor => descriptor.ServiceType));
+        var registeredServices = serviceCollection.Select(descriptor => descriptor.ServiceType);
+        RegisteredTypes = new HashSet<Type>(registeredServices);
     }
 
     protected override object InternalResolve(Type type)
@@ -41,7 +42,7 @@ public class DynamicScope : BuildScope
 
     private bool TypeIsAlreadyRegistered(Type type)
     {
-        return Collection.Any(descriptor => descriptor.ServiceType == type);
+        return RegisteredTypes.Contains(type);
     }
 
     private void AddDependencyTreeToCollection(Type type)
