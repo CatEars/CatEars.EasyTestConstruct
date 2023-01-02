@@ -4,10 +4,26 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyConstruct.Registration;
 
-internal static class ServiceRegistrator
+internal class ServiceRegistrator
 {
+    private Action<Type> MockRegistrationMethod { get; }
 
-    internal static void RegisterServiceOrThrow(IServiceCollection collection, ServiceRegistrationContext context)
+    public ServiceRegistrator(Action<Type> mockRegistrationMethod)
+    {
+        MockRegistrationMethod = mockRegistrationMethod;
+    }
+
+    internal void RegisterServicesOrThrow(
+        IServiceCollection collection,
+        IServiceDependencyWalker dependencies)
+    {
+        foreach (var dependency in dependencies)
+        {
+            RegisterServiceOrThrow(collection, dependency);
+        }
+    }
+
+    internal void RegisterServiceOrThrow(IServiceCollection collection, ServiceRegistrationContext context)
     {
         if (context.IsOpenGenericType)
         {
@@ -25,7 +41,7 @@ internal static class ServiceRegistrator
 
         if (context.IsMockIntendedType)
         {
-            context.RegistrationOptions.MockRegistrationMethod(context.ServiceToRegister);
+            MockRegistrationMethod(context.ServiceToRegister);
             return;
         }
 
@@ -33,7 +49,7 @@ internal static class ServiceRegistrator
         Register(collection, context, constructorToRegister);
     }
 
-    private static ConstructorInfo FindAppropriateConstructorOrThrow(ServiceRegistrationContext context)
+    internal static ConstructorInfo FindAppropriateConstructorOrThrow(ServiceRegistrationContext context)
     {
         // Most user-defined objects in C# will have a constructor. For most classes and records this is automatically generated.
         // However, for static classes and structs they are not. In those cases you should not be able to register
@@ -59,7 +75,8 @@ internal static class ServiceRegistrator
         throw new ArgumentException(msg);
     }
 
-    private static void Register(IServiceCollection serviceCollection, ServiceRegistrationContext context, ConstructorInfo constructor)
+    private static void Register(IServiceCollection serviceCollection, ServiceRegistrationContext context,
+        ConstructorInfo constructor)
     {
         var parameterDescriptors = constructor.GetParameters();
         var sortedByPosition = parameterDescriptors.OrderBy(paramInfo => paramInfo.Position);
@@ -72,17 +89,5 @@ internal static class ServiceRegistrator
             var parameters = parameterResolvers.Select(resolver => resolver.ResolveParameter(services));
             return constructor.Invoke(parameters.ToArray());
         });
-
-        if (context.RegistrationOptions.RegistrationMode != RegistrationMode.Recursive)
-        {
-            return;
-        }
-
-        foreach (var parameter in parameterDescriptors)
-        {
-            var parameterContext = ServiceRegistrationContext.FromTypeAndBuildOptions(
-                parameter.ParameterType, context.RegistrationOptions);
-            RegisterServiceOrThrow(serviceCollection, parameterContext);
-        }
     }
 }

@@ -47,8 +47,16 @@ public class BuildContext
 
     public void Register(Type type)
     {
-        var registrationContext = ServiceRegistrationContext.FromTypeAndBuildOptions(type, BuildOptions);
-        ServiceRegistrator.RegisterServiceOrThrow(ServiceCollection, registrationContext);
+        var registrator = new ServiceRegistrator(BuildOptions.MockRegistrationMethod);
+        var dependencyWalker = GetDependencyWalkerForType(type);
+        registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker);
+    }
+
+    private IServiceDependencyWalker GetDependencyWalkerForType(Type type)
+    {
+        return BuildOptions.RegistrationMode == RegistrationMode.Recursive
+            ? new RecursiveServiceDependencyWalker(type)
+            : new BasicServiceDependencyWalker(type);
     }
 
     public void Register<T>() where T : class

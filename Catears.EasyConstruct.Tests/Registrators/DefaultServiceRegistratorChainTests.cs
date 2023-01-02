@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using Catears.EasyConstruct.Providers;
 using Catears.EasyConstruct.Registration;
@@ -37,12 +38,13 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true)]
     public void TryRegisterService_WithType_RegistersUnlessImpossibleToConstruct(Type type, bool shouldSucceed)
     {
+        var registrator = new ServiceRegistrator(_ => throw new ArgumentException());
         var serviceCollection = new ServiceCollection();
 
         var registrationContext = ServiceRegistrationContext.FromType(type);
         if (shouldSucceed)
         {
-            ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
+            registrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
 
             var expectedRegisteredServices = 1;
             Assert.Equal(expectedRegisteredServices, serviceCollection.Count);
@@ -50,7 +52,7 @@ public class DefaultServiceRegistratorChainTests
         }
         else
         {
-            Assert.Throws<ArgumentException>(() => ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext));
+            Assert.Throws<ArgumentException>(() => registrator.RegisterServiceOrThrow(serviceCollection, registrationContext));
         }
     }
 
@@ -84,19 +86,20 @@ public class DefaultServiceRegistratorChainTests
         GetRequiredService_WhenDefaultRegistered_CanConstructElseNot(
             Type type, bool shouldSucceed, params Type[] extraTypesToRegister)
     {
+        var registrator = new ServiceRegistrator(_ => throw new ArgumentException());
         var serviceCollection = new ServiceCollection();
         serviceCollection.RegisterBasicValueProviders();
 
         foreach (var extraType in extraTypesToRegister)
         {
             var context = ServiceRegistrationContext.FromType(extraType);
-            ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, context);
+            registrator.RegisterServiceOrThrow(serviceCollection, context);
         }
 
         var registrationContext = ServiceRegistrationContext.FromType(type);
         if (shouldSucceed)
         {
-            ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
+            registrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
             using var provider = serviceCollection.BuildServiceProvider();
             var resolvedObject = provider.GetService(type);
 
@@ -105,7 +108,7 @@ public class DefaultServiceRegistratorChainTests
         }
         else
         {
-            Assert.Throws<ArgumentException>(() => ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext));
+            Assert.Throws<ArgumentException>(() => registrator.RegisterServiceOrThrow(serviceCollection, registrationContext));
         }
     }
 }
