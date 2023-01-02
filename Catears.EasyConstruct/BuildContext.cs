@@ -36,8 +36,9 @@ public class BuildContext
 
     private IDependencyLister GetConfiguredDependencyWalker()
     {
-        return BuildOptions.RegistrationMode == RegistrationMode.Recursive
-            ? new ConstructorParameterDependencyLister()
+        return (BuildOptions.RegistrationMode == RegistrationMode.Recursive ||
+                BuildOptions.RegistrationMode == RegistrationMode.Dynamic)
+            ? new RecursiveDependencyListerDecorator(new ConstructorParameterDependencyLister())
             : new BasicDependencyLister();
     }
 

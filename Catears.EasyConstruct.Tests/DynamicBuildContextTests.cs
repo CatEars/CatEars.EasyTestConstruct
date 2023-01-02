@@ -8,6 +8,10 @@ public class DynamicBuildContextTests
 
     internal record OuterRecord(InnerRecord Inner);
 
+    internal record DoubleInnerRecord(OuterRecord Inner);
+
+    internal record TripleInnerRecord(DoubleInnerRecord Double);
+    
     [Fact]
     public void DynamicContext_WithNoRegistration_CanResolveComplexType()
     {
@@ -33,5 +37,18 @@ public class DynamicBuildContextTests
         var resolved = context.Scope().Resolve<OuterRecord>();
 
         Assert.Equal("42", resolved.Inner.Value);
+    }
+
+    [Fact]
+    public void DynamicContext_WithLongDependencyChain_ResolvesCompletely()
+    {
+        var context = new BuildContext(new BuildContext.Options()
+        {
+            RegistrationMode = RegistrationMode.Dynamic
+        });
+        
+        var result = context.Scope().Resolve<TripleInnerRecord>();
+        
+        Assert.NotNull(result);
     }
 }

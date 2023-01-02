@@ -111,4 +111,20 @@ public class RecursiveBuildContextTests
 
         Assert.Equal("42", result);
     }
+    
+    
+    [Fact]
+    public void RecursiveContext_WithLongDependencyChain_ResolvesCompletely()
+    {
+        var context = new BuildContext(new BuildContext.Options()
+        {
+            RegistrationMode = RegistrationMode.Dynamic
+        });
+        context.Register<DynamicBuildContextTests.TripleInnerRecord>();
+        var scope = context.Scope();
+
+        var result = scope.Resolve<DynamicBuildContextTests.TripleInnerRecord>();
+        
+        Assert.NotNull(result);
+    }
 }

@@ -7,17 +7,21 @@ internal class DynamicScope : BuildScope
 {
     private Func<Type, object>? MockFactoryMethod { get; }
 
-    private SingleEncounterDependencyListerDecorator DependencyLister { get; }
+    private SingleEncounterDependencyListerDecorator EncounterLister { get; }
 
+    private IDependencyLister DependencyLister { get; }
+    
     public DynamicScope(IServiceCollection serviceCollection,
         Func<Type, object>? mockFactoryMethod) : base(serviceCollection)
     {
         MockFactoryMethod = mockFactoryMethod;
         var registeredServices = serviceCollection.Select(descriptor => descriptor.ServiceType);
-        DependencyLister = new SingleEncounterDependencyListerDecorator(
+        var encounterLister = new SingleEncounterDependencyListerDecorator(
             new ConstructorParameterDependencyLister(),
             registeredServices.ToHashSet()
         );
+        EncounterLister = encounterLister;
+        DependencyLister = new RecursiveDependencyListerDecorator(EncounterLister);
     }
 
     protected override object InternalResolve(Type type)
@@ -34,7 +38,7 @@ internal class DynamicScope : BuildScope
 
     private void EnsureDependencyTreeExists(Type type)
     {
-        if (DependencyLister.HasEncounteredType(type))
+        if (EncounterLister.HasEncounteredType(type))
         {
             return;
         }
