@@ -1,4 +1,4 @@
-﻿namespace Catears.EasyConstruct.Tests.Registrators;
+﻿namespace Catears.EasyConstruct.Tests;
 
 public enum TestEnum
 {
