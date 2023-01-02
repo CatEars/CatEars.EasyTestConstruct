@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Catears.EasyConstruct.DependencyListers;
-using Catears.EasyConstruct.Registration;
 using Xunit;
 
-namespace Catears.EasyConstruct.Tests.Registrators;
+namespace Catears.EasyConstruct.Tests.DependencyListers;
 
 public class SingleEncounterDependencyListerTests
 {
