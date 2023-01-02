@@ -10,8 +10,5 @@
 ## Ideas:
 
 - Maybe rebrand as HappyBuild
-- Add support for dynamic building where types are registered just-in-time
-- Allow specifying values for specific constructor parameters
-- Create a single static function `AutoResolve()` that is dynamic and "just builds it".
 - Add support for classes with type parameters
 - 
