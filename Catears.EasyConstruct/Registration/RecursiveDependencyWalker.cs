@@ -1,12 +1,12 @@
 ﻿namespace Catears.EasyConstruct.Registration;
 
-internal class RecursiveServiceDependencyWalker : IServiceDependencyWalker
+internal class RecursiveDependencyWalker : IDependencyWalker
 {
     private Type DependencyTreeRootType { get; }
 
     private ISet<Type> TypesToDisregard { get; set; }
 
-    public RecursiveServiceDependencyWalker(Type dependencyTreeRootType)
+    public RecursiveDependencyWalker(Type dependencyTreeRootType)
     {
         DependencyTreeRootType = dependencyTreeRootType;
         TypesToDisregard = new HashSet<Type>();

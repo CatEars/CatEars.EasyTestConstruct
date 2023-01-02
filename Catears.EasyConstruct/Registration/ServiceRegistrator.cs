@@ -17,7 +17,7 @@ internal class ServiceRegistrator
 
     internal void RegisterServicesOrThrow(
         IServiceCollection collection,
-        IServiceDependencyWalker walker)
+        IDependencyWalker walker)
     {
         foreach (var dependency in walker.ListDependencies())
         {

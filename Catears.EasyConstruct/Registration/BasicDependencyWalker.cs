@@ -1,10 +1,10 @@
 ﻿namespace Catears.EasyConstruct.Registration;
 
-internal class BasicServiceDependencyWalker : IServiceDependencyWalker
+internal class BasicDependencyWalker : IDependencyWalker
 {
     private Type TypeToEnumerate { get; }
 
-    public BasicServiceDependencyWalker(Type typeToEnumerate)
+    public BasicDependencyWalker(Type typeToEnumerate)
     {
         TypeToEnumerate = typeToEnumerate;
     }

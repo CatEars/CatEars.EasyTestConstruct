@@ -25,7 +25,7 @@ public class RecursiveServiceDependencyWalkerTests
     [InlineData(typeof(SelfReferentialClass), typeof(SelfReferentialClass))]
     public void ListDependencies_WithType_ReturnsExpectedListOfTypes(Type rootType, params Type[] expectedTypes)
     {
-        var walker = new RecursiveServiceDependencyWalker(rootType);
+        var walker = new RecursiveDependencyWalker(rootType);
 
         var result = walker.ListDependencies();
 
@@ -35,7 +35,7 @@ public class RecursiveServiceDependencyWalkerTests
     [Fact]
     public void ListDependencies_WithDisregardedTypes_ReturnsNoneOfDisregardedTypes()
     {
-        var walker = new RecursiveServiceDependencyWalker(typeof(ComplexRecord));
+        var walker = new RecursiveDependencyWalker(typeof(ComplexRecord));
         var disregardedTypes = new HashSet<Type> { typeof(BasicRecord) };
         walker.DisregardTypes(disregardedTypes);
 

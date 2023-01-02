@@ -47,7 +47,7 @@ internal class DynamicScope : BuildScope
 
     private void AddDependencyTreeToCollection(Type type)
     {
-        var walker = new RecursiveServiceDependencyWalker(type);
+        var walker = new RecursiveDependencyWalker(type);
         walker.DisregardTypes(RegisteredTypes);
         var registrator = new ServiceRegistrator(MockFactoryMethod);
         registrator.RegisterServicesOrThrow(Collection, walker);

@@ -24,7 +24,7 @@ public class BasicServiceDependencyWalkerTests
     [InlineData(typeof(SelfReferentialClass), typeof(SelfReferentialClass))]
     public void ListDependencies_WithType_ReturnsExpectedListOfTypes(Type rootType, params Type[] expectedTypes)
     {
-        var walker = new BasicServiceDependencyWalker(rootType);
+        var walker = new BasicDependencyWalker(rootType);
 
         var result = walker.ListDependencies();
 
