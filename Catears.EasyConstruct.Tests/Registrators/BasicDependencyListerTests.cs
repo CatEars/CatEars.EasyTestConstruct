@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Catears.EasyConstruct.Tests.Registrators;
 
-public class BasicServiceDependencyWalkerTests
+public class BasicDependencyListerTests
 {
     internal record BasicRecord(string Value);
 
@@ -24,7 +24,7 @@ public class BasicServiceDependencyWalkerTests
     [InlineData(typeof(SelfReferentialClass), typeof(SelfReferentialClass))]
     public void ListDependencies_WithType_ReturnsExpectedListOfTypes(Type rootType, params Type[] expectedTypes)
     {
-        var walker = new BasicDependencyWalker();
+        var walker = new BasicDependencyLister();
 
         var result = walker.ListDependencies(rootType);
 

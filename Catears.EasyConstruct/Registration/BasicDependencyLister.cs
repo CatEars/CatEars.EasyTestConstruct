@@ -1,6 +1,6 @@
 ﻿namespace Catears.EasyConstruct.Registration;
 
-internal class BasicDependencyWalker : IDependencyWalker
+internal class BasicDependencyLister : IDependencyLister
 {
     public IEnumerable<ServiceRegistrationContext> ListDependencies(Type type)
     {

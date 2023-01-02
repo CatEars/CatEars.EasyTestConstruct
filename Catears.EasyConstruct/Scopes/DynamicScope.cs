@@ -7,14 +7,17 @@ internal class DynamicScope : BuildScope
 {
     private Func<Type, object>? MockFactoryMethod { get; }
 
-    private ISet<Type> RegisteredTypes { get; }
+    private SingleEncounterDependencyListerDecorator DependencyLister { get; }
 
     public DynamicScope(IServiceCollection serviceCollection,
         Func<Type, object>? mockFactoryMethod) : base(serviceCollection)
     {
         MockFactoryMethod = mockFactoryMethod;
         var registeredServices = serviceCollection.Select(descriptor => descriptor.ServiceType);
-        RegisteredTypes = new HashSet<Type>(registeredServices);
+        DependencyLister = new SingleEncounterDependencyListerDecorator(
+            new ConstructorParameterDependencyLister(),
+            registeredServices.ToHashSet()
+        );
     }
 
     protected override object InternalResolve(Type type)
@@ -31,7 +34,7 @@ internal class DynamicScope : BuildScope
 
     private void EnsureDependencyTreeExists(Type type)
     {
-        if (TypeIsAlreadyRegistered(type))
+        if (DependencyLister.HasEncounteredType(type))
         {
             return;
         }
@@ -40,17 +43,9 @@ internal class DynamicScope : BuildScope
         InvalidateCurrentProvider();
     }
 
-    private bool TypeIsAlreadyRegistered(Type type)
-    {
-        return RegisteredTypes.Contains(type);
-    }
-
     private void AddDependencyTreeToCollection(Type type)
     {
-        var walker = new RecursiveDependencyWalker();
-        walker.DisregardTypes(RegisteredTypes);
         var registrator = new ServiceRegistrator(MockFactoryMethod);
-        registrator.RegisterServicesOrThrow(Collection, walker, type);
-        RegisteredTypes.UnionWith(registrator.SuccessfullyRegisteredServices);
+        registrator.RegisterServicesOrThrow(Collection, DependencyLister, type);
     }
 }

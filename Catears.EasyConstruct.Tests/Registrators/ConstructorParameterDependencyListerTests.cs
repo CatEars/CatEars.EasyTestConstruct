@@ -6,12 +6,12 @@ using Xunit;
 
 namespace Catears.EasyConstruct.Tests.Registrators;
 
-public class RecursiveServiceDependencyWalkerTests
+public class ConstructorParameterDependencyListerTests
 {
     internal record BasicRecord(string Value);
 
     internal record ComplexRecord(BasicRecord Inner);
-
+    
     internal class SelfReferentialClass
     {
         public SelfReferentialClass(SelfReferentialClass? parent)
@@ -25,25 +25,10 @@ public class RecursiveServiceDependencyWalkerTests
     [InlineData(typeof(SelfReferentialClass), typeof(SelfReferentialClass))]
     public void ListDependencies_WithType_ReturnsExpectedListOfTypes(Type rootType, params Type[] expectedTypes)
     {
-        var walker = new RecursiveDependencyWalker();
+        var walker = new ConstructorParameterDependencyLister();
 
         var result = walker.ListDependencies(rootType);
 
         Assert.Equal(expectedTypes, result.Select(x => x.ServiceToRegister).ToArray());
-    }
-
-    [Fact]
-    public void ListDependencies_WithDisregardedTypes_ReturnsNoneOfDisregardedTypes()
-    {
-        var walker = new RecursiveDependencyWalker();
-        var disregardedTypes = new HashSet<Type> { typeof(BasicRecord) };
-        walker.DisregardTypes(disregardedTypes);
-
-        var result = walker.ListDependencies(typeof(ComplexRecord));
-
-        var expected = new List<Type>() { typeof(ComplexRecord) };
-        var registrations = result.Select(x => x.ServiceToRegister).ToList();
-        Assert.Equal(expected, registrations);
-        Assert.DoesNotContain(disregardedTypes, type => registrations.Contains(type));
     }
 }

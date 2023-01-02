@@ -34,11 +34,11 @@ public class BuildContext
         registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker, type);
     }
 
-    private IDependencyWalker GetConfiguredDependencyWalker()
+    private IDependencyLister GetConfiguredDependencyWalker()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Recursive
-            ? new RecursiveDependencyWalker()
-            : new BasicDependencyWalker();
+            ? new ConstructorParameterDependencyLister()
+            : new BasicDependencyLister();
     }
 
     public void Register<T>() where T : class
