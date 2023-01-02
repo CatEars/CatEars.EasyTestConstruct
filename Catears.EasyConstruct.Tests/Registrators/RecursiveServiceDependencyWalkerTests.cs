@@ -31,4 +31,19 @@ public class RecursiveServiceDependencyWalkerTests
 
         Assert.Equal(expectedTypes, result.Select(x => x.ServiceToRegister).ToArray());
     }
+
+    [Fact]
+    public void ListDependencies_WithDisregardedTypes_ReturnsNoneOfDisregardedTypes()
+    {
+        var walker = new RecursiveServiceDependencyWalker(typeof(ComplexRecord));
+        var disregardedTypes = new HashSet<Type> { typeof(BasicRecord) };
+        walker.DisregardTypes(disregardedTypes);
+
+        var result = walker.ListDependencies();
+
+        var expected = new List<Type>() { typeof(ComplexRecord) };
+        var registrations = result.Select(x => x.ServiceToRegister).ToList();
+        Assert.Equal(expected, registrations);
+        Assert.DoesNotContain(disregardedTypes, type => registrations.Contains(type));
+    }
 }
