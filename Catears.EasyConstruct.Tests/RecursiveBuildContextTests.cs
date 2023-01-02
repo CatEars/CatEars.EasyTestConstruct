@@ -2,6 +2,7 @@
 using Catears.EasyConstruct.Extensions;
 using Catears.EasyConstruct.FakeItEasy;
 using FakeItEasy;
+using FakeItEasy.Sdk;
 using Xunit;
 
 namespace Catears.EasyConstruct.Tests;
@@ -55,18 +56,20 @@ public class RecursiveBuildContextTests
     }
 
     [Fact]
-    public void RecursiveRegister_WithInterfaceRegistrar_CallsUserDefinedMockRegistrationMethod()
+    public void RecursiveRegister_WithInterfaceRegistrar_CallsUserDefinedMockRegistrationMethodOnResolve()
     {
         Type? wasCalledWithType = null;
         var context = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
-            MockRegistrationMethod = (_, type) =>
+            MockFactoryMethod = type =>
             {
                 wasCalledWithType = type;
+                return Create.Fake(type);
             }
         });
         context.Register<SampleInterfaceWrapper>();
+        context.Scope().Resolve<SampleInterfaceWrapper>();
 
         Assert.Equal(typeof(SampleInterface), wasCalledWithType);
     }
@@ -78,7 +81,7 @@ public class RecursiveBuildContextTests
         var buildContext = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
-            MockRegistrationMethod = BuildContextExtensions.RegisterFake
+            MockFactoryMethod = Create.Fake
         });
         buildContext.Register<ComplexRecord>();
         var scope = buildContext.Scope();
@@ -96,7 +99,7 @@ public class RecursiveBuildContextTests
         var buildContext = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
-            MockRegistrationMethod = BuildContextExtensions.RegisterFake
+            MockFactoryMethod = Create.Fake
         });
         buildContext.Register<ComplexRecord>();
         var scope = buildContext.Scope();

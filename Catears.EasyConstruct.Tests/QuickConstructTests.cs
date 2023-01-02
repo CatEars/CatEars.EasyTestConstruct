@@ -31,20 +31,6 @@ public class QuickConstructTests
     }
 
     [Fact]
-    public void AutoScope_WithInterfaceInHierarchy_CanMockInterface()
-    {
-        var scope = QuickConstruct.AutoScopeWithMockFactory<TestInterfaceWrapper>(
-            FakeItEasyMockFactory.RegisterFake);
-        var mock = scope.MemoizeAndResolve<TestInterface>();
-        A.CallTo(() => mock.GetValue()).Returns("42");
-
-        var resolved = scope.Resolve<TestInterfaceWrapper>();
-        var result = resolved.GetWrappedValue();
-
-        Assert.Equal("[42]", result);
-    }
-
-    [Fact]
     public void AutoScopeWithFakeItEasy_WithInterfaceInHierarchy_CanMockInterface()
     {
         var scope = QuickFakeItEasyConstruct.AutoScope<TestInterfaceWrapper>();

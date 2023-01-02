@@ -12,42 +12,24 @@ public class BuildContext
     {
         public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Basic;
 
-        public Action<BuildContext, Type> MockRegistrationMethod { get; set; } = (_, type) =>
-        {
-            InternalOptions.Default.MockRegistrationMethod(type);
-        };
+        public Func<Type, object>? MockFactoryMethod { get; set; }
 
         public static Options Default { get; } = new();
     }
 
-    internal record InternalOptions(RegistrationMode RegistrationMode, Action<Type> MockRegistrationMethod)
-    {
-        internal static InternalOptions Default { get; } = new(RegistrationMode.Basic, type =>
-        {
-            var msg = $"Trying to register abstract type or interface '{type.Name}' without any " +
-                      $"defined function that handles such types. Add a `{nameof(Options.MockRegistrationMethod)}` " +
-                      "when creating your build context to register mocks for these kinds of types when they " +
-                      "are encountered.";
-            throw new ArgumentException(msg);
-        });
-    }
-
     private ServiceCollection ServiceCollection { get; } = new();
 
-    private InternalOptions BuildOptions { get; }
+    private Options BuildOptions { get; }
 
     public BuildContext(Options? options = null)
     {
-        options ??= Options.Default;
-        BuildOptions = new InternalOptions(
-            options.RegistrationMode,
-            type => options.MockRegistrationMethod(this, type));
+        BuildOptions = options ?? Options.Default;
         ServiceCollection.RegisterBasicValueProviders();
     }
 
     public void Register(Type type)
     {
-        var registrator = new ServiceRegistrator(BuildOptions.MockRegistrationMethod);
+        var registrator = new ServiceRegistrator(BuildOptions.MockFactoryMethod);
         var dependencyWalker = GetDependencyWalkerForType(type);
         registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker);
     }

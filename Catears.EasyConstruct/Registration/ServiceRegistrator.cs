@@ -6,11 +6,11 @@ namespace Catears.EasyConstruct.Registration;
 
 internal class ServiceRegistrator
 {
-    private Action<Type> MockRegistrationMethod { get; }
+    private Func<Type, object>? MockFactoryMethod { get; }
 
-    public ServiceRegistrator(Action<Type> mockRegistrationMethod)
+    public ServiceRegistrator(Func<Type, object>? mockFactoryMethod)
     {
-        MockRegistrationMethod = mockRegistrationMethod;
+        MockFactoryMethod = mockFactoryMethod;
     }
 
     internal void RegisterServicesOrThrow(
@@ -41,7 +41,16 @@ internal class ServiceRegistrator
 
         if (context.IsMockIntendedType)
         {
-            MockRegistrationMethod(context.ServiceToRegister);
+            if (MockFactoryMethod == null)
+            {
+                var msg = $"Trying to register abstract type or interface '{context.ServiceToRegister.Name}' without any " +
+                          $"defined function that handles such types. Add a `{nameof(BuildContext.Options.MockFactoryMethod)}` " +
+                          "when creating your build context to register mocks for these kinds of types when they " +
+                          "are encountered.";
+                throw new ArgumentException(msg);
+            }
+            collection.AddTransient(context.ServiceToRegister, 
+                _ => MockFactoryMethod(context.ServiceToRegister));
             return;
         }
 

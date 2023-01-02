@@ -14,6 +14,6 @@ internal record ServiceRegistrationContext(
             service.GetConstructors(),
             service.ContainsGenericParameters,
             service.IsPrimitive || typeof(string) == service,
-            service.IsInterface || service.IsAbstract);
+            service.IsInterface || (service.IsAbstract && !service.IsSealed));
 
 }

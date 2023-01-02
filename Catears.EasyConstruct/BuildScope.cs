@@ -5,7 +5,7 @@ namespace Catears.EasyConstruct;
 
 public class BuildScope
 {
-    private IServiceCollection Collection { get; }
+    protected IServiceCollection Collection { get; }
 
     private ServiceProvider? _provider = null;
 
@@ -19,22 +19,12 @@ public class BuildScope
         Collection = serviceCollection;
     }
 
-    public T Resolve<T>() where T : class
-    {
-        return (T)Resolve(typeof(T));
-    }
-
-    public object Resolve(Type type)
+    protected virtual object InternalResolve(Type type)
     {
         return Provider.GetRequiredService(type);
     }
 
-    public void Memoize<T>() where T : class
-    {
-        Memoize(typeof(T));
-    }
-
-    public void Memoize(Type type)
+    protected virtual void InternalMemoize(Type type)
     {
         var currentImplementation = Collection.First(descriptor => descriptor.ServiceType == type);
         var priorFactory = currentImplementation.ImplementationFactory;
@@ -49,10 +39,10 @@ public class BuildScope
         }
 
         var resolver = new MemoizedResolver(provider => priorFactory(provider));
-        Use(type, provider => resolver.ResolveParameter(provider));
+        InternalUse(type, provider => resolver.ResolveParameter(provider));
     }
 
-    private void Use<T>(Type builtType, Func<IServiceProvider, T> builder) where T : class
+    protected virtual void InternalUse<T>(Type builtType, Func<IServiceProvider, T> builder) where T : class
     {
         var currentImplementation = Collection.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(T));
         if (currentImplementation != null)
@@ -64,17 +54,37 @@ public class BuildScope
         InvalidateCurrentProvider();
     }
 
+    public T Resolve<T>() where T : class
+    {
+        return (T)Resolve(typeof(T));
+    }
+
+    public object Resolve(Type type)
+    {
+        return InternalResolve(type);
+    }
+
+    public void Memoize<T>() where T : class
+    {
+        Memoize(typeof(T));
+    }
+
+    public void Memoize(Type type)
+    {
+        InternalMemoize(type);
+    }
+
     public void Use<T>(Func<IServiceProvider, T> builder) where T : class
     {
-        Use(typeof(T), builder);
+        InternalUse(typeof(T), builder);
     }
 
     public void Use<T>(Func<T> builder) where T : class
     {
-        Use(typeof(T), _ => builder());
+        InternalUse(typeof(T), _ => builder());
     }
 
-    private void InvalidateCurrentProvider()
+    protected void InvalidateCurrentProvider()
     {
         _provider = null;
     }

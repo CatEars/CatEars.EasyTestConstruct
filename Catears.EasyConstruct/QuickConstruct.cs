@@ -12,13 +12,13 @@ public static class QuickConstruct
         return context.Scope();
     }
 
-    public static BuildScope AutoScopeWithMockFactory<T>(Action<BuildContext, Type> mockRegistrationMethod)
+    public static BuildScope AutoScopeWithMockFactory<T>(Func<Type, object> mockFactory)
         where T : class
     {
         var context = new BuildContext(new()
         {
             RegistrationMode = RegistrationMode.Recursive,
-            MockRegistrationMethod = mockRegistrationMethod
+            MockFactoryMethod = mockFactory
         });
         context.Register<T>();
         return context.Scope();
