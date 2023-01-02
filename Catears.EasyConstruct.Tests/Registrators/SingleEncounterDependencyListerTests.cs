@@ -8,18 +8,6 @@ namespace Catears.EasyConstruct.Tests.Registrators;
 
 public class SingleEncounterDependencyListerTests
 {
-    internal record BasicRecord(string Value);
-
-    internal record ComplexRecord(BasicRecord Inner);
-
-    internal record ChainedComplexRecord(ComplexRecord Inner);
-
-    internal class SelfReferentialClass
-    {
-        public SelfReferentialClass(SelfReferentialClass? parent)
-        {
-        }
-    }
 
     [Fact]
     public void ListDependencies_WithDisregardedTypes_ReturnsNoneOfDisregardedTypes()
@@ -29,9 +17,9 @@ public class SingleEncounterDependencyListerTests
             new ConstructorParameterDependencyLister(),
             disregardedTypes);
 
-        var result = walker.ListDependencies(typeof(ComplexRecord));
+        var result = walker.ListDependencies(typeof(RecordWithInnerRecord));
 
-        var expected = new List<Type>() { typeof(ComplexRecord) };
+        var expected = new List<Type>() { typeof(RecordWithInnerRecord) };
         var registrations = result.Select(x => x.ServiceToRegister).ToList();
         Assert.Single(registrations);
         Assert.Equal(expected, registrations);
@@ -44,14 +32,14 @@ public class SingleEncounterDependencyListerTests
         var walker = new SingleEncounterDependencyListerDecorator(
             new ConstructorParameterDependencyLister());
 
-        var firstResult = walker.ListDependencies(typeof(ChainedComplexRecord))
+        var firstResult = walker.ListDependencies(typeof(RecordWithChainedRecord))
             .Select(x => x.ServiceToRegister);
-        var secondResult = walker.ListDependencies(typeof(ComplexRecord))
+        var secondResult = walker.ListDependencies(typeof(RecordWithInnerRecord))
             .Select(x => x.ServiceToRegister);
-        var thirdResult = walker.ListDependencies(typeof(ChainedComplexRecord))
+        var thirdResult = walker.ListDependencies(typeof(RecordWithChainedRecord))
             .Select(x => x.ServiceToRegister);
 
-        var expectedFirst = new List<Type>() { typeof(ChainedComplexRecord), typeof(ComplexRecord) };
+        var expectedFirst = new List<Type>() { typeof(RecordWithChainedRecord), typeof(RecordWithInnerRecord) };
         var expectedSecond = new List<Type>() { typeof(BasicRecord) };
         var expectedThird = new List<Type>();
         

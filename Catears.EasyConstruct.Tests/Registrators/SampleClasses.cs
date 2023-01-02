@@ -189,3 +189,18 @@ public struct StructWithSingleConstructorContainingComplexParameter
     {
     }
 }
+
+
+public record BasicRecord(string Value);
+
+public record RecordWithInnerRecord(BasicRecord Inner);
+
+public record RecordWithChainedRecord(RecordWithInnerRecord Inner);
+
+public class SelfReferentialClass
+{
+    public SelfReferentialClass(SelfReferentialClass? selfReferentialClass)
+    {
+        
+    }
+}
