@@ -14,7 +14,7 @@ public class StringProvider
 
     private static string GenerateId()
     {
-        return Nanoid.Nanoid.Generate();
+        return Nanoid.Nanoid.Generate(size: 12);
     }
 
     private void AddIfNotNullOrEmpty(List<string> strings, string? candidate)
