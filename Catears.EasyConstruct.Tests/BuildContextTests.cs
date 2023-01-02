@@ -1,4 +1,5 @@
 ﻿using System;
+using Catears.EasyConstruct.FakeItEasy;
 using Xunit;
 
 namespace Catears.EasyConstruct.Tests;
@@ -41,5 +42,16 @@ public class BuildContextTests
         var context = new BuildContext();
 
         Assert.Throws<ArgumentException>(() => context.Register<ITestInterface>());
+    }
+
+    [Fact]
+    public void RegisterFake_WithInterface_RegistersAMockedType()
+    {
+        var context = new BuildContext();
+        context.RegisterFake(typeof(ITestInterface));
+
+        var resolved = context.Scope().Resolve<ITestInterface>();
+        
+        Assert.IsAssignableFrom<ITestInterface>(resolved);
     }
 }
