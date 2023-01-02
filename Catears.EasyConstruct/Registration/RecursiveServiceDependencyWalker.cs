@@ -4,9 +4,12 @@ internal class RecursiveServiceDependencyWalker : IServiceDependencyWalker
 {
     private Type DependencyTreeRootType { get; }
 
+    private ISet<Type> TypesToDisregard { get; set; }
+
     public RecursiveServiceDependencyWalker(Type dependencyTreeRootType)
     {
         DependencyTreeRootType = dependencyTreeRootType;
+        TypesToDisregard = new HashSet<Type>();
     }
 
     public IEnumerable<ServiceRegistrationContext> ListDependencies()
@@ -29,7 +32,8 @@ internal class RecursiveServiceDependencyWalker : IServiceDependencyWalker
             var constructorParams = matchingConstructor.GetParameters();
             foreach (var param in constructorParams)
             {
-                if (encounteredTypes.Contains(param.ParameterType))
+                if (encounteredTypes.Contains(param.ParameterType) ||
+                    TypesToDisregard.Contains(param.ParameterType))
                 {
                     // Skip inline instead of with LINQ expression
                     // in case one class contains same complex type of parameter twice
@@ -42,11 +46,17 @@ internal class RecursiveServiceDependencyWalker : IServiceDependencyWalker
                 {
                     continue;
                 }
+
                 encounteredTypes.Add(param.ParameterType);
                 foundTypes.Add(registrationContext);
             }
         }
 
         return foundTypes;
+    }
+
+    internal void DisregardTypes(ISet<Type> typesToDisregard)
+    {
+        TypesToDisregard = typesToDisregard;
     }
 }

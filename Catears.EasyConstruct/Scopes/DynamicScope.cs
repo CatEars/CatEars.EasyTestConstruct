@@ -7,10 +7,13 @@ public class DynamicScope : BuildScope
 {
     private Func<Type, object>? MockFactoryMethod { get; }
 
-    public DynamicScope(IServiceCollection serviceCollection, 
+    private ISet<Type> RegisteredTypes { get; }
+
+    public DynamicScope(IServiceCollection serviceCollection,
         Func<Type, object>? mockFactoryMethod) : base(serviceCollection)
     {
         MockFactoryMethod = mockFactoryMethod;
+        RegisteredTypes = new HashSet<Type>(serviceCollection.Select(descriptor => descriptor.ServiceType));
     }
 
     protected override object InternalResolve(Type type)
@@ -44,7 +47,9 @@ public class DynamicScope : BuildScope
     private void AddDependencyTreeToCollection(Type type)
     {
         var walker = new RecursiveServiceDependencyWalker(type);
+        walker.DisregardTypes(RegisteredTypes);
         var registrator = new ServiceRegistrator(MockFactoryMethod);
         registrator.RegisterServicesOrThrow(Collection, walker);
+        RegisteredTypes.UnionWith(registrator.SuccessfullyRegisteredServices);
     }
 }

@@ -8,6 +8,8 @@ internal class ServiceRegistrator
 {
     private Func<Type, object>? MockFactoryMethod { get; }
 
+    internal ISet<Type> SuccessfullyRegisteredServices { get; } = new HashSet<Type>();
+
     public ServiceRegistrator(Func<Type, object>? mockFactoryMethod)
     {
         MockFactoryMethod = mockFactoryMethod;
@@ -31,6 +33,7 @@ internal class ServiceRegistrator
             // will only be constructed if they have a specific implementation type. The object will not be built
             // with a factory method.
             collection.AddTransient(context.ServiceToRegister, context.ServiceToRegister);
+            SuccessfullyRegisteredServices.Add(context.ServiceToRegister);
             return;
         }
 
@@ -49,8 +52,9 @@ internal class ServiceRegistrator
                           "are encountered.";
                 throw new ArgumentException(msg);
             }
-            collection.AddTransient(context.ServiceToRegister, 
+            collection.AddTransient(context.ServiceToRegister,
                 _ => MockFactoryMethod(context.ServiceToRegister));
+            SuccessfullyRegisteredServices.Add(context.ServiceToRegister);
             return;
         }
 
@@ -84,7 +88,7 @@ internal class ServiceRegistrator
         throw new ArgumentException(msg);
     }
 
-    private static void Register(IServiceCollection serviceCollection, ServiceRegistrationContext context,
+    private void Register(IServiceCollection serviceCollection, ServiceRegistrationContext context,
         ConstructorInfo constructor)
     {
         var parameterDescriptors = constructor.GetParameters();
@@ -98,5 +102,6 @@ internal class ServiceRegistrator
             var parameters = parameterResolvers.Select(resolver => resolver.ResolveParameter(services));
             return constructor.Invoke(parameters.ToArray());
         });
+        SuccessfullyRegisteredServices.Add(context.ServiceToRegister);
     }
 }
