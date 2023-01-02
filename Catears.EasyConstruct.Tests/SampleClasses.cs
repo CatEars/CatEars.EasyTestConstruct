@@ -26,14 +26,14 @@ public record RecordWithMultipleConstructors(string Value)
 [TestableForRegistration]
 public record RecordWithSingleMarkedConstructor
 {
-    [EasyConstruct.PreferredConstructor]
+    [EasyConstruct.EasyConstructConstructor]
     public RecordWithSingleMarkedConstructor() { }
 }
 
 [TestableForRegistration]
 public record RecordWithSingleMarkedConstructorAmongMultipleConstructors(string Value)
 {
-    [EasyConstruct.PreferredConstructor]
+    [EasyConstruct.EasyConstructConstructor]
     public RecordWithSingleMarkedConstructorAmongMultipleConstructors() : this("Sample Value") { }
 }
 
@@ -76,7 +76,7 @@ public class ClassWithMultipleConstructors
 [TestableForRegistration]
 public class ClassWithSingleMarkedConstructor
 {
-    [EasyConstruct.PreferredConstructor]
+    [EasyConstruct.EasyConstructConstructor]
     public ClassWithSingleMarkedConstructor() { }
 }
 
@@ -85,7 +85,7 @@ public class ClassWithSingleMarkedConstructorAmongMultipleConstructors
 {
     public string Value { get; }
 
-    [EasyConstruct.PreferredConstructor]
+    [EasyConstruct.EasyConstructConstructor]
     public ClassWithSingleMarkedConstructorAmongMultipleConstructors()
     {
         Value = "Sample Value";
@@ -147,7 +147,7 @@ public struct StructWithMultipleConstructors
 [TestableForRegistration]
 public struct StructWithSingleMarkedConstructor
 {
-    [EasyConstruct.PreferredConstructor]
+    [EasyConstruct.EasyConstructConstructor]
     public StructWithSingleMarkedConstructor() { }
 }
 
@@ -157,7 +157,7 @@ public struct StructWithSingleMarkedConstructorAmongMultipleConstructors
 {
     public string Value { get; }
 
-    [EasyConstruct.PreferredConstructor]
+    [EasyConstruct.EasyConstructConstructor]
     public StructWithSingleMarkedConstructorAmongMultipleConstructors()
     {
         Value = "Sample Value";

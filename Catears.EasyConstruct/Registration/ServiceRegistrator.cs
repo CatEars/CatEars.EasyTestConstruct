@@ -76,7 +76,7 @@ internal class ServiceRegistrator
         }
 
         bool IsPreferredConstructor(ConstructorInfo info) =>
-            Attribute.IsDefined(info, typeof(PreferredConstructorAttribute));
+            Attribute.IsDefined(info, typeof(EasyConstructConstructorAttribute));
 
         var markedConstructor = context.Constructors.FirstOrDefault(IsPreferredConstructor);
         if (markedConstructor != null)
@@ -85,7 +85,7 @@ internal class ServiceRegistrator
         }
 
         var msg = $"Constructor for type {context.ServiceToRegister.Name} did not contain exactly 1 constructor, " +
-                  $"and it did not contain a constructor marked as {nameof(PreferredConstructorAttribute)} and can " +
+                  $"and it did not contain a constructor marked as {nameof(EasyConstructConstructorAttribute)} and can " +
                   $"therefore not be registered for automatically constructing";
         throw new ArgumentException(msg);
     }
