@@ -24,7 +24,7 @@ public class StringResolverTests : IClassFixture<BasicProviderFixture>
         var result = sut.ResolveParameter(scope);
 
         Assert.IsType<string>(result);
-        Assert.False(string.IsNullOrWhiteSpace((string) result));
+        Assert.False(string.IsNullOrWhiteSpace((string)result));
     }
 
     [Fact]
@@ -40,9 +40,9 @@ public class StringResolverTests : IClassFixture<BasicProviderFixture>
         var result = sut.ResolveParameter(scope);
 
         Assert.IsType<string>(result);
-        var str = (string) result;
+        var str = (string)result;
         Assert.Contains("MyVariableName", str);
         Assert.Contains("MyVariableType", str);
     }
-    
+
 }

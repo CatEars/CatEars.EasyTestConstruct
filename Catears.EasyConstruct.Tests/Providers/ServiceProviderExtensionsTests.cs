@@ -13,7 +13,7 @@ public class ServiceProviderExtensionsTests : IClassFixture<BasicProvidersFixtur
     {
         A, B, C
     }
-    
+
     public ServiceProviderExtensionsTests(BasicProvidersFixture fixture)
     {
         Fixture = fixture;
@@ -23,7 +23,7 @@ public class ServiceProviderExtensionsTests : IClassFixture<BasicProvidersFixtur
     public void RandomInt_ReturnsAnInt()
     {
         var randomInt = Fixture.ServiceProvider.RandomInt();
-        
+
         Assert.IsType<int>(randomInt);
     }
 

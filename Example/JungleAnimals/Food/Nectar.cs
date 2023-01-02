@@ -7,7 +7,7 @@ public class Nectar : IAnimalFood
     {
         Flower = flower;
     }
-    
+
     public string Flower { get; private set; }
-    
+
 }

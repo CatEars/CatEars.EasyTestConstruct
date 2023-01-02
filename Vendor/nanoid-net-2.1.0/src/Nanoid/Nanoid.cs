@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-[assembly:InternalsVisibleTo("Nanoid.Test")]
+[assembly: InternalsVisibleTo("Nanoid.Test")]
 
 namespace Nanoid
 {
@@ -27,7 +27,7 @@ namespace Nanoid
         /// <param name="alphabet"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static string Generate(string alphabet= DefaultAlphabet, int size=21) => Generate(Random, alphabet, size);
+        public static string Generate(string alphabet = DefaultAlphabet, int size = 21) => Generate(Random, alphabet, size);
 
         /// <summary>
         /// 
@@ -38,7 +38,7 @@ namespace Nanoid
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public static string Generate(Random random, string alphabet= DefaultAlphabet, int size=21)
+        public static string Generate(Random random, string alphabet = DefaultAlphabet, int size = 21)
         {
 
             if (random == null)

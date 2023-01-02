@@ -7,7 +7,7 @@ public class Meat : IAnimalFood
     {
         Weight = weight;
     }
-    
+
     public int Weight { get; private set; }
-    
+
 }

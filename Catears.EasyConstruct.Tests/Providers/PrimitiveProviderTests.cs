@@ -12,7 +12,7 @@ public class PrimitiveProviderTests
     {
         bool GeneratesUniqueValues();
     }
-    
+
     private class ProviderTester<TReturnType> : IProviderTester
     {
         private Func<TReturnType> Generator { get; }
@@ -56,7 +56,7 @@ public class PrimitiveProviderTests
     {
         Assert.True(tester.GeneratesUniqueValues());
     }
-    
+
     [Fact]
     public void BoolProvider_CanProvideAllBools()
     {

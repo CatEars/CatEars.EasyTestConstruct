@@ -63,7 +63,7 @@ public class BuildScope
         Collection.AddTransient(builtType, builder);
         InvalidateCurrentProvider();
     }
-    
+
     public void Use<T>(Func<IServiceProvider, T> builder) where T : class
     {
         Use(typeof(T), builder);
@@ -73,7 +73,7 @@ public class BuildScope
     {
         Use(typeof(T), _ => builder());
     }
-    
+
     private void InvalidateCurrentProvider()
     {
         _provider = null;

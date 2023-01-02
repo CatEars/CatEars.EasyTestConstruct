@@ -6,8 +6,8 @@ namespace TooComplexForYouDotCom.Tests;
 
 public class OpenGenericTests
 {
-    public record RecWithDependency(IOpenGenericInterface<string> Dependency); 
-    
+    public record RecWithDependency(IOpenGenericInterface<string> Dependency);
+
     [Fact]
     public void CannotDeductInterfaceFromOnlyGenericImplementation()
     {
@@ -25,5 +25,5 @@ public class OpenGenericTests
         context.Register<RecWithDependency>();
         context.Scope().Resolve<RecWithDependency>();
     }
-    
+
 }

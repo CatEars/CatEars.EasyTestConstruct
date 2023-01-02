@@ -19,7 +19,7 @@ public class IntProviderTests
         {
             uniqueIds.Add(sut.RandomInt());
         }
-        
+
         Assert.True(uniqueIds.Count > minimumExpectedUniqueInts);
     }
 
@@ -37,7 +37,7 @@ public class IntProviderTests
         {
             actualResults.Add(sut.RandomInt(low, high));
         }
-        
+
         Assert.Equal(expectedResults, actualResults);
     }
 }

@@ -92,14 +92,14 @@ public class DefaultServiceRegistratorChainTests
             var context = ServiceRegistrationContext.FromType(extraType);
             ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, context);
         }
-        
+
         var registrationContext = ServiceRegistrationContext.FromType(type);
         if (shouldSucceed)
         {
             ServiceRegistrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
             using var provider = serviceCollection.BuildServiceProvider();
             var resolvedObject = provider.GetService(type);
-            
+
             Assert.NotNull(resolvedObject);
             Assert.IsType(type, resolvedObject);
         }

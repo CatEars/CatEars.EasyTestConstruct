@@ -6,35 +6,35 @@ public enum TestEnum
 }
 
 [TestableForRegistration]
-public static class ClassThatIsStatic {}
+public static class ClassThatIsStatic { }
 
 [TestableForRegistration]
 public record RecordWithSingleConstructor;
 
 [TestableForRegistration]
-public abstract record RecordThatIsAbstract {}
+public abstract record RecordThatIsAbstract { }
 
 [TestableForRegistration]
-public sealed record RecordThatIsSealed {}
+public sealed record RecordThatIsSealed { }
 
 [TestableForRegistration]
 public record RecordWithMultipleConstructors(string Value)
 {
-    public RecordWithMultipleConstructors() : this("Sample Value") {}
+    public RecordWithMultipleConstructors() : this("Sample Value") { }
 }
 
 [TestableForRegistration]
 public record RecordWithSingleMarkedConstructor
 {
     [EasyConstruct.PreferredConstructor]
-    public RecordWithSingleMarkedConstructor() {}
+    public RecordWithSingleMarkedConstructor() { }
 }
 
 [TestableForRegistration]
 public record RecordWithSingleMarkedConstructorAmongMultipleConstructors(string Value)
 {
     [EasyConstruct.PreferredConstructor]
-    public RecordWithSingleMarkedConstructorAmongMultipleConstructors() : this("Sample Value") {}
+    public RecordWithSingleMarkedConstructorAmongMultipleConstructors() : this("Sample Value") { }
 }
 
 [TestableForRegistration]
@@ -49,13 +49,13 @@ public record RecordWithSingleConstructorWithMultiplePrimitiveParameters(
 public record RecordWithSingleConstructorContainingComplexParameter(RecordWithSingleConstructor _);
 
 [TestableForRegistration]
-public class ClassWithSingleConstructor {}
+public class ClassWithSingleConstructor { }
 
 [TestableForRegistration]
-public abstract class ClassThatIsAbstract {}
+public abstract class ClassThatIsAbstract { }
 
 [TestableForRegistration]
-public sealed class ClassThatIsSealed {}
+public sealed class ClassThatIsSealed { }
 
 [TestableForRegistration]
 public class ClassWithMultipleConstructors
@@ -77,7 +77,7 @@ public class ClassWithMultipleConstructors
 public class ClassWithSingleMarkedConstructor
 {
     [EasyConstruct.PreferredConstructor]
-    public ClassWithSingleMarkedConstructor() {}
+    public ClassWithSingleMarkedConstructor() { }
 }
 
 [TestableForRegistration]
@@ -106,7 +106,7 @@ public class ClassWithSingleConstructorWithMultiplePrimitiveParameters
         double DoubleValue, long LongValue, sbyte SByteValue, short ShortValue,
         uint UIntValue, ulong ULongValue, ushort UShortValue)
     {
-        
+
     }
 }
 
@@ -120,12 +120,12 @@ public class ClassWithSingleConstructorContainingComplexParameter
 }
 
 [TestableForRegistration]
-public struct StructWithNoConstructor {}
+public struct StructWithNoConstructor { }
 
 [TestableForRegistration]
 public struct StructWithSingleConstructor
 {
-    public StructWithSingleConstructor() {}
+    public StructWithSingleConstructor() { }
 }
 
 [TestableForRegistration]
@@ -148,7 +148,7 @@ public struct StructWithMultipleConstructors
 public struct StructWithSingleMarkedConstructor
 {
     [EasyConstruct.PreferredConstructor]
-    public StructWithSingleMarkedConstructor() {}
+    public StructWithSingleMarkedConstructor() { }
 }
 
 
@@ -156,7 +156,7 @@ public struct StructWithSingleMarkedConstructor
 public struct StructWithSingleMarkedConstructorAmongMultipleConstructors
 {
     public string Value { get; }
-    
+
     [EasyConstruct.PreferredConstructor]
     public StructWithSingleMarkedConstructorAmongMultipleConstructors()
     {
@@ -178,7 +178,7 @@ public struct StructWithSingleConstructorWithMultiplePrimitiveParameters
         double DoubleValue, long LongValue, sbyte SByteValue, short ShortValue,
         uint UIntValue, ulong ULongValue, ushort UShortValue)
     {
-        
+
     }
 }
 

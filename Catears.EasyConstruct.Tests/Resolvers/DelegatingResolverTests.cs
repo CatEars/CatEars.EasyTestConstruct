@@ -8,7 +8,7 @@ namespace Catears.EasyConstruct.Tests.Resolvers;
 public class DelegatingResolverTests
 {
     private record MySpecialType();
-    
+
     [Fact]
     public void ResolveParameter_ResolvesUsingGivenServiceProvider()
     {
@@ -19,7 +19,7 @@ public class DelegatingResolverTests
         var sut = new DelegatingResolver(typeof(MySpecialType));
 
         var result = sut.ResolveParameter(provider);
-        
+
         Assert.Same(myServiceInstance, result);
         A.CallTo(() => provider.GetService(typeof(MySpecialType)))
             .MustHaveHappened();

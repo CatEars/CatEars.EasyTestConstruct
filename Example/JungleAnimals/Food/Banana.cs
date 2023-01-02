@@ -9,15 +9,15 @@ public class Banana : IAnimalFood
         Yellowish,
         Yellow
     }
-    
+
     public Banana(int length, Color bananaColor)
     {
         Length = length;
         BananaColor = bananaColor;
     }
-    
+
     public int Length { get; private set; }
-    
+
     public Color BananaColor { get; private set; }
-    
+
 }

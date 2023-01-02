@@ -30,12 +30,12 @@ internal static class ParameterResolverCollection
     {
         new(IsEnum, info => new EnumResolver(info.ParameterType))
     };
-    
+
     private static bool IsEnum(ParameterInfo paramInfo)
     {
         return paramInfo.ParameterType.IsEnum;
     }
-    
+
     internal static IParameterResolver GetResolverForType(ParameterInfo info)
     {
         var type = info.ParameterType;

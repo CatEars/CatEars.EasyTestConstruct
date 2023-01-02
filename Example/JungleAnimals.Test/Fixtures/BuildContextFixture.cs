@@ -21,10 +21,10 @@ public class BuildContextFixture
 
         Context.Register<AnimalFeeder>();
         Context.Register<BigOlAnimalFoodDatabase>();
-        
+
         Context.RegisterFake<IAnimalFood>();
         Context.RegisterFake<IAnimalFoodCompatibilityRepository>();
         Context.RegisterFake<IJungleAnimal>();
     }
-    
+
 }

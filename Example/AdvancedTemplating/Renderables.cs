@@ -20,6 +20,6 @@ public record B(string Text) : IRenderable
 {
     public string RenderSelf()
     {
-        return $">> {Text} <<"; 
+        return $">> {Text} <<";
     }
 }

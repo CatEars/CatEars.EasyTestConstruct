@@ -6,40 +6,40 @@ namespace Catears.EasyConstruct.Tests;
 public class BuildScopeExtensionTests
 {
     private record SampleRecord(string StringValue);
-    
+
     [Fact]
     public void MemoizeAndResolve_WhenCalledMultipleTimes_ReturnsSameObject()
     {
         var buildContext = new BuildContext();
         buildContext.Register<SampleRecord>();
         var scope = buildContext.Scope();
-        
+
         var firstSampleRecord = scope.MemoizeAndResolve<SampleRecord>();
         var secondSampleRecord = scope.Resolve<SampleRecord>();
-        
+
         Assert.Same(firstSampleRecord, secondSampleRecord);
     }
-    
+
     [Fact]
     public void MemoizeAndResolve_WhenCalledAfterResolve_ReturnsANewObject()
     {
         var buildContext = new BuildContext();
         buildContext.Register<SampleRecord>();
         var scope = buildContext.Scope();
-        
+
         var firstSampleRecord = scope.Resolve<SampleRecord>();
         var secondSampleRecord = scope.MemoizeAndResolve<SampleRecord>();
 
         Assert.NotSame(firstSampleRecord, secondSampleRecord);
     }
-    
+
     [Fact]
     public void MemoizeAndResolve_ReturnsValidObject()
     {
         var scope = CreateSampleBuildScope();
 
         var sampleRecord = scope.MemoizeAndResolve<SampleRecord>();
-        
+
         Assert.NotNull(sampleRecord);
         Assert.IsType<SampleRecord>(sampleRecord);
         Assert.NotEmpty(sampleRecord.StringValue);
@@ -62,10 +62,10 @@ public class BuildScopeExtensionTests
         buildContext.Register<ThirdRecord>();
         buildContext.Register<FourthRecord>();
         var scope = buildContext.Scope();
-        
+
         var fourthRecord = scope.MemoizeAndResolve<FourthRecord>();
         var newThirdRecord = scope.Resolve<ThirdRecord>();
-        
+
         Assert.NotSame(newThirdRecord, fourthRecord.ThirdRecord);
         Assert.NotSame(newThirdRecord.SecondRecord, fourthRecord.ThirdRecord.SecondRecord);
         Assert.NotSame(newThirdRecord.SecondRecord.FirstRecord, fourthRecord.ThirdRecord.SecondRecord.FirstRecord);
@@ -88,13 +88,13 @@ public class BuildScopeExtensionTests
         Assert.IsType<SampleRecord>(result);
         Assert.NotEmpty(result.StringValue);
     }
-    
+
     [Fact]
     public void UseAndResolve_WhenCalledMultipleTimes_WillUseProvidedBuildFunction()
     {
         var scope = CreateSampleBuildScope();
         var count = 0;
-        
+
         scope.UseAndResolve(provider =>
         {
             ++count;
@@ -118,7 +118,7 @@ public class BuildScopeExtensionTests
             ++count;
             return new SampleRecord(provider.RandomString());
         });
-        
+
         Assert.Equal(1, count);
     }
 
@@ -140,7 +140,7 @@ public class BuildScopeExtensionTests
             ++secondCount;
             return new SampleRecord(provider.RandomString());
         });
-        
+
         Assert.Equal(1, firstCount);
         Assert.Equal(1, secondCount);
     }
@@ -150,21 +150,21 @@ public class BuildScopeExtensionTests
     {
         var obj = new object();
         var scope = CreateSampleBuildScope();
-        
+
         var resolvedObj = scope.UseAndResolve(obj);
-        
+
         Assert.Same(obj, resolvedObj);
     }
-    
+
     [Fact]
     public void UseAndResolve_CalledMultipleTimesWithObject_WillReturnSameObject()
     {
         var obj = new object();
         var scope = CreateSampleBuildScope();
-        
+
         var resolvedObj1 = scope.UseAndResolve(obj);
         var resolvedObj2 = scope.Resolve<object>();
-        
+
         Assert.Same(obj, resolvedObj1);
         Assert.Same(obj, resolvedObj2);
     }
@@ -175,12 +175,12 @@ public class BuildScopeExtensionTests
         var scope = CreateSampleBuildScope();
 
         var result = scope.UseAndResolve(() => new SampleRecord("123"));
-        
+
         Assert.NotNull(result);
         Assert.IsType<SampleRecord>(result);
         Assert.Equal("123", result.StringValue);
     }
-    
+
     private static BuildScope CreateSampleBuildScope()
     {
         var buildContext = new BuildContext();

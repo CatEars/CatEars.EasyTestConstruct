@@ -23,10 +23,10 @@ public class MemoizedResolverTests : IClassFixture<BasicProviderFixture>
         var resolver = new MemoizedResolver(Builder);
 
         var result = resolver.ResolveParameter(A.Fake<IServiceProvider>());
-        
+
         Assert.Same(obj, result);
     }
-    
+
     [Fact]
     public void ResolveParameter_WhenCalledTwice_CallsBuilderOnlyOnce()
     {
@@ -42,7 +42,7 @@ public class MemoizedResolverTests : IClassFixture<BasicProviderFixture>
         resolver.ResolveParameter(A.Fake<IServiceProvider>());
         resolver.ResolveParameter(A.Fake<IServiceProvider>());
         resolver.ResolveParameter(A.Fake<IServiceProvider>());
-        
+
         Assert.Equal(1, count);
     }
 }

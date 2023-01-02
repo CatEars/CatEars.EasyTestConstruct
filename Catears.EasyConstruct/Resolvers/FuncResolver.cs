@@ -3,7 +3,7 @@
 internal class FuncResolver : IParameterResolver
 {
     private Func<IServiceProvider, object> Generator { get; }
-    
+
     public FuncResolver(Func<IServiceProvider, object> generator)
     {
         Generator = generator;

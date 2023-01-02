@@ -18,14 +18,14 @@ public class QuickConstructTests
     {
         public string GetWrappedValue() => $"[{TestInterface.GetValue()}]";
     }
-    
+
     [Fact]
     public void AutoScope_WithComplexType_BuildsScopeThatCanResolveType()
     {
         var scope = QuickConstruct.AutoScope<RecordWithSingleConstructorContainingComplexParameter>();
 
         var resolved = scope.Resolve<RecordWithSingleConstructorContainingComplexParameter>();
-        
+
         Assert.NotNull(resolved);
         Assert.NotNull(resolved._);
     }
@@ -40,7 +40,7 @@ public class QuickConstructTests
 
         var resolved = scope.Resolve<TestInterfaceWrapper>();
         var result = resolved.GetWrappedValue();
-        
+
         Assert.Equal("[42]", result);
     }
 }

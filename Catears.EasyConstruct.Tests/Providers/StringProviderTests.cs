@@ -14,12 +14,12 @@ public class StringProviderTests
         const int iterations = 1000;
         var uniqueStrings = new HashSet<string>();
         var sut = new StringProvider();
-        
+
         foreach (var _ in Enumerable.Range(0, iterations))
         {
             uniqueStrings.Add(sut.RandomString());
         }
-        
+
         Assert.Equal(iterations, uniqueStrings.Count);
     }
 
@@ -39,5 +39,5 @@ public class StringProviderTests
         Assert.Contains(myVariableName, result);
         Assert.Contains(myTypeName, result);
     }
-    
+
 }

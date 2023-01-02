@@ -25,12 +25,12 @@ public class EnumProviderTests
         var expectedEnums = Enum.GetValues<TestableEnum>().ToHashSet();
         var generatedEnums = new HashSet<TestableEnum>();
         var sut = new EnumProvider();
-        
+
         foreach (var _ in Enumerable.Range(0, iterations))
         {
-            generatedEnums.Add((TestableEnum) sut.RandomEnum<TestableEnum>());
+            generatedEnums.Add((TestableEnum)sut.RandomEnum<TestableEnum>());
         }
-        
+
         Assert.Equal(expectedEnums, generatedEnums);
         Assert.True(generatedEnums.Count > 0);
     }
@@ -42,5 +42,5 @@ public class EnumProviderTests
 
         Assert.Throws<ArgumentException>(() => sut.RandomEnum(typeof(EnumProvider)));
     }
-    
+
 }

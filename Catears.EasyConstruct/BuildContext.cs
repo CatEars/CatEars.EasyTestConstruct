@@ -35,12 +35,12 @@ public class BuildContext
     private ServiceCollection ServiceCollection { get; } = new();
 
     private InternalOptions BuildOptions { get; }
-    
+
     public BuildContext(Options? options = null)
     {
         options ??= Options.Default;
         BuildOptions = new InternalOptions(
-            options.RegistrationMode, 
+            options.RegistrationMode,
             type => options.MockRegistrationMethod(this, type));
         ServiceCollection.RegisterBasicValueProviders();
     }
@@ -50,7 +50,7 @@ public class BuildContext
         var registrationContext = ServiceRegistrationContext.FromTypeAndBuildOptions(type, BuildOptions);
         ServiceRegistrator.RegisterServiceOrThrow(ServiceCollection, registrationContext);
     }
-    
+
     public void Register<T>() where T : class
     {
         Register(typeof(T));
@@ -60,7 +60,7 @@ public class BuildContext
     {
         ServiceCollection.AddTransient(type, builder);
     }
-    
+
     public void Register<T>(Func<IServiceProvider, T> builder) where T : class
     {
         ServiceCollection.AddTransient(builder);

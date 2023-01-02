@@ -16,7 +16,7 @@ public class BuildScopeTests
 
         var firstResult = scope.Resolve<SampleRecord>();
         var secondResult = scope.Resolve<SampleRecord>();
-        
+
         Assert.Same(firstResult, secondResult);
     }
 
@@ -32,7 +32,7 @@ public class BuildScopeTests
 
         var firstResult = scope.Resolve<SampleRecord>();
         var secondResult = scope.Resolve<SampleRecord>();
-        
+
         Assert.Same(firstResult, secondResult);
     }
 
@@ -48,7 +48,7 @@ public class BuildScopeTests
         });
 
         scope.Resolve<object>();
-        
+
         Assert.Equal(1, count);
     }
 
@@ -59,10 +59,10 @@ public class BuildScopeTests
         serviceCollection.AddSingleton(new object());
         var buildScope = new BuildScope(serviceCollection);
         buildScope.Memoize<object>();
-        
+
         var firstResult = buildScope.Resolve<object>();
         var secondResult = buildScope.Resolve<object>();
-        
+
         Assert.NotNull(firstResult);
         Assert.Same(firstResult, secondResult);
     }
@@ -80,7 +80,7 @@ public class BuildScopeTests
 
         Assert.Throws<InvalidOperationException>(() => buildScope.Memoize<SampleAbstractClass>());
     }
-    
+
     private static BuildScope CreateSampleBuildScope()
     {
         var buildContext = new BuildContext();

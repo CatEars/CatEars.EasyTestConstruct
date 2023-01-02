@@ -2,7 +2,7 @@
 
 public class Template<T> where T : IRenderable
 {
-    
+
     private T TemplatedType { get; }
 
     public Template(T templatedType)

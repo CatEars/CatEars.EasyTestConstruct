@@ -19,5 +19,5 @@ public class RegisterTests
 
         Assert.IsType<Monkey>(monkey);
     }
-    
+
 }

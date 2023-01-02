@@ -16,23 +16,23 @@ public class RecursiveBuildContextTests
     {
         string GetValue();
     }
-    
+
     public class SampleInterfaceImpl : SampleInterface
     {
         internal static readonly string Value = "Sample Value";
-        
+
         public string GetValue() => Value;
     }
 
     internal class SampleInterfaceWrapper
     {
-        internal SampleInterface WrappedInterface { get; } 
-            
+        internal SampleInterface WrappedInterface { get; }
+
         public SampleInterfaceWrapper(SampleInterface sampleInterface)
         {
             WrappedInterface = sampleInterface;
         }
-        
+
     }
 
     internal record ComplexRecord(InnerRecord Inner, SampleInterface SampleInterface, string Value);
@@ -67,11 +67,11 @@ public class RecursiveBuildContextTests
             }
         });
         context.Register<SampleInterfaceWrapper>();
-        
+
         Assert.Equal(typeof(SampleInterface), wasCalledWithType);
     }
-    
- 
+
+
     [Fact]
     public void RecursiveRegister_WithClassPrimitiveAndInterface_IsAbleToResolveClass()
     {
@@ -83,7 +83,7 @@ public class RecursiveBuildContextTests
         buildContext.Register<ComplexRecord>();
         var scope = buildContext.Scope();
         var complex = scope.Resolve<ComplexRecord>();
-        
+
         Assert.NotNull(complex);
         Assert.NotNull(complex.Inner);
         Assert.NotNull(complex.SampleInterface);
@@ -105,7 +105,7 @@ public class RecursiveBuildContextTests
         var resolved = scope.Resolve<ComplexRecord>();
 
         var result = resolved.SampleInterface.GetValue();
-        
+
         Assert.Equal("42", result);
     }
 }
