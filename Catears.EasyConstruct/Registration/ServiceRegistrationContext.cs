@@ -6,7 +6,7 @@ internal record ServiceRegistrationContext(
     Type ServiceToRegister,
     ConstructorInfo[] Constructors,
     bool IsOpenGenericType,
-    bool IsPrimitiveType,
+    bool IsBasicType,
     bool IsMockIntendedType)
 {
     internal static ServiceRegistrationContext FromType(Type service) =>

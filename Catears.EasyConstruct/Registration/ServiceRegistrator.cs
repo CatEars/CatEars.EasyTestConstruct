@@ -34,7 +34,7 @@ internal class ServiceRegistrator
             return;
         }
 
-        if (context.IsPrimitiveType)
+        if (context.IsBasicType)
         {
             return;
         }

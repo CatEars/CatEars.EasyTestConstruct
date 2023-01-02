@@ -38,7 +38,7 @@ internal class RecursiveServiceDependencyWalker : IServiceDependencyWalker
                 }
 
                 var registrationContext = ServiceRegistrationContext.FromType(param.ParameterType);
-                if (registrationContext.IsPrimitiveType)
+                if (registrationContext.IsBasicType)
                 {
                     continue;
                 }
