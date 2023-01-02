@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Catears.EasyConstruct.Registration;
 using Xunit;
 
 namespace Catears.EasyConstruct.Tests.Registrators;
 
-public class RecursiveServiceDependencyWalkerTests
+public class BasicServiceDependencyWalkerTests
 {
     internal record BasicRecord(string Value);
 
@@ -21,11 +20,11 @@ public class RecursiveServiceDependencyWalkerTests
 
     [Theory]
     [InlineData(typeof(BasicRecord), typeof(BasicRecord))]
-    [InlineData(typeof(ComplexRecord), typeof(ComplexRecord), typeof(BasicRecord))]
+    [InlineData(typeof(ComplexRecord), typeof(ComplexRecord))]
     [InlineData(typeof(SelfReferentialClass), typeof(SelfReferentialClass))]
     public void ListDependencies_WithType_ReturnsExpectedListOfTypes(Type rootType, params Type[] expectedTypes)
     {
-        var walker = new RecursiveServiceDependencyWalker(rootType);
+        var walker = new BasicServiceDependencyWalker(rootType);
 
         var result = walker.ListDependencies();
 
