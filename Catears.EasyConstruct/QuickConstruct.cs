@@ -2,7 +2,6 @@
 
 public static class QuickConstruct
 {
-
     public static BuildScope AutoScope<T>() where T : class
     {
         var context = new BuildContext(new()
@@ -13,7 +12,8 @@ public static class QuickConstruct
         return context.Scope();
     }
 
-    public static BuildScope AutoScopeWithMockFactory<T>(Action<BuildContext, Type> mockRegistrationMethod) where T : class
+    public static BuildScope AutoScopeWithMockFactory<T>(Action<BuildContext, Type> mockRegistrationMethod)
+        where T : class
     {
         var context = new BuildContext(new()
         {
@@ -23,5 +23,4 @@ public static class QuickConstruct
         context.Register<T>();
         return context.Scope();
     }
-
 }
