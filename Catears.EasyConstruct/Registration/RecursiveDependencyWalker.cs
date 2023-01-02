@@ -2,22 +2,14 @@
 
 internal class RecursiveDependencyWalker : IDependencyWalker
 {
-    private Type DependencyTreeRootType { get; }
+    private ISet<Type> TypesToDisregard { get; set; } = new HashSet<Type>();
 
-    private ISet<Type> TypesToDisregard { get; set; }
-
-    public RecursiveDependencyWalker(Type dependencyTreeRootType)
+    public IEnumerable<ServiceRegistrationContext> ListDependencies(Type rootDependency)
     {
-        DependencyTreeRootType = dependencyTreeRootType;
-        TypesToDisregard = new HashSet<Type>();
-    }
-
-    public IEnumerable<ServiceRegistrationContext> ListDependencies()
-    {
-        var encounteredTypes = new HashSet<Type>() { DependencyTreeRootType };
+        var encounteredTypes = new HashSet<Type>() { rootDependency };
         var foundTypes = new List<ServiceRegistrationContext>()
         {
-            ServiceRegistrationContext.FromType(DependencyTreeRootType)
+            ServiceRegistrationContext.FromType(rootDependency)
         };
 
         for (var idx = 0; idx < foundTypes.Count; ++idx)

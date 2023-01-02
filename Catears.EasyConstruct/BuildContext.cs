@@ -30,15 +30,15 @@ public class BuildContext
     public void Register(Type type)
     {
         var registrator = new ServiceRegistrator(BuildOptions.MockFactoryMethod);
-        var dependencyWalker = GetDependencyWalkerForType(type);
-        registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker);
+        var dependencyWalker = GetConfiguredDependencyWalker();
+        registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker, type);
     }
 
-    private IDependencyWalker GetDependencyWalkerForType(Type type)
+    private IDependencyWalker GetConfiguredDependencyWalker()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Recursive
-            ? new RecursiveDependencyWalker(type)
-            : new BasicDependencyWalker(type);
+            ? new RecursiveDependencyWalker()
+            : new BasicDependencyWalker();
     }
 
     public void Register<T>() where T : class

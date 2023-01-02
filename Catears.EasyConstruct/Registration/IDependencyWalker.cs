@@ -2,5 +2,5 @@
 
 internal interface IDependencyWalker
 {
-    IEnumerable<ServiceRegistrationContext> ListDependencies();
+    IEnumerable<ServiceRegistrationContext> ListDependencies(Type type);
 }

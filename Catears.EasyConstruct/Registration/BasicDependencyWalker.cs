@@ -2,18 +2,11 @@
 
 internal class BasicDependencyWalker : IDependencyWalker
 {
-    private Type TypeToEnumerate { get; }
-
-    public BasicDependencyWalker(Type typeToEnumerate)
-    {
-        TypeToEnumerate = typeToEnumerate;
-    }
-
-    public IEnumerable<ServiceRegistrationContext> ListDependencies()
+    public IEnumerable<ServiceRegistrationContext> ListDependencies(Type type)
     {
         return new List<ServiceRegistrationContext>()
         {
-            ServiceRegistrationContext.FromType(TypeToEnumerate)
+            ServiceRegistrationContext.FromType(type)
         };
     }
 }
