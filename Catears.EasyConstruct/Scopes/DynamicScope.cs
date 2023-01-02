@@ -13,7 +13,8 @@ internal class DynamicScope : BuildScope
     private IDependencyLister DependencyLister { get; }
     
     public DynamicScope(IServiceCollection serviceCollection,
-        Func<Type, object>? mockFactoryMethod) : base(serviceCollection)
+        ParameterResolverBundleCollection resolverCollection,
+        Func<Type, object>? mockFactoryMethod) : base(serviceCollection, resolverCollection)
     {
         MockFactoryMethod = mockFactoryMethod;
         var registeredServices = serviceCollection.Select(descriptor => descriptor.ServiceType);
@@ -50,7 +51,7 @@ internal class DynamicScope : BuildScope
 
     private void AddDependencyTreeToCollection(Type type)
     {
-        var registrator = new ServiceRegistrator(MockFactoryMethod);
+        var registrator = new ServiceRegistrator(MockFactoryMethod, ResolverCollection);
         registrator.RegisterServicesOrThrow(Collection, DependencyLister, type);
     }
 }

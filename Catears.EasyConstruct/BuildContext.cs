@@ -22,6 +22,9 @@ public class BuildContext
 
     private Options BuildOptions { get; }
 
+    private ParameterResolverBundleCollection ResolverCollection { get; } =
+        new(new Dictionary<Type, ParameterResolverBundle>());
+    
     public BuildContext(Options? options = null)
     {
         BuildOptions = options ?? Options.Default;
@@ -30,7 +33,7 @@ public class BuildContext
 
     public void Register(Type type)
     {
-        var registrator = new ServiceRegistrator(BuildOptions.MockFactoryMethod);
+        var registrator = new ServiceRegistrator(BuildOptions.MockFactoryMethod, ResolverCollection);
         var dependencyWalker = GetConfiguredDependencyWalker();
         registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker, type);
     }
@@ -65,8 +68,8 @@ public class BuildContext
     public BuildScope Scope()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
-            ? new DynamicScope(CopyOf(ServiceCollection), BuildOptions.MockFactoryMethod)
-            : new BuildScope(CopyOf(ServiceCollection));
+            ? new DynamicScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.MockFactoryMethod)
+            : new BuildScope(CopyOf(ServiceCollection), ResolverCollection.Copy());
     }
 
     private static IServiceCollection CopyOf(ServiceCollection serviceCollection)

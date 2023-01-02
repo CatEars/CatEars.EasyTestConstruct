@@ -7,11 +7,15 @@ namespace Catears.EasyConstruct.Registration;
 
 internal class ServiceRegistrator
 {
+    private ParameterResolverBundleCollection ResolverCollection { get; }
+    
     private Func<Type, object>? MockFactoryMethod { get; }
 
-    public ServiceRegistrator(Func<Type, object>? mockFactoryMethod)
+    public ServiceRegistrator(Func<Type, object>? mockFactoryMethod, 
+        ParameterResolverBundleCollection resolverCollection)
     {
         MockFactoryMethod = mockFactoryMethod;
+        ResolverCollection = resolverCollection;
     }
 
     internal void RegisterServicesOrThrow(
@@ -100,5 +104,7 @@ internal class ServiceRegistrator
             var parameters = parameterResolvers.Select(resolver => resolver.ResolveParameter(services));
             return constructor.Invoke(parameters.ToArray());
         });
+        ResolverCollection.BundleMap.Add(context.ServiceToRegister, new ParameterResolverBundle(
+            constructor, parameterResolvers));
     }
 }

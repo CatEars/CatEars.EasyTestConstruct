@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Catears.EasyConstruct.Registration;
+﻿using Catears.EasyConstruct.Registration;
 using Catears.EasyConstruct.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +6,8 @@ namespace Catears.EasyConstruct;
 
 public class BuildScope
 {
+    internal ParameterResolverBundleCollection ResolverCollection { get; }
+    
     protected IServiceCollection Collection { get; }
 
     private ServiceProvider? _provider = null;
@@ -16,9 +17,10 @@ public class BuildScope
         get { return _provider ??= Collection.BuildServiceProvider(); }
     }
 
-    public BuildScope(IServiceCollection serviceCollection)
+    internal BuildScope(IServiceCollection serviceCollection, ParameterResolverBundleCollection resolverCollection)
     {
         Collection = serviceCollection;
+        ResolverCollection = resolverCollection;
     }
 
     protected virtual object InternalResolve(Type type)
@@ -91,7 +93,9 @@ public class BuildScope
         _provider = null;
     }
 
-    public BuildScope BindParameterFor<TService, TParam>(TParam value) where TParam : class
+    public BuildScope BindParameterFor<TService, TParam>(TParam value) 
+        where TParam : class 
+        where TService : class
     {
         if (value == null)
         {
@@ -104,27 +108,34 @@ public class BuildScope
             .Select((resolver, index) => (resolver, index))
             .First(resolverPair => resolverPair.resolver.Provides(typeof(TParam)));
 
-        object NewFactoryImplementation(IServiceProvider provider)
+        TService NewFactoryImplementation(IServiceProvider provider)
         {
             var parameters = new List<object>();
             for (var idx = 0; idx < priorResolvers.Count; ++idx)
             {
                 var chosenParameter = idx == priorIndex
-                    ? new FuncResolver(_ => value, typeof(TParam))
+                    ? value
                     : priorResolvers[idx].ResolveParameter(provider);
 
                 parameters.Add(chosenParameter);
             }
 
-            return constructor.Invoke(parameters.ToArray());
+            return (TService) constructor.Invoke(parameters.ToArray());
         }
 
-        Collection.AddTransient(typeof(TService), NewFactoryImplementation);
+        InternalUse(typeof(TService), NewFactoryImplementation);
         return this;
     }
 
     private ParameterResolverBundle GetParameterResolversForType<TService>()
     {
-        throw new NotImplementedException();
+        var type = typeof(TService);
+        if (ResolverCollection.BundleMap.TryGetValue(type, out var bundle))
+        {
+            return bundle;
+        }
+
+        var msg = $"Tried to bind parameter for '{type.Name}', but no such type seems to be registered";
+        throw new InvalidOperationException(msg);
     }
 }

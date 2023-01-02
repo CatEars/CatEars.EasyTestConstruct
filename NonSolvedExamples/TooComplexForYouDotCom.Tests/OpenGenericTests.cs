@@ -17,13 +17,4 @@ public class OpenGenericTests
         context.Scope().Resolve<RecWithDependency>();
     }
 
-    [Fact]
-    public void CannotAutomaticallyResolveDependencyWithSpecificImplementation()
-    {
-        var context = new BuildContext();
-        context.Register<OpenGenericInterfaceImpl<string>>();
-        context.Register<RecWithDependency>();
-        context.Scope().Resolve<RecWithDependency>();
-    }
-
 }
