@@ -1,4 +1,6 @@
-﻿using Catears.EasyConstruct.Resolvers;
+﻿using System.Reflection;
+using Catears.EasyConstruct.Registration;
+using Catears.EasyConstruct.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Catears.EasyConstruct;
@@ -38,7 +40,7 @@ public class BuildScope
             priorFactory = _ => currentImplementation.ImplementationInstance;
         }
 
-        var resolver = new MemoizedResolver(provider => priorFactory(provider));
+        var resolver = new MemoizedResolver(provider => priorFactory(provider), type);
         InternalUse(type, provider => resolver.ResolveParameter(provider));
     }
 
@@ -87,5 +89,42 @@ public class BuildScope
     protected void InvalidateCurrentProvider()
     {
         _provider = null;
+    }
+
+    public BuildScope BindParameterFor<TService, TParam>(TParam value) where TParam : class
+    {
+        if (value == null)
+        {
+            throw new ArgumentNullException(nameof(value));
+        }
+        var priorResolverBundle = GetParameterResolversForType<TService>();
+        var constructor = priorResolverBundle.Constructor;
+        var priorResolvers = priorResolverBundle.ParameterResolvers;
+        var (_, priorIndex) = priorResolvers
+            .Select((resolver, index) => (resolver, index))
+            .First(resolverPair => resolverPair.resolver.Provides(typeof(TParam)));
+
+        object NewFactoryImplementation(IServiceProvider provider)
+        {
+            var parameters = new List<object>();
+            for (var idx = 0; idx < priorResolvers.Count; ++idx)
+            {
+                var chosenParameter = idx == priorIndex
+                    ? new FuncResolver(_ => value, typeof(TParam))
+                    : priorResolvers[idx].ResolveParameter(provider);
+
+                parameters.Add(chosenParameter);
+            }
+
+            return constructor.Invoke(parameters.ToArray());
+        }
+
+        Collection.AddTransient(typeof(TService), NewFactoryImplementation);
+        return this;
+    }
+
+    private ParameterResolverBundle GetParameterResolversForType<TService>()
+    {
+        throw new NotImplementedException();
     }
 }

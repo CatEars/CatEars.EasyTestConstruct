@@ -20,7 +20,7 @@ public class MemoizedResolverTests : IClassFixture<BasicProviderFixture>
     {
         var obj = new object();
         object Builder(IServiceProvider _) => obj;
-        var resolver = new MemoizedResolver(Builder);
+        var resolver = new MemoizedResolver(Builder, typeof(object));
 
         var result = resolver.ResolveParameter(A.Fake<IServiceProvider>());
 
@@ -37,7 +37,7 @@ public class MemoizedResolverTests : IClassFixture<BasicProviderFixture>
             return new object();
         }
 
-        var resolver = new MemoizedResolver(Builder);
+        var resolver = new MemoizedResolver(Builder, typeof(object));
 
         resolver.ResolveParameter(A.Fake<IServiceProvider>());
         resolver.ResolveParameter(A.Fake<IServiceProvider>());

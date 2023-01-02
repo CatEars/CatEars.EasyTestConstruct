@@ -15,4 +15,9 @@ internal class DelegatingResolver : IParameterResolver
     {
         return provider.GetRequiredService(WantedType);
     }
+
+    public bool Provides(Type type)
+    {
+        return WantedType == type;
+    }
 }

@@ -27,4 +27,9 @@ internal class EnumResolver : IParameterResolver
     {
         return provider.RandomEnum(EnumType);
     }
+
+    public bool Provides(Type type)
+    {
+        return type == EnumType;
+    }
 }

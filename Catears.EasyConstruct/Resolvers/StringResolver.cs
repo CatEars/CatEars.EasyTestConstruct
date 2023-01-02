@@ -19,6 +19,11 @@ internal class StringResolver : IParameterResolver
         return stringProvider.RandomString(StringProviderOptions);
     }
 
+    public bool Provides(Type type)
+    {
+        return type == typeof(string);
+    }
+
     public static StringResolver CreateFromParamInfo(ParameterInfo info)
     {
         return new StringResolver(StringProviderOptions.Default with

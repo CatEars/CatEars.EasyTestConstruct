@@ -6,9 +6,12 @@ internal class MemoizedResolver : IParameterResolver
 
     private Func<object>? CapturingClosure { get; set; }
 
-    public MemoizedResolver(Func<IServiceProvider, object> resolver)
+    private Type ProvidedType { get; }
+    
+    public MemoizedResolver(Func<IServiceProvider, object> resolver, Type providedType)
     {
         Resolver = resolver;
+        ProvidedType = providedType;
     }
 
     public object ResolveParameter(IServiceProvider provider)
@@ -19,6 +22,11 @@ internal class MemoizedResolver : IParameterResolver
         }
 
         return ResolveAndSaveValue(provider);
+    }
+
+    public bool Provides(Type type)
+    {
+        return ProvidedType == type;
     }
 
     private object ResolveAndSaveValue(IServiceProvider provider)

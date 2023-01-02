@@ -1,6 +1,5 @@
 ﻿using Catears.EasyConstruct.Extensions;
 using Catears.EasyConstruct.FakeItEasy;
-using Catears.EasyConstruct.Tests.Registrators;
 using FakeItEasy;
 using Xunit;
 
@@ -36,7 +35,7 @@ public class QuickConstructTests
         var scope = QuickFakeItEasyConstruct.AutoScope();
         var mock = scope.MemoizeAndResolve<TestInterface>();
         A.CallTo(() => mock.GetValue()).Returns("42");
-
+        
         var resolved = scope.Resolve<TestInterfaceWrapper>();
         var result = resolved.GetWrappedValue();
 
