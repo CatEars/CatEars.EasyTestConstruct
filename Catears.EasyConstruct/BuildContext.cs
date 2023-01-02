@@ -1,5 +1,6 @@
 ﻿using Catears.EasyConstruct.Providers;
 using Catears.EasyConstruct.Registration;
+using Catears.EasyConstruct.Scopes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -7,7 +8,6 @@ namespace Catears.EasyConstruct;
 
 public class BuildContext
 {
-
     public class Options
     {
         public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Basic;
@@ -63,7 +63,9 @@ public class BuildContext
 
     public BuildScope Scope()
     {
-        return new BuildScope(CopyOf(ServiceCollection));
+        return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
+            ? new DynamicScope(CopyOf(ServiceCollection), BuildOptions.MockFactoryMethod)
+            : new BuildScope(CopyOf(ServiceCollection));
     }
 
     private static IServiceCollection CopyOf(ServiceCollection serviceCollection)
