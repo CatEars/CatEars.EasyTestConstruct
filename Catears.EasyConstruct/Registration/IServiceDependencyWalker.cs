@@ -1,6 +1,6 @@
 ﻿namespace Catears.EasyConstruct.Registration;
 
-internal interface IServiceDependencyWalker : IEnumerable<ServiceRegistrationContext>
+internal interface IServiceDependencyWalker
 {
-    
+    IEnumerable<ServiceRegistrationContext> ListDependencies();
 }
