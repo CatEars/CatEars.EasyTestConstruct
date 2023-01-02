@@ -1,4 +1,6 @@
-﻿namespace Catears.EasyConstruct.Registration;
+﻿using Catears.EasyConstruct.Registration;
+
+namespace Catears.EasyConstruct.DependencyListers;
 
 internal class SingleEncounterDependencyListerDecorator : IDependencyLister
 {

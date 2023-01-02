@@ -1,4 +1,5 @@
-﻿using Catears.EasyConstruct.Providers;
+﻿using Catears.EasyConstruct.DependencyListers;
+using Catears.EasyConstruct.Providers;
 using Catears.EasyConstruct.Registration;
 using Catears.EasyConstruct.Scopes;
 using Microsoft.Extensions.DependencyInjection;

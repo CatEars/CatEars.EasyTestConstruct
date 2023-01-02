@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Catears.EasyConstruct.DependencyListers;
 using Catears.EasyConstruct.Registration;
 using Xunit;
 
