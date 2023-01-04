@@ -26,13 +26,13 @@ internal class DynamicScope : BuildScope
         DependencyLister = new RecursiveDependencyListerDecorator(EncounterLister);
     }
 
-    protected override object InternalResolve(Type type)
+    internal override object InternalResolve(Type type)
     {
         EnsureDependencyTreeExists(type);
         return base.InternalResolve(type);
     }
 
-    protected override void InternalMemoize(Type type)
+    internal override void InternalMemoize(Type type)
     {
         EnsureDependencyTreeExists(type);
         base.InternalMemoize(type);

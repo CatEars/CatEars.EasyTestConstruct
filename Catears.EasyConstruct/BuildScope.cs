@@ -23,12 +23,12 @@ public class BuildScope
         ResolverCollection = resolverCollection;
     }
 
-    protected virtual object InternalResolve(Type type)
+    internal virtual object InternalResolve(Type type)
     {
         return Provider.GetRequiredService(type);
     }
 
-    protected virtual void InternalMemoize(Type type)
+    internal virtual void InternalMemoize(Type type)
     {
         var currentImplementation = Collection.First(descriptor => descriptor.ServiceType == type);
         var priorFactory = currentImplementation.ImplementationFactory;
@@ -46,7 +46,7 @@ public class BuildScope
         InternalUse(type, provider => resolver.ResolveParameter(provider));
     }
 
-    protected virtual void InternalUse<T>(Type builtType, Func<IServiceProvider, T> builder) where T : class
+    internal virtual void InternalUse<T>(Type builtType, Func<IServiceProvider, T> builder) where T : class
     {
         var currentImplementation = Collection.FirstOrDefault(descriptor => descriptor.ServiceType == typeof(T));
         if (currentImplementation != null)
