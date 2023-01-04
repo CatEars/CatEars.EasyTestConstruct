@@ -24,7 +24,7 @@ public class BuildContext
 
     private ParameterResolverBundleCollection ResolverCollection { get; } =
         new(new Dictionary<Type, ParameterResolverBundle>());
-    
+
     public BuildContext(Options? options = null)
     {
         BuildOptions = options ?? Options.Default;
@@ -48,6 +48,14 @@ public class BuildContext
     public void Register<T>() where T : class
     {
         Register(typeof(T));
+    }
+
+    public void Register<TService, TImplementation>()
+        where TService : class
+        where TImplementation : class, TService
+    {
+        Register<TService>(provider => provider.GetRequiredService<TImplementation>());
+        ServiceCollection.AddTransient<TImplementation>();
     }
 
     public void Register(Type type, Func<IServiceProvider, object> builder)

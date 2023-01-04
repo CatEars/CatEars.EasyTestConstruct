@@ -14,6 +14,9 @@ public class BuildContextTests
 
     public record SampleInterfaceRecord(ITestInterface TestInterface);
 
+    public class SampleTestInterfaceImplementation : ITestInterface {
+    }
+
     [Fact]
     public void Register_WithBuilderFunc_RegistersSampleRecord()
     {
@@ -36,6 +39,18 @@ public class BuildContextTests
         Assert.Equal(new SampleRecord(""), scope.Resolve<SampleRecord>());
     }
 
+    [Fact]
+    public void Register_WithInterfaceAndImplementation_CanFetchImplementationAsInterface()
+    {
+        var buildContext = new BuildContext();
+        
+        buildContext.Register<ITestInterface, SampleTestInterfaceImplementation>();
+
+        var scope = buildContext.Scope();
+        var result = scope.Resolve<ITestInterface>();
+        Assert.IsType<SampleTestInterfaceImplementation>(result);
+    }
+    
     [Fact]
     public void Register_WithInterfaceAndDefaultRegistrationOptions_ThrowsArgumentException()
     {
