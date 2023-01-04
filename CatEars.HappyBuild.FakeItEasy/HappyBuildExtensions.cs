@@ -2,9 +2,9 @@
 
 namespace CatEars.HappyBuild.FakeItEasy;
 
-public static class EasyConstructExtensions
+public static class HappyBuildExtensions
 {
-    public static BuildScope AutoScope(this Easy.BuildInstance _)
+    public static BuildScope AutoScope(this Happy.BuildInstance _)
     {
         var buildContext = new BuildContext(new BuildContext.Options()
         {

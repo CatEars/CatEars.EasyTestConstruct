@@ -1,6 +1,6 @@
 ﻿namespace CatEars.HappyBuild;
 
-public static class Easy
+public static class Happy
 {
     public class BuildInstance
     {
