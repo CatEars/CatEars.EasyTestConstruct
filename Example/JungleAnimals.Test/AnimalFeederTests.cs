@@ -1,5 +1,5 @@
 ﻿using System;
-using Catears.EasyConstruct.Extensions;
+using CatEars.HappyBuild.Extensions;
 using FakeItEasy;
 using JungleAnimals.Animals;
 using JungleAnimals.Food;

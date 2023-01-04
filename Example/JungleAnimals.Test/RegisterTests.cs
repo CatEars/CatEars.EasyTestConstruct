@@ -1,4 +1,4 @@
-﻿using Catears.EasyConstruct;
+﻿using CatEars.HappyBuild;
 using JungleAnimals.Animals;
 using Xunit;
 

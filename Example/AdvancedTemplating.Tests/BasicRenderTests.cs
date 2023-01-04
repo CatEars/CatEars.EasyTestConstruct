@@ -1,4 +1,4 @@
-﻿using Catears.EasyConstruct;
+﻿using CatEars.HappyBuild;
 using Xunit;
 
 namespace AdvancedTemplating.Tests;

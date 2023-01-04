@@ -21,8 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Catears.EasyConstruct.FakeItEasy\Catears.EasyConstruct.FakeItEasy.csproj" />
-      <ProjectReference Include="..\..\Catears.EasyConstruct\Catears.EasyConstruct.csproj" />
+      <ProjectReference Include="..\..\CatEars.HappyBuild.FakeItEasy\CatEars.HappyBuild.FakeItEasy.csproj" />
+      <ProjectReference Include="..\..\CatEars.HappyBuild\CatEars.HappyBuild.csproj" />
       <ProjectReference Include="..\JungleAnimals\JungleAnimals.csproj" />
     </ItemGroup>
 

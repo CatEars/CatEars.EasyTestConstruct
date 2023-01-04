@@ -1,4 +1,4 @@
-﻿# CatEars EasyConstruct
+﻿# CatEars HappyBuild
 
 ## Elevator Pitch
 
