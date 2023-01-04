@@ -2,6 +2,6 @@
 
 public enum RegistrationMode
 {
-    Basic = 1,
+    Simple = 1,
     Dynamic = 2
 }
