@@ -1,6 +1,5 @@
 ﻿using System;
 using Catears.EasyConstruct.Registration;
-using FakeItEasy.Sdk;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -85,10 +84,10 @@ public class BuildScopeTests
     }
 
     [Fact]
-    public void BindParameterFor_WithStringParameter_ResolveReturnsBoundParameter()
+    public void BindParameterOfType_WithStringParameter_ResolveReturnsBoundParameter()
     {
         var scope = CreateSampleBuildScope()
-            .BindParameterFor<SampleRecord, string>("42");
+            .BindParameter<SampleRecord, string>("42");
         var result = scope.Resolve<SampleRecord>();
 
         Assert.Equal("42", result.StringValue);
@@ -107,17 +106,53 @@ public class BuildScopeTests
     private record RecordUsingAbstractClass(string A, SampleAbstractClass InnerClass, int B);
 
     [Fact]
-    public void BindParameterFor_WithImplementationOfAbstractClass_ReturnsBoundParameter()
+    public void BindParameter_WithImplementationOfAbstractClass_ReturnsBoundParameter()
     {
         var context = new BuildContext();
         context.Register<RecordUsingAbstractClass>();
         var scope = context.Scope();
         
-        var result = scope.BindParameterFor<RecordUsingAbstractClass, SampleAbstractClass>(
+        var result = scope.BindParameter<RecordUsingAbstractClass, SampleAbstractClass>(
             new ImplementedAbstractClass("42"))
             .Resolve<RecordUsingAbstractClass>();
         
         Assert.Equal("42", result.InnerClass.GetValue());
+    }
+    
+    private record RecordWithManyStringsAndInts(string A, int X, int Y, int Z, string B, string C);
+    
+    [Fact]
+    public void BindNthParameterOfType_WhenBindingThirdString_BindsThatString()
+    {
+        var context = new BuildContext();
+        context.Register<RecordWithManyStringsAndInts>();
+        var scope = context.Scope();
+
+        var result = scope
+            .BindNthParameterOfType<RecordWithManyStringsAndInts, string>("42", 2)
+            .Resolve<RecordWithManyStringsAndInts>();
+        
+        Assert.NotEqual("42", result.A);
+        Assert.NotEqual("42", result.B);
+        Assert.Equal("42", result.C);
+    }
+
+    private record RecordWithDifferentParameters(int A, double B, string C);
+
+    [Fact]
+    public void BindNthParameter_WhenBindingSecondParameter_BindsSecondParameter()
+    {
+        var buildContext = new BuildContext();
+        buildContext.Register<RecordWithDifferentParameters>();
+        var scope = buildContext.Scope();
+
+        var result = scope
+            .BindNthParameter<RecordWithDifferentParameters, double>(42.42, 1)
+            .Resolve<RecordWithDifferentParameters>();
+        
+        Assert.NotEqual(42.42, result.A);
+        Assert.Equal(42.42, result.B);
+        Assert.NotEqual("42.42", result.C);
     }
     
     private static BuildScope CreateSampleBuildScope()

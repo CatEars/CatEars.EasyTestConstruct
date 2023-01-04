@@ -7,7 +7,7 @@ namespace Catears.EasyConstruct;
 public class BuildScope
 {
     internal ParameterResolverBundleCollection ResolverCollection { get; }
-    
+
     protected IServiceCollection Collection { get; }
 
     private ServiceProvider? _provider;
@@ -17,7 +17,8 @@ public class BuildScope
         get { return _provider ??= Collection.BuildServiceProvider(); }
     }
 
-    internal BuildScope(IServiceCollection serviceCollection, ParameterResolverBundleCollection resolverCollection)
+    internal BuildScope(IServiceCollection serviceCollection,
+        ParameterResolverBundleCollection resolverCollection)
     {
         Collection = serviceCollection;
         ResolverCollection = resolverCollection;
@@ -93,37 +94,42 @@ public class BuildScope
         _provider = null;
     }
 
-    public BuildScope BindParameterFor<TService, TParam>(TParam value) 
-        where TParam : class 
+    public BuildScope BindParameter<TService, TParam>(TParam value)
+        where TService : class
+    {
+        return BindNthParameterOfType<TService, TParam>(value, 0);
+    }
+
+    public BuildScope BindNthParameterOfType<TService, TParam>(TParam value, int parameterIndex)
         where TService : class
     {
         if (value == null)
         {
             throw new ArgumentNullException(nameof(value));
         }
+
         var priorResolverBundle = GetParameterResolversForType<TService>();
-        var constructor = priorResolverBundle.Constructor;
         var priorResolvers = priorResolverBundle.ParameterResolvers;
-        var (_, priorIndex) = priorResolvers
+        var chosenIndex = priorResolvers
             .Select((resolver, index) => (resolver, index))
-            .First(resolverPair => resolverPair.resolver.Provides(typeof(TParam)));
+            .First(x => x.resolver.Provides(typeof(TParam)) && parameterIndex-- == 0)
+            .index;
+        return BindNthParameter(value, chosenIndex, priorResolverBundle);
+    }
 
-        TService NewFactoryImplementation(IServiceProvider provider)
-        {
-            var parameters = new List<object>();
-            for (var idx = 0; idx < priorResolvers.Count; ++idx)
-            {
-                var chosenParameter = idx == priorIndex
-                    ? value
-                    : priorResolvers[idx].ResolveParameter(provider);
+    public BuildScope BindNthParameter<TService, TParam>(TParam value, int index)
+    {
+        var priorResolverBundle = GetParameterResolversForType<TService>();
+        return BindNthParameter(value, index, priorResolverBundle);
+    }
 
-                parameters.Add(chosenParameter);
-            }
-
-            return (TService) constructor.Invoke(parameters.ToArray());
-        }
-
-        InternalUse(typeof(TService), NewFactoryImplementation);
+    private BuildScope BindNthParameter<TParam>(
+        TParam value, 
+        int index, 
+        ParameterResolverBundle bundle)
+    {
+        var newResolver = new FuncResolver(_ => value, typeof(TParam));
+        bundle.ParameterResolvers[index] = newResolver;
         return this;
     }
 
