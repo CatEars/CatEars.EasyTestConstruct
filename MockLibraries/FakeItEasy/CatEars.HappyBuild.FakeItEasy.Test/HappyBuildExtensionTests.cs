@@ -1,11 +1,10 @@
 ﻿using CatEars.HappyBuild.Extensions;
-using CatEars.HappyBuild.FakeItEasy;
 using FakeItEasy;
 using Xunit;
 
-namespace CatEars.HappyBuild.Tests;
+namespace CatEars.HappyBuild.FakeItEasy.Test;
 
-public class EasyConstructTests
+public class HappyBuildExtensionTests
 {
 
     public interface TestInterface
@@ -18,15 +17,19 @@ public class EasyConstructTests
         public string GetWrappedValue() => $"[{TestInterface.GetValue()}]";
     }
 
+    private record EmptyRecord;
+    
+    private record RecordContainingOtherRecord(EmptyRecord Inner);
+    
     [Fact]
     public void AutoScope_WithComplexType_BuildsScopeThatCanResolveType()
     {
         var scope = Happy.Build.AutoScope();
 
-        var resolved = scope.Resolve<RecordWithSingleConstructorContainingComplexParameter>();
+        var resolved = scope.Resolve<RecordContainingOtherRecord>();
 
         Assert.NotNull(resolved);
-        Assert.NotNull(resolved._);
+        Assert.NotNull(resolved.Inner);
     }
 
     [Fact]

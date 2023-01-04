@@ -1,5 +1,4 @@
 ﻿using System;
-using CatEars.HappyBuild.FakeItEasy;
 using Xunit;
 
 namespace CatEars.HappyBuild.Tests;
@@ -59,14 +58,4 @@ public class BuildContextTests
         Assert.Throws<ArgumentException>(() => context.Register<ITestInterface>());
     }
 
-    [Fact]
-    public void RegisterFake_WithInterface_RegistersAMockedType()
-    {
-        var context = new BuildContext();
-        context.RegisterFake(typeof(ITestInterface));
-
-        var resolved = context.Scope().Resolve<ITestInterface>();
-        
-        Assert.IsAssignableFrom<ITestInterface>(resolved);
-    }
 }
