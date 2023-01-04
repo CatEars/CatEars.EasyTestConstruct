@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Catears.EasyConstruct.Tests;
 
-public class QuickConstructTests
+public class EasyConstructTests
 {
 
     public interface TestInterface
@@ -21,7 +21,7 @@ public class QuickConstructTests
     [Fact]
     public void AutoScope_WithComplexType_BuildsScopeThatCanResolveType()
     {
-        var scope = QuickConstruct.AutoScope();
+        var scope = Easy.Construct.AutoScope();
 
         var resolved = scope.Resolve<RecordWithSingleConstructorContainingComplexParameter>();
 
@@ -30,9 +30,9 @@ public class QuickConstructTests
     }
 
     [Fact]
-    public void AutoScopeWithFakeItEasy_WithInterfaceInHierarchy_CanMockInterface()
+    public void AutoScope_WithInterfaceInHierarchy_CanMockInterface()
     {
-        var scope = QuickFakeItEasyConstruct.AutoScope();
+        var scope = Easy.Construct.AutoScope();
         var mock = scope.MemoizeAndResolve<TestInterface>();
         A.CallTo(() => mock.GetValue()).Returns("42");
         
