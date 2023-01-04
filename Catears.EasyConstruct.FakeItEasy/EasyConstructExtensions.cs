@@ -4,8 +4,7 @@ namespace Catears.EasyConstruct.FakeItEasy;
 
 public static class EasyConstructExtensions
 {
-
-    public static BuildScope AutoScope(this Easy.ConstructionInstance _)
+    public static BuildScope AutoScope(this Easy.BuildInstance _)
     {
         var buildContext = new BuildContext(new BuildContext.Options()
         {
@@ -14,5 +13,4 @@ public static class EasyConstructExtensions
         });
         return buildContext.Scope();
     }
-    
 }

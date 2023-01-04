@@ -21,7 +21,7 @@ public class EasyConstructTests
     [Fact]
     public void AutoScope_WithComplexType_BuildsScopeThatCanResolveType()
     {
-        var scope = Easy.Construct.AutoScope();
+        var scope = Easy.Build.AutoScope();
 
         var resolved = scope.Resolve<RecordWithSingleConstructorContainingComplexParameter>();
 
@@ -32,7 +32,7 @@ public class EasyConstructTests
     [Fact]
     public void AutoScope_WithInterfaceInHierarchy_CanMockInterface()
     {
-        var scope = Easy.Construct.AutoScope();
+        var scope = Easy.Build.AutoScope();
         var mock = scope.MemoizeAndResolve<TestInterface>();
         A.CallTo(() => mock.GetValue()).Returns("42");
         

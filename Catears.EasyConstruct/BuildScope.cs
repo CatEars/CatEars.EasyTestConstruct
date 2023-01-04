@@ -10,7 +10,7 @@ public class BuildScope
     
     protected IServiceCollection Collection { get; }
 
-    private ServiceProvider? _provider = null;
+    private ServiceProvider? _provider;
 
     private ServiceProvider Provider
     {
