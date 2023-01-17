@@ -7,10 +7,15 @@ public class BuildScopeExtensionTests
 {
     private record SampleRecord(string StringValue);
 
+    private static readonly BuildContext.Options ControlledRegistrationOptions = new()
+    {
+        RegistrationMode = RegistrationMode.Controlled
+    };
+    
     [Fact]
     public void MemoizeAndResolve_WhenCalledMultipleTimes_ReturnsSameObject()
     {
-        var buildContext = new BuildContext();
+        var buildContext = new BuildContext(ControlledRegistrationOptions);
         buildContext.Register<SampleRecord>();
         var scope = buildContext.Scope();
 
@@ -23,7 +28,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void MemoizeAndResolve_WhenCalledAfterResolve_ReturnsANewObject()
     {
-        var buildContext = new BuildContext();
+        var buildContext = new BuildContext(ControlledRegistrationOptions);
         buildContext.Register<SampleRecord>();
         var scope = buildContext.Scope();
 
@@ -56,7 +61,7 @@ public class BuildScopeExtensionTests
     [Fact]
     public void MemoizeAndResolve_WhenCalledWithObjectHierarchy_OnlyMemoizesTheSpecificallyUsedType()
     {
-        var buildContext = new BuildContext();
+        var buildContext = new BuildContext(ControlledRegistrationOptions);
         buildContext.Register<FirstRecord>();
         buildContext.Register<SecondRecord>();
         buildContext.Register<ThirdRecord>();
@@ -183,7 +188,7 @@ public class BuildScopeExtensionTests
 
     private static BuildScope CreateSampleBuildScope()
     {
-        var buildContext = new BuildContext();
+        var buildContext = new BuildContext(ControlledRegistrationOptions);
         buildContext.Register<SampleRecord>();
         return buildContext.Scope();
     }

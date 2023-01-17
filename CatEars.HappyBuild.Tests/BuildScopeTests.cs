@@ -9,6 +9,11 @@ public class BuildScopeTests
 {
     private record SampleRecord(string StringValue);
 
+    private static readonly BuildContext.Options ControlledRegistrationOptions = new()
+    {
+        RegistrationMode = RegistrationMode.Controlled
+    };
+    
     [Fact]
     public void Memoize_WithTypeParameter_MemoizesThatClass()
     {
@@ -108,7 +113,7 @@ public class BuildScopeTests
     [Fact]
     public void BindParameter_WithImplementationOfAbstractClass_ReturnsBoundParameter()
     {
-        var context = new BuildContext();
+        var context = new BuildContext(ControlledRegistrationOptions);
         context.Register<RecordUsingAbstractClass>();
         var scope = context.Scope();
         
@@ -124,7 +129,7 @@ public class BuildScopeTests
     [Fact]
     public void BindNthParameterOfType_WhenBindingThirdString_BindsThatString()
     {
-        var context = new BuildContext();
+        var context = new BuildContext(ControlledRegistrationOptions);
         context.Register<RecordWithManyStringsAndInts>();
         var scope = context.Scope();
 
@@ -142,7 +147,7 @@ public class BuildScopeTests
     [Fact]
     public void BindNthParameter_WhenBindingSecondParameter_BindsSecondParameter()
     {
-        var buildContext = new BuildContext();
+        var buildContext = new BuildContext(ControlledRegistrationOptions);
         buildContext.Register<RecordWithDifferentParameters>();
         var scope = buildContext.Scope();
 
@@ -157,7 +162,7 @@ public class BuildScopeTests
     
     private static BuildScope CreateSampleBuildScope()
     {
-        var buildContext = new BuildContext();
+        var buildContext = new BuildContext(ControlledRegistrationOptions);
         buildContext.Register<SampleRecord>();
         return buildContext.Scope();
     }

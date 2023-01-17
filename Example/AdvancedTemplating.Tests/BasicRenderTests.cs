@@ -6,21 +6,18 @@ namespace AdvancedTemplating.Tests;
 public class BasicRenderTests
 {
 
-    private BuildContext Context { get; } = new();
+    private BuildContext Context { get; } = new(new BuildContext.Options()
+    {
+        RegistrationMode = RegistrationMode.Controlled
+    });
 
     public BasicRenderTests()
     {
         Context.Register<P>();
         Context.Register<B>();
         Context.Register<I>();
-        var mySpecifiedGenericType = typeof(Template<P>);
-        var myOpenGenericType = typeof(Template<>);
 
         Context.Register(typeof(Template<>));
-        //Context.Register(typeof(Template<>), typeof(Template<>));
-        /*Context.Register<Template<P>>();
-        Context.Register<Template<B>>();
-        Context.Register<Template<I>>();*/
     }
 
     [Fact]

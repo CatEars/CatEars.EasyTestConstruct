@@ -12,7 +12,7 @@ public class BuildContext
     public class Options
     {
         
-        public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Controlled;
+        public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Dynamic;
 
         public Func<Type, object>? MockFactoryMethod { get; set; }
 

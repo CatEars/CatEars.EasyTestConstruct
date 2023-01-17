@@ -7,7 +7,10 @@ namespace JungleAnimals.Test.Fixtures;
 
 public class BuildContextFixture
 {
-    public BuildContext Context { get; } = new();
+    public BuildContext Context { get; } = new(new BuildContext.Options()
+    {
+        RegistrationMode = RegistrationMode.Controlled
+    });
 
     public BuildContextFixture()
     {
