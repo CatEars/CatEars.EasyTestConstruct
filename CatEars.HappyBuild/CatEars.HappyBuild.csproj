@@ -5,6 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <Version>0.1.0</Version>
+        <Title>CatEars.HappyBuild</Title>
+        <Authors>Henrik "CatEars" Adolfsson</Authors>
+        <Description>Simplify constructing classes for testing</Description>
+        <PackageProjectUrl>https://github.com/CatEars/CatEars.HappyBuild</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/CatEars/CatEars.HappyBuild/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/CatEars/CatEars.HappyBuild</RepositoryUrl>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +25,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="..\README.md">
+        <Link>README.md</Link>
+      </Content>
       <Content Include="..\Vendor\nanoid-net-2.1.0\LICENSE">
         <Link>Licenses\Nanoid\LICENSE</Link>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

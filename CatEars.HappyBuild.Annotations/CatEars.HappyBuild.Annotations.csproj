@@ -4,6 +4,13 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <Version>0.1.0</Version>
+        <Title>CatEars.HappyBuild.Annotations</Title>
+        <Authors>Henrik "CatEars" Adolfsson</Authors>
+        <Description>Annotations used by HappyBuild to determine how to construct objects.</Description>
+        <PackageProjectUrl>https://github.com/CatEars/CatEars.HappyBuild</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/CatEars/CatEars.HappyBuild/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/CatEars/CatEars.HappyBuild</RepositoryUrl>
     </PropertyGroup>
 
 </Project>
