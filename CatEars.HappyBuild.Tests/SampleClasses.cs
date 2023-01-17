@@ -1,4 +1,6 @@
-﻿namespace CatEars.HappyBuild.Tests;
+﻿using CatEars.HappyBuild.Annotations;
+
+namespace CatEars.HappyBuild.Tests;
 
 public enum TestEnum
 {
@@ -26,14 +28,14 @@ public record RecordWithMultipleConstructors(string Value)
 [TestableForRegistration]
 public record RecordWithSingleMarkedConstructor
 {
-    [EasyConstructConstructor]
+    [HappyBuildConstructor]
     public RecordWithSingleMarkedConstructor() { }
 }
 
 [TestableForRegistration]
 public record RecordWithSingleMarkedConstructorAmongMultipleConstructors(string Value)
 {
-    [EasyConstructConstructor]
+    [HappyBuildConstructor]
     public RecordWithSingleMarkedConstructorAmongMultipleConstructors() : this("Sample Value") { }
 }
 
@@ -76,7 +78,7 @@ public class ClassWithMultipleConstructors
 [TestableForRegistration]
 public class ClassWithSingleMarkedConstructor
 {
-    [EasyConstructConstructor]
+    [HappyBuildConstructor]
     public ClassWithSingleMarkedConstructor() { }
 }
 
@@ -85,7 +87,7 @@ public class ClassWithSingleMarkedConstructorAmongMultipleConstructors
 {
     public string Value { get; }
 
-    [EasyConstructConstructor]
+    [HappyBuildConstructor]
     public ClassWithSingleMarkedConstructorAmongMultipleConstructors()
     {
         Value = "Sample Value";
@@ -147,7 +149,7 @@ public struct StructWithMultipleConstructors
 [TestableForRegistration]
 public struct StructWithSingleMarkedConstructor
 {
-    [EasyConstructConstructor]
+    [HappyBuildConstructor]
     public StructWithSingleMarkedConstructor() { }
 }
 
@@ -157,7 +159,7 @@ public struct StructWithSingleMarkedConstructorAmongMultipleConstructors
 {
     public string Value { get; }
 
-    [EasyConstructConstructor]
+    [HappyBuildConstructor]
     public StructWithSingleMarkedConstructorAmongMultipleConstructors()
     {
         Value = "Sample Value";

@@ -11,7 +11,8 @@ public class BuildContext
 {
     public class Options
     {
-        public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Simple;
+        
+        public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Controlled;
 
         public Func<Type, object>? MockFactoryMethod { get; set; }
 

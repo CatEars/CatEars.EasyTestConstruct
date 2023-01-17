@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatEars.HappyBuild.FakeItEa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatEars.HappyBuild.FakeItEasy.Test", "MockLibraries\FakeItEasy\CatEars.HappyBuild.FakeItEasy.Test\CatEars.HappyBuild.FakeItEasy.Test.csproj", "{F5840C8C-FEC5-477A-90B1-52D0619BC7E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatEars.HappyBuild.Annotations", "CatEars.HappyBuild.Annotations\CatEars.HappyBuild.Annotations.csproj", "{27C8D313-4DAC-40E6-982F-45C6918FD131}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{F5840C8C-FEC5-477A-90B1-52D0619BC7E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5840C8C-FEC5-477A-90B1-52D0619BC7E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5840C8C-FEC5-477A-90B1-52D0619BC7E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27C8D313-4DAC-40E6-982F-45C6918FD131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C8D313-4DAC-40E6-982F-45C6918FD131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C8D313-4DAC-40E6-982F-45C6918FD131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C8D313-4DAC-40E6-982F-45C6918FD131}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{67449929-5C59-44B0-8B79-9FEEF0C56138} = {B5CFD06F-D85B-4A9B-978E-672C98FB167B}
