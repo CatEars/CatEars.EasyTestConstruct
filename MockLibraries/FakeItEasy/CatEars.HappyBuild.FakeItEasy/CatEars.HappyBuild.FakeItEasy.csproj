@@ -5,6 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.1.0</Version>
+        <Title>CatEars.HappyBuild.FakeItEasy</Title>
+        <Authors>Henrik "CatEars" Adolfsson</Authors>
+        <Description>Mock library for HappyBuild when using FakeItEasy</Description>
+        <PackageProjectUrl>https://github.com/CatEars/CatEars.HappyBuild</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/CatEars/CatEars.HappyBuild/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/CatEars/CatEars.HappyBuild</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
