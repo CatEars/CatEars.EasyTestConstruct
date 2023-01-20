@@ -12,8 +12,6 @@ public class BuildContext
 {
     public class Options
     {
-
-
         public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Dynamic;
 
         public MockFactory MockFactory { get; set; } = new ThrowingMockFactory();
@@ -34,13 +32,6 @@ public class BuildContext
         ServiceCollection.RegisterBasicValueProviders();
     }
 
-    public void Register(Type type)
-    {
-        var registrator = new ServiceRegistrator(BuildOptions.MockFactory, ResolverCollection);
-        var dependencyWalker = GetConfiguredDependencyWalker();
-        registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker, type);
-    }
-
     private IDependencyLister GetConfiguredDependencyWalker()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
@@ -50,7 +41,9 @@ public class BuildContext
 
     public void Register<T>() where T : class
     {
-        Register(typeof(T));
+        var registrator = new ServiceRegistrator(BuildOptions.MockFactory, ResolverCollection);
+        var dependencyWalker = GetConfiguredDependencyWalker();
+        registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker, typeof(T));
     }
 
     public void Register<TService, TImplementation>()
@@ -59,11 +52,6 @@ public class BuildContext
     {
         Register<TService>(provider => provider.GetRequiredService<TImplementation>());
         ServiceCollection.AddTransient<TImplementation>();
-    }
-
-    public void Register(Type type, Func<IServiceProvider, object> builder)
-    {
-        ServiceCollection.AddTransient(type, builder);
     }
 
     public void Register<T>(Func<IServiceProvider, T> builder) where T : class

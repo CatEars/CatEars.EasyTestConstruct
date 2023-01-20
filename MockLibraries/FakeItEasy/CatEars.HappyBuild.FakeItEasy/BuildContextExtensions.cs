@@ -9,9 +9,4 @@ public static class BuildContextExtensions
     {
         context.Register(A.Fake<T>);
     }
-
-    public static void RegisterFake(this BuildContext context, Type type)
-    {
-        context.Register(type, _ => Create.Fake(type));
-    }
 }

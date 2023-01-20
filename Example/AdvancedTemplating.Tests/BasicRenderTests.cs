@@ -5,21 +5,8 @@ namespace AdvancedTemplating.Tests;
 
 public class BasicRenderTests
 {
-
-    private BuildContext Context { get; } = new(new BuildContext.Options()
-    {
-        RegistrationMode = RegistrationMode.Controlled
-    });
-
-    public BasicRenderTests()
-    {
-        Context.Register<P>();
-        Context.Register<B>();
-        Context.Register<I>();
-
-        Context.Register(typeof(Template<>));
-    }
-
+    private BuildContext Context { get; } = new(new BuildContext.Options());
+    
     [Fact]
     public void CanRenderAParagraphTag()
     {

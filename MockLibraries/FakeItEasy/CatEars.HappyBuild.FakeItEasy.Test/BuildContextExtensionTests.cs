@@ -10,7 +10,7 @@ public class BuildContextExtensionTests
     public void RegisterFake_WithInterface_RegistersAMockedType()
     {
         var context = new BuildContext();
-        context.RegisterFake(typeof(ITestInterface));
+        context.RegisterFake<ITestInterface>();
 
         var resolved = context.Scope().Resolve<ITestInterface>();
         
