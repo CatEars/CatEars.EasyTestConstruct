@@ -65,22 +65,12 @@ public class ControlledBuildScope : BuildScope
 
     public T Resolve<T>() where T : class
     {
-        return (T)Resolve(typeof(T));
-    }
-
-    public object Resolve(Type type)
-    {
-        return InternalResolve(type);
+        return (T)InternalResolve(typeof(T));
     }
 
     public void Memoize<T>() where T : class
     {
-        Memoize(typeof(T));
-    }
-
-    public void Memoize(Type type)
-    {
-        InternalMemoize(type);
+        InternalMemoize(typeof(T));
     }
 
     public void Use<T>(Func<IServiceProvider, T> builder) where T : class
