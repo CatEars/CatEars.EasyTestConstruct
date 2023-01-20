@@ -31,7 +31,7 @@ public class PrimitiveValueProvider
 
     public float RandomFloat()
     {
-        return Random.NextSingle();
+        return (float) Random.NextDouble();
     }
 
     public int RandomInt(int low = 0, int high = 10000)
@@ -41,7 +41,9 @@ public class PrimitiveValueProvider
 
     public long RandomLong()
     {
-        return Random.NextInt64();
+        long upperHalf = RandomInt(int.MinValue, int.MinValue);
+        var lowerHalf = RandomInt(int.MinValue, int.MaxValue);
+        return upperHalf * 128 + lowerHalf;
     }
 
     public sbyte RandomSByte()
@@ -61,7 +63,7 @@ public class PrimitiveValueProvider
 
     public ulong RandomULong()
     {
-        return (ulong)Random.NextInt64();
+        return (ulong)RandomLong();
     }
 
     public ushort RandomUShort()
