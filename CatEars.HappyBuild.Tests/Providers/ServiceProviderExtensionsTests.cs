@@ -1,5 +1,4 @@
-﻿using CatEars.HappyBuild.Extensions;
-using CatEars.HappyBuild.Providers;
+﻿using CatEars.HappyBuild.Providers;
 using CatEars.HappyBuild.Tests.Providers.Fixtures;
 using Xunit;
 

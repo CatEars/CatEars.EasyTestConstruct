@@ -1,5 +1,4 @@
-﻿using CatEars.HappyBuild.Extensions;
-using FakeItEasy;
+﻿using FakeItEasy;
 using Xunit;
 
 namespace CatEars.HappyBuild.FakeItEasy.Test;

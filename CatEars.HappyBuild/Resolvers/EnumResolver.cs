@@ -1,6 +1,4 @@
-﻿using CatEars.HappyBuild.Extensions;
-
-namespace CatEars.HappyBuild.Resolvers;
+﻿namespace CatEars.HappyBuild.Resolvers;
 
 internal class EnumResolver : IParameterResolver
 {

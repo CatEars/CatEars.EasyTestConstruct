@@ -1,4 +1,4 @@
-﻿using CatEars.HappyBuild.Extensions;
+﻿using CatEars.HappyBuild;
 using JungleAnimals.Animals;
 using JungleAnimals.Food;
 using JungleAnimals.Test.Fixtures;

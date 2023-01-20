@@ -1,4 +1,4 @@
-﻿namespace CatEars.HappyBuild.Extensions;
+﻿namespace CatEars.HappyBuild;
 
 public static class BuildScopeExtensions
 {

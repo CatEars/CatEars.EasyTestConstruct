@@ -1,7 +1,7 @@
 ﻿using CatEars.HappyBuild.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CatEars.HappyBuild.Extensions;
+namespace CatEars.HappyBuild;
 
 public static class ServiceProviderExtensions
 {

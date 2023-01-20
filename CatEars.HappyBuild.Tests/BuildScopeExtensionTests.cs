@@ -1,5 +1,4 @@
-﻿using CatEars.HappyBuild.Extensions;
-using Xunit;
+﻿using Xunit;
 
 namespace CatEars.HappyBuild.Tests;
 
