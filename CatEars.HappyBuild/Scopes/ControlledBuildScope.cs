@@ -118,7 +118,7 @@ public class ControlledBuildScope : BuildScope
         return BindNthParameter(value, index, priorResolverBundle);
     }
 
-    private ControlledBuildScope BindNthParameter<TParam>(
+    private BuildScope BindNthParameter<TParam>(
         TParam value, 
         int index, 
         ParameterResolverBundle bundle)
