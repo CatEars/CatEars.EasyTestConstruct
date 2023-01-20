@@ -51,11 +51,13 @@ public class BuildContextTests
     }
     
     [Fact]
-    public void Register_WithInterfaceAndDefaultRegistrationOptions_ThrowsArgumentException()
+    public void Register_WithInterfaceAndDefaultRegistrationOptions_ThrowsNotImplementedExceptionOnResolve()
     {
         var context = new BuildContext();
+        context.Register<ITestInterface>();
+        var scope = context.Scope();
 
-        Assert.Throws<ArgumentException>(() => context.Register<ITestInterface>());
+        Assert.Throws<NotImplementedException>(() => scope.Resolve<ITestInterface>());
     }
 
 }

@@ -1,4 +1,5 @@
 ﻿using CatEars.HappyBuild.DependencyListers;
+using CatEars.HappyBuild.MockFactories;
 using CatEars.HappyBuild.Providers;
 using CatEars.HappyBuild.Registration;
 using CatEars.HappyBuild.Scopes;
@@ -11,16 +12,7 @@ public class BuildContext
 {
     public class Options
     {
-        private class ThrowingMockFactory : MockFactory
-        {
-            public object CreateMock(Type mockTypeToCreate)
-            {
-                var message =
-                    $"You tried to create a mockable type '{mockTypeToCreate.Name}' without configuring a mocking" +
-                    $" framework for HappyBuild. You should always use HappyBuild together with a mocking framework";
-                throw new NotImplementedException(message);
-            }
-        }
+
 
         public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Dynamic;
 

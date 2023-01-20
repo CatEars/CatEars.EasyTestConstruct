@@ -24,7 +24,8 @@ internal class ServiceRegistrator
         IDependencyLister lister,
         Type type)
     {
-        foreach (var dependency in lister.ListDependencies(type))
+        var dependencies = lister.ListDependencies(type).ToList();
+        foreach (var dependency in dependencies)
         {
             RegisterServiceOrThrow(collection, dependency);
         }
@@ -48,21 +49,42 @@ internal class ServiceRegistrator
 
         if (context.IsMockIntendedType)
         {
-            if (MockFactory == null)
-            {
-                var msg = $"Trying to register abstract type or interface '{context.ServiceToRegister.Name}' without any " +
-                          $"defined function that handles such types. Add a `{nameof(BuildContext.Options.MockFactory)}` " +
-                          "when creating your build context to register mocks for these kinds of types when they " +
-                          "are encountered.";
-                throw new ArgumentException(msg);
-            }
             collection.AddTransient(context.ServiceToRegister,
-                _ => MockFactory.CreateMock(context.ServiceToRegister));
+                _ => CreateMock(context.ServiceToRegister));
             return;
         }
 
         var constructorToRegister = FindAppropriateConstructorOrThrow(context);
         Register(collection, context, constructorToRegister);
+    }
+
+    private object CreateMock(Type contextServiceToRegister)
+    {
+        var methodInfo = MockFactory.GetType().GetMethod(nameof(MockFactory.CreateMock));
+        if (methodInfo == null)
+        {
+            var message = $"Mock factory of type '{MockFactory.GetType().Name}' did not implement the MockFactory " +
+                          $"interface correctly. Cannot create mocks from it";
+            throw new InvalidOperationException(message);
+        }
+        var genericMethod = methodInfo.MakeGenericMethod(contextServiceToRegister);
+        try
+        {
+            var resultingObject = genericMethod.Invoke(MockFactory, new object[] { });
+            if (resultingObject == null)
+            {
+                var message =
+                    $"Mock factory of type '{MockFactory.GetType().Name}' did not return a valid object for a mock. " +
+                    $"For HappyBuild to work correctly it needs to be able to create mocks with the mock factory.";
+                throw new InvalidOperationException(message);
+            }
+
+            return resultingObject;
+        }
+        catch (TargetInvocationException ex) when (ex.InnerException != null)
+        {
+            throw ex.InnerException;
+        }
     }
 
     internal static ConstructorInfo FindAppropriateConstructorOrThrow(ServiceRegistrationContext context)

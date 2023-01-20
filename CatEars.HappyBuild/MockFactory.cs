@@ -2,5 +2,5 @@
 
 public interface MockFactory
 {
-    object CreateMock(Type mockTypeToCreate);
+    T CreateMock<T>() where T : class;
 }

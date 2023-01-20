@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CatEars.HappyBuild.MockFactories;
 using CatEars.HappyBuild.Providers;
 using CatEars.HappyBuild.Registration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,7 @@ public class DefaultServiceRegistratorChainTests
     [TestsAllAvailableClassesForRegistration]
     [InlineData(typeof(ClassThatIsStatic), false)]
     [InlineData(typeof(ClassWithSingleConstructor), true)]
-    [InlineData(typeof(ClassThatIsAbstract), false)]
+    [InlineData(typeof(ClassThatIsAbstract), true)]
     [InlineData(typeof(ClassThatIsSealed), true)]
     [InlineData(typeof(ClassWithSingleMarkedConstructor), true)]
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
@@ -21,7 +22,7 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), true)]
     [InlineData(typeof(ClassWithSingleConstructorContainingComplexParameter), true)]
     [InlineData(typeof(RecordWithSingleConstructor), true)]
-    [InlineData(typeof(RecordThatIsAbstract), false)]
+    [InlineData(typeof(RecordThatIsAbstract), true)]
     [InlineData(typeof(RecordThatIsSealed), true)]
     [InlineData(typeof(RecordWithSingleMarkedConstructor), true)]
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
@@ -37,7 +38,7 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true)]
     public void TryRegisterService_WithType_RegistersUnlessImpossibleToConstruct(Type type, bool shouldSucceed)
     {
-        var registrator = new ServiceRegistrator(null, ParameterResolverBundleCollection.Empty);
+        var registrator = new ServiceRegistrator(new ThrowingMockFactory(), ParameterResolverBundleCollection.Empty);
         var serviceCollection = new ServiceCollection();
 
         var registrationContext = ServiceRegistrationContext.FromType(type);
@@ -59,33 +60,33 @@ public class DefaultServiceRegistratorChainTests
     [TestsAllAvailableClassesForRegistration]
     [InlineData(typeof(ClassThatIsStatic), false)]
     [InlineData(typeof(ClassWithSingleConstructor), true)]
-    [InlineData(typeof(ClassThatIsAbstract), false)]
+    [InlineData(typeof(ClassThatIsAbstract), true, true)]
     [InlineData(typeof(ClassThatIsSealed), true)]
     [InlineData(typeof(ClassWithSingleMarkedConstructor), true)]
     [InlineData(typeof(ClassWithMultipleConstructors), false)]
     [InlineData(typeof(ClassWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(ClassWithSingleConstructorWithMultiplePrimitiveParameters), true)]
-    [InlineData(typeof(ClassWithSingleConstructorContainingComplexParameter), true, typeof(RecordWithSingleConstructor))]
+    [InlineData(typeof(ClassWithSingleConstructorContainingComplexParameter), true, false, typeof(RecordWithSingleConstructor))]
     [InlineData(typeof(RecordWithSingleConstructor), true)]
-    [InlineData(typeof(RecordThatIsAbstract), false)]
+    [InlineData(typeof(RecordThatIsAbstract), true, true)]
     [InlineData(typeof(RecordThatIsSealed), true)]
     [InlineData(typeof(RecordWithSingleMarkedConstructor), true)]
     [InlineData(typeof(RecordWithMultipleConstructors), false)]
     [InlineData(typeof(RecordWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(RecordWithSingleConstructorWithMultiplePrimitiveParameters), true)]
-    [InlineData(typeof(RecordWithSingleConstructorContainingComplexParameter), true, typeof(RecordWithSingleConstructor))]
+    [InlineData(typeof(RecordWithSingleConstructorContainingComplexParameter), true, false, typeof(RecordWithSingleConstructor))]
     [InlineData(typeof(StructWithNoConstructor), false)]
     [InlineData(typeof(StructWithSingleConstructor), true)]
     [InlineData(typeof(StructWithSingleMarkedConstructor), true)]
     [InlineData(typeof(StructWithMultipleConstructors), false)]
     [InlineData(typeof(StructWithSingleMarkedConstructorAmongMultipleConstructors), true)]
     [InlineData(typeof(StructWithSingleConstructorWithMultiplePrimitiveParameters), true)]
-    [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true, typeof(RecordWithSingleConstructor))]
+    [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true, false, typeof(RecordWithSingleConstructor))]
     public void
         GetRequiredService_WhenDefaultRegistered_CanConstructElseNot(
-            Type type, bool shouldSucceed, params Type[] extraTypesToRegister)
+            Type type, bool shouldSucceed, bool throwsOnResolving = false, params Type[] extraTypesToRegister)
     {
-        var registrator = new ServiceRegistrator(null, ParameterResolverBundleCollection.Empty);
+        var registrator = new ServiceRegistrator(new ThrowingMockFactory(), ParameterResolverBundleCollection.Empty);
         var serviceCollection = new ServiceCollection();
         serviceCollection.RegisterBasicValueProviders();
 
@@ -100,6 +101,11 @@ public class DefaultServiceRegistratorChainTests
         {
             registrator.RegisterServiceOrThrow(serviceCollection, registrationContext);
             using var provider = serviceCollection.BuildServiceProvider();
+            if (throwsOnResolving)
+            {
+                Assert.Throws<NotImplementedException>(() => provider.GetService(type));
+                return;
+            }
             var resolvedObject = provider.GetService(type);
 
             Assert.NotNull(resolvedObject);

@@ -1,8 +1,8 @@
-﻿using FakeItEasy.Sdk;
+﻿using FakeItEasy;
 
 namespace CatEars.HappyBuild.FakeItEasy;
 
 public class FakeItEasyMockFactory : MockFactory
 {
-    public object CreateMock(Type mockTypeToCreate) => Create.Fake(mockTypeToCreate);
+    public T CreateMock<T>() where T : class => A.Fake<T>();
 }
