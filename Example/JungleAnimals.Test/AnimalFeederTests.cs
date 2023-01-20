@@ -18,15 +18,12 @@ public class AnimalFeederTests : IClassFixture<BuildContextFixture>
         Fixture = fixture;
     }
 
-    [Theory]
-    [InlineData(typeof(Monkey), typeof(Banana))]
-    [InlineData(typeof(Piranha), typeof(Meat))]
-    [InlineData(typeof(Bird), typeof(Nectar))]
-    public void CanBeFed_WithCompatibleAnimals_FeedsAnimals(Type animalType, Type foodType)
+    [Fact]
+    public void CanBeFed_WithCompatibleAnimals_FeedsAnimals()
     {
         var scope = Fixture.Context.Scope();
-        var animal = (IJungleAnimal)scope.MemoizeAndResolve(animalType);
-        var food = (IAnimalFood)scope.MemoizeAndResolve(foodType);
+        var animal = (IJungleAnimal)scope.MemoizeAndResolve<Monkey>();
+        var food = (IAnimalFood)scope.MemoizeAndResolve<Banana>();
         var repository = scope.MemoizeAndResolve<IAnimalFoodCompatibilityRepository>();
         A.CallTo(() => repository.CanBeFeed(animal, food))
             .Returns(true);

@@ -4,11 +4,7 @@ public interface BuildScope
 {
     public T Resolve<T>() where T : class;
 
-    public object Resolve(Type type);
-
     public void Memoize<T>() where T : class;
-
-    public void Memoize(Type type);
 
     public void Use<T>(Func<IServiceProvider, T> builder) where T : class;
 
