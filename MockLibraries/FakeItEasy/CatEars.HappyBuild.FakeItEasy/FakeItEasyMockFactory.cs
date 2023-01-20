@@ -4,5 +4,5 @@ namespace CatEars.HappyBuild.FakeItEasy;
 
 public class FakeItEasyMockFactory : MockFactory
 {
-    public T CreateMock<T>() where T : class => A.Fake<T>();
+    public T CreateMock<T>(BuildContext.Options options) where T : class => A.Fake<T>();
 }

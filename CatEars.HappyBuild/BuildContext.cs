@@ -10,6 +10,7 @@ namespace CatEars.HappyBuild;
 
 public class BuildContext
 {
+    
     public class Options
     {
         public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Dynamic;
@@ -17,11 +18,20 @@ public class BuildContext
         public MockFactory MockFactory { get; set; } = new ThrowingMockFactory();
 
         public static Options Default { get; } = new();
+
+        public virtual Options Copy()
+        {
+            return new Options()
+            {
+                RegistrationMode = RegistrationMode,
+                MockFactory = MockFactory
+            };
+        }
     }
 
     private ServiceCollection ServiceCollection { get; } = new();
 
-    private Options BuildOptions { get; }
+    public Options BuildOptions { get; }
 
     private ParameterResolverBundleCollection ResolverCollection { get; } =
         new(new Dictionary<Type, ParameterResolverBundle>());
@@ -41,7 +51,7 @@ public class BuildContext
 
     public void Register<T>() where T : class
     {
-        var registrator = new ServiceRegistrator(BuildOptions.MockFactory, ResolverCollection);
+        var registrator = new ServiceRegistrator(ResolverCollection, BuildOptions);
         var dependencyWalker = GetConfiguredDependencyWalker();
         registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker, typeof(T));
     }
@@ -67,8 +77,8 @@ public class BuildContext
     public BuildScope Scope()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
-            ? new DynamicScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.MockFactory)
-            : new ControlledBuildScope(CopyOf(ServiceCollection), ResolverCollection.Copy());
+            ? new DynamicScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.Copy())
+            : new ControlledBuildScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.Copy());
     }
 
     private static IServiceCollection CopyOf(ServiceCollection serviceCollection)

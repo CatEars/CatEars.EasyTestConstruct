@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using CatEars.HappyBuild.MockFactories;
 using CatEars.HappyBuild.Providers;
 using CatEars.HappyBuild.Registration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +9,7 @@ namespace CatEars.HappyBuild.Tests.Registrators;
 
 public class DefaultServiceRegistratorChainTests
 {
+
     [Theory]
     [TestsAllAvailableClassesForRegistration]
     [InlineData(typeof(ClassThatIsStatic), false)]
@@ -38,7 +38,7 @@ public class DefaultServiceRegistratorChainTests
     [InlineData(typeof(StructWithSingleConstructorContainingComplexParameter), true)]
     public void TryRegisterService_WithType_RegistersUnlessImpossibleToConstruct(Type type, bool shouldSucceed)
     {
-        var registrator = new ServiceRegistrator(new ThrowingMockFactory(), ParameterResolverBundleCollection.Empty);
+        var registrator = new ServiceRegistrator(ParameterResolverBundleCollection.Empty, BuildContext.Options.Default);
         var serviceCollection = new ServiceCollection();
 
         var registrationContext = ServiceRegistrationContext.FromType(type);
@@ -86,7 +86,7 @@ public class DefaultServiceRegistratorChainTests
         GetRequiredService_WhenDefaultRegistered_CanConstructElseNot(
             Type type, bool shouldSucceed, bool throwsOnResolving = false, params Type[] extraTypesToRegister)
     {
-        var registrator = new ServiceRegistrator(new ThrowingMockFactory(), ParameterResolverBundleCollection.Empty);
+        var registrator = new ServiceRegistrator(ParameterResolverBundleCollection.Empty, BuildContext.Options.Default);
         var serviceCollection = new ServiceCollection();
         serviceCollection.RegisterBasicValueProviders();
 

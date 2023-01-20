@@ -12,16 +12,20 @@ public class ControlledBuildScope : BuildScope
 
     private ServiceProvider? _provider;
 
+    public BuildContext.Options Options { get; }
+    
     private ServiceProvider Provider
     {
         get { return _provider ??= Collection.BuildServiceProvider(); }
     }
 
     internal ControlledBuildScope(IServiceCollection serviceCollection,
-        ParameterResolverBundleCollection resolverCollection)
+        ParameterResolverBundleCollection resolverCollection,
+        BuildContext.Options options)
     {
         Collection = serviceCollection;
         ResolverCollection = resolverCollection;
+        Options = options;
     }
 
     internal virtual object InternalResolve(Type type)

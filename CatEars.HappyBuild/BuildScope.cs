@@ -2,6 +2,8 @@
 
 public interface BuildScope
 {
+    public BuildContext.Options Options { get; }
+    
     public T Resolve<T>() where T : class;
 
     public void Memoize<T>() where T : class;

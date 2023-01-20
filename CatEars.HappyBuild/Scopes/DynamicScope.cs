@@ -6,17 +6,14 @@ namespace CatEars.HappyBuild.Scopes;
 
 internal class DynamicScope : ControlledBuildScope
 {
-    private MockFactory MockFactory { get; }
-
     private SingleEncounterDependencyListerDecorator EncounterLister { get; }
 
     private IDependencyLister DependencyLister { get; }
     
     public DynamicScope(IServiceCollection serviceCollection,
         ParameterResolverBundleCollection resolverCollection,
-        MockFactory mockFactory) : base(serviceCollection, resolverCollection)
+        BuildContext.Options options) : base(serviceCollection, resolverCollection, options)
     {
-        MockFactory = mockFactory;
         var registeredServices = serviceCollection.Select(descriptor => descriptor.ServiceType);
         var encounterLister = new SingleEncounterDependencyListerDecorator(
             new ConstructorParameterDependencyLister(),
@@ -51,7 +48,7 @@ internal class DynamicScope : ControlledBuildScope
 
     private void AddDependencyTreeToCollection(Type type)
     {
-        var registrator = new ServiceRegistrator(MockFactory, ResolverCollection);
+        var registrator = new ServiceRegistrator(ResolverCollection, Options);
         registrator.RegisterServicesOrThrow(Collection, DependencyLister, type);
     }
 }

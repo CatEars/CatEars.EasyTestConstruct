@@ -64,7 +64,7 @@ public class BuildScopeTests
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton(new object());
-        var buildScope = new ControlledBuildScope(serviceCollection, ParameterResolverBundleCollection.Empty);
+        var buildScope = new ControlledBuildScope(serviceCollection, ParameterResolverBundleCollection.Empty, BuildContext.Options.Default);
         buildScope.Memoize<object>();
 
         var firstResult = buildScope.Resolve<object>();
@@ -84,7 +84,7 @@ public class BuildScopeTests
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton<SampleAbstractClass>();
-        var buildScope = new ControlledBuildScope(serviceCollection, ParameterResolverBundleCollection.Empty);
+        var buildScope = new ControlledBuildScope(serviceCollection, ParameterResolverBundleCollection.Empty, BuildContext.Options.Default);
 
         Assert.Throws<InvalidOperationException>(() => buildScope.Memoize<SampleAbstractClass>());
     }

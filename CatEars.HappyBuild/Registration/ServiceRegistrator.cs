@@ -10,13 +10,14 @@ internal class ServiceRegistrator
 {
     private ParameterResolverBundleCollection ResolverCollection { get; }
     
-    private MockFactory MockFactory { get; }
-
-    public ServiceRegistrator(MockFactory mockFactory, 
-        ParameterResolverBundleCollection resolverCollection)
+    private BuildContext.Options Options { get; }
+    
+    public ServiceRegistrator(
+        ParameterResolverBundleCollection resolverCollection, 
+        BuildContext.Options options)
     {
-        MockFactory = mockFactory;
         ResolverCollection = resolverCollection;
+        Options = options;
     }
 
     internal void RegisterServicesOrThrow(
@@ -60,21 +61,22 @@ internal class ServiceRegistrator
 
     private object CreateMock(Type contextServiceToRegister)
     {
-        var methodInfo = MockFactory.GetType().GetMethod(nameof(MockFactory.CreateMock));
+        var mockFactory = Options.MockFactory;
+        var methodInfo = mockFactory.GetType().GetMethod(nameof(mockFactory.CreateMock));
         if (methodInfo == null)
         {
-            var message = $"Mock factory of type '{MockFactory.GetType().Name}' did not implement the MockFactory " +
+            var message = $"Mock factory of type '{mockFactory.GetType().Name}' did not implement the MockFactory " +
                           $"interface correctly. Cannot create mocks from it";
             throw new InvalidOperationException(message);
         }
         var genericMethod = methodInfo.MakeGenericMethod(contextServiceToRegister);
         try
         {
-            var resultingObject = genericMethod.Invoke(MockFactory, new object[] { });
+            var resultingObject = genericMethod.Invoke(mockFactory, new object[] { Options });
             if (resultingObject == null)
             {
                 var message =
-                    $"Mock factory of type '{MockFactory.GetType().Name}' did not return a valid object for a mock. " +
+                    $"Mock factory of type '{mockFactory.GetType().Name}' did not return a valid object for a mock. " +
                     $"For HappyBuild to work correctly it needs to be able to create mocks with the mock factory.";
                 throw new InvalidOperationException(message);
             }

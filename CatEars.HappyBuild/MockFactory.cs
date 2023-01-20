@@ -2,5 +2,5 @@
 
 public interface MockFactory
 {
-    T CreateMock<T>() where T : class;
+    T CreateMock<T>(BuildContext.Options options) where T : class;
 }
