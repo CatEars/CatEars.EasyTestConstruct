@@ -2,7 +2,7 @@
 
 public class MoqBuildOptions : BuildContext.Options
 {
-    internal Dictionary<Type, object> StoredMocks { get; init; } = new();
+    internal Dictionary<Type, object> StoredMocks { get; private set; } = new();
 
     public override BuildContext.Options Copy()
     {
