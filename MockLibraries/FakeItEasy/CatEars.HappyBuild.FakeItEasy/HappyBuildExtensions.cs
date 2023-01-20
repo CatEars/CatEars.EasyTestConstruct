@@ -8,7 +8,7 @@ public static class HappyBuildExtensions
     {
         var buildContext = new BuildContext(new BuildContext.Options()
         {
-            MockFactoryMethod = Create.Fake,
+            MockFactory = new FakeItEasyMockFactory(),
             RegistrationMode = RegistrationMode.Dynamic
         });
         return buildContext.Scope();

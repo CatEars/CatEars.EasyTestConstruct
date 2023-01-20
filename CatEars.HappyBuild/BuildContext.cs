@@ -11,10 +11,17 @@ public class BuildContext
 {
     public class Options
     {
-        
+        private class ThrowingMockFactory : MockFactory
+        {
+            public object CreateMock(Type mockTypeToCreate)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public RegistrationMode RegistrationMode { get; set; } = RegistrationMode.Dynamic;
 
-        public Func<Type, object>? MockFactoryMethod { get; set; }
+        public MockFactory MockFactory { get; set; } = new ThrowingMockFactory();
 
         public static Options Default { get; } = new();
     }
@@ -34,7 +41,7 @@ public class BuildContext
 
     public void Register(Type type)
     {
-        var registrator = new ServiceRegistrator(BuildOptions.MockFactoryMethod, ResolverCollection);
+        var registrator = new ServiceRegistrator(BuildOptions.MockFactory, ResolverCollection);
         var dependencyWalker = GetConfiguredDependencyWalker();
         registrator.RegisterServicesOrThrow(ServiceCollection, dependencyWalker, type);
     }
@@ -77,7 +84,7 @@ public class BuildContext
     public BuildScope Scope()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
-            ? new DynamicScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.MockFactoryMethod)
+            ? new DynamicScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.MockFactory)
             : new BuildScopeImpl(CopyOf(ServiceCollection), ResolverCollection.Copy());
     }
 

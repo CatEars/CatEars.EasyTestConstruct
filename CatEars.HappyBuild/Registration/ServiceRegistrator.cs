@@ -10,12 +10,12 @@ internal class ServiceRegistrator
 {
     private ParameterResolverBundleCollection ResolverCollection { get; }
     
-    private Func<Type, object>? MockFactoryMethod { get; }
+    private MockFactory MockFactory { get; }
 
-    public ServiceRegistrator(Func<Type, object>? mockFactoryMethod, 
+    public ServiceRegistrator(MockFactory mockFactory, 
         ParameterResolverBundleCollection resolverCollection)
     {
-        MockFactoryMethod = mockFactoryMethod;
+        MockFactory = mockFactory;
         ResolverCollection = resolverCollection;
     }
 
@@ -48,16 +48,16 @@ internal class ServiceRegistrator
 
         if (context.IsMockIntendedType)
         {
-            if (MockFactoryMethod == null)
+            if (MockFactory == null)
             {
                 var msg = $"Trying to register abstract type or interface '{context.ServiceToRegister.Name}' without any " +
-                          $"defined function that handles such types. Add a `{nameof(BuildContext.Options.MockFactoryMethod)}` " +
+                          $"defined function that handles such types. Add a `{nameof(BuildContext.Options.MockFactory)}` " +
                           "when creating your build context to register mocks for these kinds of types when they " +
                           "are encountered.";
                 throw new ArgumentException(msg);
             }
             collection.AddTransient(context.ServiceToRegister,
-                _ => MockFactoryMethod(context.ServiceToRegister));
+                _ => MockFactory.CreateMock(context.ServiceToRegister));
             return;
         }
 
