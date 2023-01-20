@@ -15,7 +15,10 @@ public class BuildContext
         {
             public object CreateMock(Type mockTypeToCreate)
             {
-                throw new NotImplementedException();
+                var message =
+                    $"You tried to create a mockable type '{mockTypeToCreate.Name}' without configuring a mocking" +
+                    $" framework for HappyBuild. You should always use HappyBuild together with a mocking framework";
+                throw new NotImplementedException(message);
             }
         }
 
