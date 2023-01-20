@@ -78,7 +78,7 @@ public class BuildContext
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
             ? new DynamicScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.MockFactoryMethod)
-            : new BuildScope(CopyOf(ServiceCollection), ResolverCollection.Copy());
+            : new BuildScopeImpl(CopyOf(ServiceCollection), ResolverCollection.Copy());
     }
 
     private static IServiceCollection CopyOf(ServiceCollection serviceCollection)

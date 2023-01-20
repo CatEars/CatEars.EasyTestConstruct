@@ -1,5 +1,6 @@
 ﻿using System;
 using CatEars.HappyBuild.Registration;
+using CatEars.HappyBuild.Scopes;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -63,7 +64,7 @@ public class BuildScopeTests
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton(new object());
-        var buildScope = new BuildScope(serviceCollection, ParameterResolverBundleCollection.Empty);
+        var buildScope = new BuildScopeImpl(serviceCollection, ParameterResolverBundleCollection.Empty);
         buildScope.Memoize<object>();
 
         var firstResult = buildScope.Resolve<object>();
@@ -83,7 +84,7 @@ public class BuildScopeTests
     {
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddSingleton<SampleAbstractClass>();
-        var buildScope = new BuildScope(serviceCollection, ParameterResolverBundleCollection.Empty);
+        var buildScope = new BuildScopeImpl(serviceCollection, ParameterResolverBundleCollection.Empty);
 
         Assert.Throws<InvalidOperationException>(() => buildScope.Memoize<SampleAbstractClass>());
     }
