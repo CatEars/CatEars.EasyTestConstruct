@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CatEars.HappyBuild.Scopes;
 
-internal class DynamicScope : BuildScopeImpl
+internal class DynamicScope : ControlledBuildScope
 {
     private MockFactory MockFactory { get; }
 

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CatEars.HappyBuild.Scopes;
 
-public class BuildScopeImpl : BuildScope
+public class ControlledBuildScope : BuildScope
 {
     internal ParameterResolverBundleCollection ResolverCollection { get; }
 
@@ -17,7 +17,7 @@ public class BuildScopeImpl : BuildScope
         get { return _provider ??= Collection.BuildServiceProvider(); }
     }
 
-    internal BuildScopeImpl(IServiceCollection serviceCollection,
+    internal ControlledBuildScope(IServiceCollection serviceCollection,
         ParameterResolverBundleCollection resolverCollection)
     {
         Collection = serviceCollection;
@@ -124,7 +124,7 @@ public class BuildScopeImpl : BuildScope
         return BindNthParameter(value, index, priorResolverBundle);
     }
 
-    private BuildScopeImpl BindNthParameter<TParam>(
+    private ControlledBuildScope BindNthParameter<TParam>(
         TParam value, 
         int index, 
         ParameterResolverBundle bundle)
