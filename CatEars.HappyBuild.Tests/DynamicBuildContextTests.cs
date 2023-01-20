@@ -51,4 +51,20 @@ public class DynamicBuildContextTests
         
         Assert.NotNull(result);
     }
+
+    [Fact]
+    public void Memoize_CalledBeforeMultipleResolves_WillResultInParameterAlwaysBeingMemoized()
+    {
+        var context = new BuildContext(new BuildContext.Options()
+        {
+            RegistrationMode = RegistrationMode.Dynamic
+        });
+        var scope = context.Scope();
+        scope.Memoize<InnerRecord>();
+
+        var a = scope.Resolve<OuterRecord>();
+        var b = scope.Resolve<OuterRecord>();
+        
+        Assert.Same(a.Inner, b.Inner);
+    }
 }
