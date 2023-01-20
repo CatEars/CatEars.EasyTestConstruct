@@ -1,5 +1,4 @@
 using System;
-using Moq;
 using Xunit;
 
 namespace CatEars.HappyBuild.Moq.Test;
@@ -12,7 +11,7 @@ public class BuildScopeExtensionTests
     }
     
     [Fact]
-    public void Resolve_WithInterface_CanRetrieveAndConfigureMock()
+    public void Resolve_WithInterface_CanRetrieveAndConfigureMockAfterResolveWasCalled()
     {
         var scope = Happy.Build.AutoScope();
         var iface = scope.Resolve<ITestInterface>();
@@ -23,5 +22,20 @@ public class BuildScopeExtensionTests
             .Returns(randomString);
         
         Assert.Equal(randomString, iface.GetValue());       
+    }
+
+    [Fact]
+    public void MockFor_WhenCalledBeforeResolve_CreatesNewMockThatCanBeResolved()
+    {
+        var scope = Happy.Build.AutoScope();
+        var randomString = Guid.NewGuid().ToString();
+        
+        scope
+            .MockFor<ITestInterface>()
+            .Setup(t => t.GetValue())
+            .Returns(randomString);
+
+        var iface = scope.Resolve<ITestInterface>();
+        Assert.Equal(randomString, iface.GetValue());
     }
 }

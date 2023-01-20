@@ -11,6 +11,11 @@ public class MoqMockFactory : MockFactory
             throw new ArgumentException("Expected MoqBuildOptions", nameof(options));
         }
 
+        if (moqOptions.StoredMocks.TryGetValue(typeof(T), out var priorMock))
+        {
+            return (T)priorMock;
+        }
+        
         var mock = new Mock<T>();
         moqOptions.StoredMocks.Add(typeof(T), mock);
         return mock.Object;

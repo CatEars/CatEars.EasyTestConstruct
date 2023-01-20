@@ -14,7 +14,9 @@ public static class BuildScopeExtensions
 
         if (!moqOptions.StoredMocks.TryGetValue(typeof(T), out var obj))
         {
-            throw new ArgumentException($"Expected to find Mock<{typeof(T).Name}> but found `null`");
+            var newMock = new Mock<T>();
+            moqOptions.StoredMocks[typeof(T)] = newMock.Object;
+            return newMock;
         }
         
         if (obj is not Mock<T> mock)
