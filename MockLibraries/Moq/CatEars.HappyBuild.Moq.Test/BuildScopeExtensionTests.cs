@@ -14,7 +14,7 @@ public class BuildScopeExtensionTests
     public void Resolve_WithInterface_CanRetrieveAndConfigureMockAfterResolveWasCalled()
     {
         var scope = Happy.Build.AutoScope();
-        var iface = scope.Resolve<ITestInterface>();
+        var iface = scope.Build<ITestInterface>();
         var randomString = Guid.NewGuid().ToString();
 
         var mock = scope.MockFor<ITestInterface>();
@@ -35,7 +35,7 @@ public class BuildScopeExtensionTests
             .Setup(t => t.GetValue())
             .Returns(randomString);
 
-        var iface = scope.Resolve<ITestInterface>();
+        var iface = scope.Build<ITestInterface>();
         Assert.Equal(randomString, iface.GetValue());
     }
 }

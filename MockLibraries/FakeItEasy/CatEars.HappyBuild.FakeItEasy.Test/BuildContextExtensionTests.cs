@@ -12,7 +12,7 @@ public class BuildContextExtensionTests
         var context = new BuildContext();
         context.RegisterFake<ITestInterface>();
 
-        var resolved = context.Scope().Resolve<ITestInterface>();
+        var resolved = context.Scope().Build<ITestInterface>();
         
         Assert.IsAssignableFrom<ITestInterface>(resolved);
     }

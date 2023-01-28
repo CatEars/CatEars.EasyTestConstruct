@@ -25,7 +25,7 @@ public class HappyBuildExtensionTests
     {
         var scope = Happy.Build.AutoScope();
 
-        var resolved = scope.Resolve<RecordContainingOtherRecord>();
+        var resolved = scope.Build<RecordContainingOtherRecord>();
 
         Assert.NotNull(resolved);
         Assert.NotNull(resolved.Inner);
@@ -35,10 +35,10 @@ public class HappyBuildExtensionTests
     public void AutoScope_WithInterfaceInHierarchy_CanMockInterface()
     {
         var scope = Happy.Build.AutoScope();
-        var mock = scope.MemoizeAndResolve<TestInterface>();
+        var mock = scope.MemoizeAndBuild<TestInterface>();
         A.CallTo(() => mock.GetValue()).Returns("42");
         
-        var resolved = scope.Resolve<TestInterfaceWrapper>();
+        var resolved = scope.Build<TestInterfaceWrapper>();
         var result = resolved.GetWrappedValue();
 
         Assert.Equal("[42]", result);

@@ -24,7 +24,7 @@ public class BuildContextTests
         buildContext.Register(() => new SampleRecord(""));
 
         var scope = buildContext.Scope();
-        Assert.Equal(new SampleRecord(""), scope.Resolve<SampleRecord>());
+        Assert.Equal(new SampleRecord(""), scope.Build<SampleRecord>());
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class BuildContextTests
         buildContext.Register(_ => new SampleRecord(""));
 
         var scope = buildContext.Scope();
-        Assert.Equal(new SampleRecord(""), scope.Resolve<SampleRecord>());
+        Assert.Equal(new SampleRecord(""), scope.Build<SampleRecord>());
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class BuildContextTests
         buildContext.Register<ITestInterface, SampleTestInterfaceImplementation>();
 
         var scope = buildContext.Scope();
-        var result = scope.Resolve<ITestInterface>();
+        var result = scope.Build<ITestInterface>();
         Assert.IsType<SampleTestInterfaceImplementation>(result);
     }
     
@@ -57,7 +57,7 @@ public class BuildContextTests
         context.Register<ITestInterface>();
         var scope = context.Scope();
 
-        Assert.Throws<NotImplementedException>(() => scope.Resolve<ITestInterface>());
+        Assert.Throws<NotImplementedException>(() => scope.Build<ITestInterface>());
     }
 
 }

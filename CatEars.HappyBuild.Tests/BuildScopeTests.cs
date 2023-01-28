@@ -21,8 +21,8 @@ public class BuildScopeTests
         var scope = CreateSampleBuildScope();
         scope.Memoize<SampleRecord>();
 
-        var firstResult = scope.Resolve<SampleRecord>();
-        var secondResult = scope.Resolve<SampleRecord>();
+        var firstResult = scope.Build<SampleRecord>();
+        var secondResult = scope.Build<SampleRecord>();
 
         Assert.Same(firstResult, secondResult);
     }
@@ -37,8 +37,8 @@ public class BuildScopeTests
         scope.Memoize<SampleRecord>();
         scope.Memoize<SampleRecord>();
 
-        var firstResult = scope.Resolve<SampleRecord>();
-        var secondResult = scope.Resolve<SampleRecord>();
+        var firstResult = scope.Build<SampleRecord>();
+        var secondResult = scope.Build<SampleRecord>();
 
         Assert.Same(firstResult, secondResult);
     }
@@ -54,7 +54,7 @@ public class BuildScopeTests
             return new object();
         });
 
-        scope.Resolve<object>();
+        scope.Build<object>();
 
         Assert.Equal(1, count);
     }
@@ -67,8 +67,8 @@ public class BuildScopeTests
         var buildScope = new ControlledBuildScope(serviceCollection, ParameterResolverBundleCollection.Empty, BuildContext.Options.Default);
         buildScope.Memoize<object>();
 
-        var firstResult = buildScope.Resolve<object>();
-        var secondResult = buildScope.Resolve<object>();
+        var firstResult = buildScope.Build<object>();
+        var secondResult = buildScope.Build<object>();
 
         Assert.NotNull(firstResult);
         Assert.Same(firstResult, secondResult);
@@ -94,7 +94,7 @@ public class BuildScopeTests
     {
         var scope = CreateSampleBuildScope()
             .BindParameter<SampleRecord, string>("42");
-        var result = scope.Resolve<SampleRecord>();
+        var result = scope.Build<SampleRecord>();
 
         Assert.Equal("42", result.StringValue);
     }
@@ -120,7 +120,7 @@ public class BuildScopeTests
         
         var result = scope.BindParameter<RecordUsingAbstractClass, SampleAbstractClass>(
             new ImplementedAbstractClass("42"))
-            .Resolve<RecordUsingAbstractClass>();
+            .Build<RecordUsingAbstractClass>();
         
         Assert.Equal("42", result.InnerClass.GetValue());
     }
@@ -136,7 +136,7 @@ public class BuildScopeTests
 
         var result = scope
             .BindNthParameterOfType<RecordWithManyStringsAndInts, string>("42", 2)
-            .Resolve<RecordWithManyStringsAndInts>();
+            .Build<RecordWithManyStringsAndInts>();
         
         Assert.NotEqual("42", result.A);
         Assert.NotEqual("42", result.B);
@@ -154,7 +154,7 @@ public class BuildScopeTests
 
         var result = scope
             .BindNthParameter<RecordWithDifferentParameters, double>(42.42, 1)
-            .Resolve<RecordWithDifferentParameters>();
+            .Build<RecordWithDifferentParameters>();
         
         Assert.NotEqual(42.42, result.A);
         Assert.Equal(42.42, result.B);

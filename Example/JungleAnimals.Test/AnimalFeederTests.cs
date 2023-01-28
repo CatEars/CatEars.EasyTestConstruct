@@ -22,12 +22,12 @@ public class AnimalFeederTests : IClassFixture<BuildContextFixture>
     public void CanBeFed_WithCompatibleAnimals_FeedsAnimals()
     {
         var scope = Fixture.Context.Scope();
-        var animal = (IJungleAnimal)scope.MemoizeAndResolve<Monkey>();
-        var food = (IAnimalFood)scope.MemoizeAndResolve<Banana>();
-        var repository = scope.MemoizeAndResolve<IAnimalFoodCompatibilityRepository>();
+        var animal = (IJungleAnimal)scope.MemoizeAndBuild<Monkey>();
+        var food = (IAnimalFood)scope.MemoizeAndBuild<Banana>();
+        var repository = scope.MemoizeAndBuild<IAnimalFoodCompatibilityRepository>();
         A.CallTo(() => repository.CanBeFeed(animal, food))
             .Returns(true);
-        var feeder = scope.Resolve<AnimalFeeder>();
+        var feeder = scope.Build<AnimalFeeder>();
 
         var result = feeder.TryFeedAnimal(animal, food);
         Assert.True(result.WasFed);

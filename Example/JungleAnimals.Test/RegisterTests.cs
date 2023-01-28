@@ -15,7 +15,7 @@ public class RegisterTests
         var scope = buildContext.Scope();
         scope.Memoize<Monkey>();
 
-        var monkey = scope.Resolve<Monkey>();
+        var monkey = scope.Build<Monkey>();
 
         Assert.IsType<Monkey>(monkey);
     }

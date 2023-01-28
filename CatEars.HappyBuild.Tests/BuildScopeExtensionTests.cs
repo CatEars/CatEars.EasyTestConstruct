@@ -18,8 +18,8 @@ public class BuildScopeExtensionTests
         buildContext.Register<SampleRecord>();
         var scope = buildContext.Scope();
 
-        var firstSampleRecord = scope.MemoizeAndResolve<SampleRecord>();
-        var secondSampleRecord = scope.Resolve<SampleRecord>();
+        var firstSampleRecord = scope.MemoizeAndBuild<SampleRecord>();
+        var secondSampleRecord = scope.Build<SampleRecord>();
 
         Assert.Same(firstSampleRecord, secondSampleRecord);
     }
@@ -31,8 +31,8 @@ public class BuildScopeExtensionTests
         buildContext.Register<SampleRecord>();
         var scope = buildContext.Scope();
 
-        var firstSampleRecord = scope.Resolve<SampleRecord>();
-        var secondSampleRecord = scope.MemoizeAndResolve<SampleRecord>();
+        var firstSampleRecord = scope.Build<SampleRecord>();
+        var secondSampleRecord = scope.MemoizeAndBuild<SampleRecord>();
 
         Assert.NotSame(firstSampleRecord, secondSampleRecord);
     }
@@ -42,7 +42,7 @@ public class BuildScopeExtensionTests
     {
         var scope = CreateSampleBuildScope();
 
-        var sampleRecord = scope.MemoizeAndResolve<SampleRecord>();
+        var sampleRecord = scope.MemoizeAndBuild<SampleRecord>();
 
         Assert.NotNull(sampleRecord);
         Assert.IsType<SampleRecord>(sampleRecord);
@@ -67,8 +67,8 @@ public class BuildScopeExtensionTests
         buildContext.Register<FourthRecord>();
         var scope = buildContext.Scope();
 
-        var fourthRecord = scope.MemoizeAndResolve<FourthRecord>();
-        var newThirdRecord = scope.Resolve<ThirdRecord>();
+        var fourthRecord = scope.MemoizeAndBuild<FourthRecord>();
+        var newThirdRecord = scope.Build<ThirdRecord>();
 
         Assert.NotSame(newThirdRecord, fourthRecord.ThirdRecord);
         Assert.NotSame(newThirdRecord.SecondRecord, fourthRecord.ThirdRecord.SecondRecord);
@@ -81,7 +81,7 @@ public class BuildScopeExtensionTests
         var scope = CreateSampleBuildScope();
         var isCalled = false;
 
-        var result = scope.UseAndResolve(provider =>
+        var result = scope.UseAndBuild(provider =>
         {
             isCalled = true;
             return new SampleRecord(provider.RandomString());
@@ -99,13 +99,13 @@ public class BuildScopeExtensionTests
         var scope = CreateSampleBuildScope();
         var count = 0;
 
-        scope.UseAndResolve(provider =>
+        scope.UseAndBuild(provider =>
         {
             ++count;
             return new SampleRecord(provider.RandomString());
         });
-        scope.Resolve<SampleRecord>();
-        scope.Resolve<SampleRecord>();
+        scope.Build<SampleRecord>();
+        scope.Build<SampleRecord>();
 
         Assert.Equal(3, count);
     }
@@ -116,8 +116,8 @@ public class BuildScopeExtensionTests
         var scope = CreateSampleBuildScope();
         var count = 0;
 
-        scope.Resolve<SampleRecord>();
-        scope.UseAndResolve(provider =>
+        scope.Build<SampleRecord>();
+        scope.UseAndBuild(provider =>
         {
             ++count;
             return new SampleRecord(provider.RandomString());
@@ -133,13 +133,13 @@ public class BuildScopeExtensionTests
         var firstCount = 0;
         var secondCount = 0;
 
-        scope.Resolve<SampleRecord>();
-        scope.UseAndResolve(provider =>
+        scope.Build<SampleRecord>();
+        scope.UseAndBuild(provider =>
         {
             ++firstCount;
             return new SampleRecord(provider.RandomString());
         });
-        scope.UseAndResolve(provider =>
+        scope.UseAndBuild(provider =>
         {
             ++secondCount;
             return new SampleRecord(provider.RandomString());
@@ -155,7 +155,7 @@ public class BuildScopeExtensionTests
         var obj = new object();
         var scope = CreateSampleBuildScope();
 
-        var resolvedObj = scope.UseAndResolve(obj);
+        var resolvedObj = scope.UseAndBuild(obj);
 
         Assert.Same(obj, resolvedObj);
     }
@@ -166,8 +166,8 @@ public class BuildScopeExtensionTests
         var obj = new object();
         var scope = CreateSampleBuildScope();
 
-        var resolvedObj1 = scope.UseAndResolve(obj);
-        var resolvedObj2 = scope.Resolve<object>();
+        var resolvedObj1 = scope.UseAndBuild(obj);
+        var resolvedObj2 = scope.Build<object>();
 
         Assert.Same(obj, resolvedObj1);
         Assert.Same(obj, resolvedObj2);
@@ -178,7 +178,7 @@ public class BuildScopeExtensionTests
     {
         var scope = CreateSampleBuildScope();
 
-        var result = scope.UseAndResolve(() => new SampleRecord("123"));
+        var result = scope.UseAndBuild(() => new SampleRecord("123"));
 
         Assert.NotNull(result);
         Assert.IsType<SampleRecord>(result);

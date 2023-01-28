@@ -19,7 +19,7 @@ public class DynamicBuildContextTests
         {
             RegistrationMode = RegistrationMode.Dynamic
         });
-        var resolved = context.Scope().Resolve<OuterRecord>();
+        var resolved = context.Scope().Build<OuterRecord>();
 
         Assert.NotNull(resolved);
         Assert.NotNull(resolved.Inner);
@@ -34,7 +34,7 @@ public class DynamicBuildContextTests
             RegistrationMode = RegistrationMode.Dynamic
         });
         context.Register(() => new InnerRecord("42"));
-        var resolved = context.Scope().Resolve<OuterRecord>();
+        var resolved = context.Scope().Build<OuterRecord>();
 
         Assert.Equal("42", resolved.Inner.Value);
     }
@@ -47,7 +47,7 @@ public class DynamicBuildContextTests
             RegistrationMode = RegistrationMode.Dynamic
         });
         
-        var result = context.Scope().Resolve<TripleInnerRecord>();
+        var result = context.Scope().Build<TripleInnerRecord>();
         
         Assert.NotNull(result);
     }
@@ -62,8 +62,8 @@ public class DynamicBuildContextTests
         var scope = context.Scope();
         scope.Memoize<InnerRecord>();
 
-        var a = scope.Resolve<OuterRecord>();
-        var b = scope.Resolve<OuterRecord>();
+        var a = scope.Build<OuterRecord>();
+        var b = scope.Build<OuterRecord>();
         
         Assert.Same(a.Inner, b.Inner);
     }

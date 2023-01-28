@@ -63,7 +63,7 @@ public class ControlledBuildScope : BuildScope
         InvalidateCurrentProvider();
     }
 
-    public T Resolve<T>() where T : class
+    public T Build<T>() where T : class
     {
         return (T)InternalResolve(typeof(T));
     }

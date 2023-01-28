@@ -19,8 +19,8 @@ public class MonkeyTests : IClassFixture<BuildContextFixture>
     public void TryFeed_WithBanana_ReturnsTrue()
     {
         var scope = Fixture.Context.Scope();
-        var banana = scope.Resolve<Banana>();
-        var monkey = scope.Resolve<Monkey>();
+        var banana = scope.Build<Banana>();
+        var monkey = scope.Build<Monkey>();
 
         var result = monkey.TryEat(banana);
 
@@ -31,8 +31,8 @@ public class MonkeyTests : IClassFixture<BuildContextFixture>
     public void TryFeed_WithMeat_ReturnsFalse()
     {
         var scope = Fixture.Context.Scope();
-        var banana = scope.Resolve<Meat>();
-        var monkey = scope.Resolve<Monkey>();
+        var banana = scope.Build<Meat>();
+        var monkey = scope.Build<Monkey>();
 
         var result = monkey.TryEat(banana);
 
@@ -43,8 +43,8 @@ public class MonkeyTests : IClassFixture<BuildContextFixture>
     public void TryFeed_WithGreenBanana_ReturnsTrue()
     {
         var scope = Fixture.Context.Scope();
-        var banana = scope.UseAndResolve(provider => new Banana(provider.RandomInt(), Banana.Color.Green));
-        var monkey = scope.Resolve<Monkey>();
+        var banana = scope.UseAndBuild(provider => new Banana(provider.RandomInt(), Banana.Color.Green));
+        var monkey = scope.Build<Monkey>();
 
         var result = monkey.TryEat(banana);
 

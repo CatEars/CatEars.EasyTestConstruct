@@ -20,10 +20,10 @@ public class MemoizeTests : IClassFixture<BuildContextFixture>
         var scope = Fixture.Context.Scope();
         scope.Memoize<Banana>();
 
-        var firstBanana = scope.Resolve<Banana>();
+        var firstBanana = scope.Build<Banana>();
         foreach (var _ in Enumerable.Range(0, 100))
         {
-            var nextBanana = scope.Resolve<Banana>();
+            var nextBanana = scope.Build<Banana>();
             Assert.Same(firstBanana, nextBanana);
         }
     }
