@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>HappyBuild - Documentation</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="vendor/prism/prism.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <script src="vendor/prism/prism.js"></script>
+    <script>
+      function selectPage(page) {
+        const elementsToHide = document.getElementsByClassName("page");
+        for (const toHide of elementsToHide) {
+          toHide.style.display = "none";
+        }
+        document.getElementById(page).style.display = "block";
+      }
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <h1>Happy Build</h1>
+        <a onclick="selectPage('about-page')" href="#about">About</a>
+        <a onclick="selectPage('use-page')" href="#use">Use</a>
+        <a onclick="selectPage('example-page')" href="#example">Examples</a>
+        <a onclick="selectPage('reference-page')" href="#reference"
+          >Reference</a
+        >
+        <div class="framework-select">
+          <select name="framework" id="framework">
+            <option value="FakeItEasy">FakeItEasy</option>
+            <option value="Moq">Moq</option>
+          </select>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section id="about-page" class="page">
+        <p>I want:</p>
+        <ul>
+          <li>Resilient tests, decoupled from the code</li>
+          <li>Easy refactoring of code, without breaking tests</li>
+        </ul>
+        <p>These points are at odds with each other. Consider:</p>
+        <ul>
+          <li>Adding a logger to the constructor</li>
+          <li>Creating random test data for a record with twelve fields</li>
+          <li>Creating A, which depends on B, which depends on C, ...</li>
+        </ul>
+        <p>
+          These tasks take up unnecessary time and make simple changes harder
+          than they have to be.
+        </p>
+        <p>
+          But Happy Build makes test cases <strong>trivial to setup</strong> and
+          <strong>resilient to change</strong>:
+        </p>
+        <pre><code class="language-csharp">[Fact]
+public void Encode_WhenExceptionIsThrown_ReturnsFailedErrorCode() {
+    // Arrange
+    var scope = Happy.Build.AutoScope();    
+    var encodingSelector = scope.MemoizeAndGet&lt;IEncodingSelector&gt;();
+    A.CallTo(() => encodingSelector.GetEncoding())
+        .Throws&lt;Exception&gt;();
+    var sut = scope.Get&lt;Encoder&gt;();
+    
+    // Act    
+    var result = sut.Encode("Hello, World!");
+
+    // Assert    
+    Assert.Equal(ErrorCodes.Failed, result.ErrorCode);
+}</code></pre>
+      </section>
+      <section id="use-page" class="page">
+        <h2>Install</h2>
+        <pre><code class="language-csharp">dotnet add package CatEars.HappyBuild.FakeItEasy</code></pre>
+        <h2>Build & Memoize</h2>
+        <p>
+          Call Memoize to get and always use the same object for that class.
+          Call Build to create an instance of that class
+        </p>
+        <pre><code class="language-csharp">public record Person(int Age, string Name, string City, Gender Gender);
+
+public record Postcard(string Header, string Message, string Sign);
+
+public interface IPostcardConfiguration {
+    bool IncludeSignature();
+    string GetStandardHeader();
+}
+
+public class PostcardMaker {
+    private IPostcardConfiguration configuration;
+
+    public PostcardMaker(IPostcardConfiguration configuration) {
+        this.configuration =  configuration;
+    }
+
+    public Postcard CreatePostcard(Person sender, Person receiver, string message) { /* ... */ }
+}
+
+[Fact]
+public void CreatePostcard_WhenIncludingSignature_SetsSendersNameAsSignature() {
+    var scope = Happy.Build.AutoScope();
+    var sender = scope.Build&lt;Person&gt;();
+    var receiver = scope.Build&lt;Person&gt;();
+    var configuration = scope.Memoize&lt;IPostcardConfiguration&gt();
+    A.CallTo(() => configuration.IncludeSignature()).Returns(true);
+    var sut = scope.Build&lt;PostcardMaker&gt;();
+
+    var result = sut.CreatePostcard(sender, receiver, "Hello, how are you?");
+
+    Assert.Equal(sender.Name, result.Sign);
+}</code></pre>
+      </section>
+      <section id="example-page" class="page">
+        <h1>This is examples of how you use HappyBuild</h1>
+        <h1>Bye!</h1>
+      </section>
+      <section id="reference-page" class="page">
+        <h1>This is reference for HappyBuild</h1>
+        <h1>Bye!</h1>
+      </section>
+    </main>
+  </body>
+  <script>
+    const pageMappings = {
+      "#about": "about-page",
+      "#use": "use-page",
+      "#example": "example-page",
+      "#reference": "reference-page",
+    };
+    function gotoDefaultPage() {
+      for (const key in pageMappings) {
+        if (window.location.hash === key) {
+          selectPage(pageMappings[key]);
+          return;
+        }
+      }
+      selectPage("about-page");
+    }
+    gotoDefaultPage();
+  </script>
+</html>

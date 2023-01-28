@@ -1,0 +1,45 @@
+body {
+  background-color: #f4f4f4;
+  font-family: "Roboto", sans-serif;
+  font-size: 17px;
+}
+
+main,
+header {
+  display: flex;
+  justify-content: center;
+}
+
+main > section,
+header > nav {
+  max-width: 900px;
+  width: 100%;
+  margin-left: 2em;
+  margin-right: 2em;
+}
+
+nav {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  display: flex;
+}
+
+nav > h1 {
+  margin-right: 3em;
+}
+
+nav > a,
+nav > select {
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 0.2em;
+}
+
+nav > h1 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.framework-select > select {
+  background-color: transparent;
+  border: none;
+}
