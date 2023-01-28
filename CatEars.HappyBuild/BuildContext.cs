@@ -77,7 +77,7 @@ public class BuildContext
     public BuildScope Scope()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
-            ? new DynamicScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.Copy())
+            ? new DynamicBuildScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.Copy())
             : new ControlledBuildScope(CopyOf(ServiceCollection), ResolverCollection.Copy(), BuildOptions.Copy());
     }
 

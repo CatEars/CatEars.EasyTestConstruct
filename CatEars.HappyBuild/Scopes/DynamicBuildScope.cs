@@ -4,13 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CatEars.HappyBuild.Scopes;
 
-internal class DynamicScope : ControlledBuildScope
+internal class DynamicBuildScope : ControlledBuildScope
 {
     private SingleEncounterDependencyListerDecorator EncounterLister { get; }
 
     private IDependencyLister DependencyLister { get; }
     
-    public DynamicScope(IServiceCollection serviceCollection,
+    public DynamicBuildScope(IServiceCollection serviceCollection,
         ParameterResolverBundleCollection resolverCollection,
         BuildContext.Options options) : base(serviceCollection, resolverCollection, options)
     {
