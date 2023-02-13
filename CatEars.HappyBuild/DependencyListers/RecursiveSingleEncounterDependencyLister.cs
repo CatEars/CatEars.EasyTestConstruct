@@ -1,4 +1,5 @@
-﻿using CatEars.HappyBuild.Registration;
+﻿using System.Reflection;
+using CatEars.HappyBuild.Registration;
 
 namespace CatEars.HappyBuild.DependencyListers;
 
@@ -10,7 +11,7 @@ internal class RecursiveSingleEncounterDependencyLister : IDependencyLister
     {
         EncounteredTypes = new HashSet<Type>(initiallyEncounteredTypes ?? new HashSet<Type>());
     }
-    
+
     public IEnumerable<ServiceRegistrationContext> ListDependencies(Type rootType)
     {
         if (EncounteredTypes.Contains(rootType))
@@ -18,29 +19,36 @@ internal class RecursiveSingleEncounterDependencyLister : IDependencyLister
             yield break;
         }
 
-        var walker = new DependencyTreeWalker(rootType);
-        DependencyTreeDecisionPoint decision;
-        do
+        var typeQueue = new List<ServiceRegistrationContext>()
         {
-            decision = walker.PopNextDependency();
-            var type = decision.GetCurrentType();
-            if (type.IsBasicType || EncounteredTypes.Contains(type.ServiceToRegister))
+            ServiceRegistrationContext.FromType(rootType)
+        };
+
+        for (var idx = 0; idx < typeQueue.Count; ++idx)
+        {
+            var currentType = typeQueue[idx];
+            if (currentType.IsBasicType || EncounteredTypes.Contains(currentType.ServiceToRegister))
             {
                 continue;
             }
-            
-            EncounteredTypes.Add(type.ServiceToRegister);
-            yield return type;
-            if (type.IsMockIntendedType)
+
+            EncounteredTypes.Add(currentType.ServiceToRegister);
+            yield return currentType;
+            if (currentType.IsMockIntendedType)
             {
                 continue;
             }
-            // Only dive on complex types, not on mocked types, or primitives
-            decision.Dive(HasYetToEncounterType);
-        } while (!decision.AtEnd());
+
+            var constructorInfo = ServiceRegistrator.FindAppropriateConstructorOrThrow(currentType);
+            var typesToVisit = ListConstructorParameterTypes(constructorInfo)
+                .Select(ServiceRegistrationContext.FromType)
+                .Where(service => !service.IsBasicType && !EncounteredTypes.Contains(service.ServiceToRegister));
+            typeQueue.AddRange(typesToVisit);
+        }
     }
 
-    private bool HasYetToEncounterType(ServiceRegistrationContext context) => !EncounteredTypes.Contains(context.ServiceToRegister);
-
     public bool HasEncounteredType(Type type) => EncounteredTypes.Contains(type);
+
+    private static IEnumerable<Type> ListConstructorParameterTypes(ConstructorInfo constructorInfo)
+        => constructorInfo.GetParameters().Select(x => x.ParameterType);
 }
