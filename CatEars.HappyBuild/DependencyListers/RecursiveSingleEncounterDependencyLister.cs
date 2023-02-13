@@ -9,7 +9,9 @@ internal class RecursiveSingleEncounterDependencyLister : IDependencyLister
 
     public RecursiveSingleEncounterDependencyLister(ISet<Type>? initiallyEncounteredTypes = null)
     {
-        EncounteredTypes = new HashSet<Type>(initiallyEncounteredTypes ?? new HashSet<Type>());
+        EncounteredTypes = initiallyEncounteredTypes == null
+            ? new HashSet<Type>()
+            : new HashSet<Type>(initiallyEncounteredTypes);
     }
 
     public IEnumerable<ServiceRegistrationContext> ListDependencies(Type rootType)
