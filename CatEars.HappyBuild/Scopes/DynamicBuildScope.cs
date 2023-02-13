@@ -6,8 +6,6 @@ namespace CatEars.HappyBuild.Scopes;
 
 internal class DynamicBuildScope : ControlledBuildScope
 {
-    private SingleEncounterDependencyListerDecorator EncounterLister { get; }
-
     private IDependencyLister DependencyLister { get; }
     
     public DynamicBuildScope(IServiceCollection serviceCollection,
@@ -15,12 +13,10 @@ internal class DynamicBuildScope : ControlledBuildScope
         BuildContext.Options options) : base(serviceCollection, resolverCollection, options)
     {
         var registeredServices = serviceCollection.Select(descriptor => descriptor.ServiceType);
-        var encounterLister = new SingleEncounterDependencyListerDecorator(
-            new ConstructorParameterDependencyLister(),
+        var encounterLister = new RecursiveSingleEncounterDependencyLister(
             registeredServices.ToHashSet()
         );
-        EncounterLister = encounterLister;
-        DependencyLister = new RecursiveDependencyListerDecorator(EncounterLister);
+        DependencyLister = encounterLister;
     }
 
     internal override object InternalResolve(Type type)
@@ -37,7 +33,7 @@ internal class DynamicBuildScope : ControlledBuildScope
 
     private void EnsureDependencyTreeExists(Type type)
     {
-        if (EncounterLister.HasEncounteredType(type))
+        if (DependencyLister.HasEncounteredType(type))
         {
             return;
         }

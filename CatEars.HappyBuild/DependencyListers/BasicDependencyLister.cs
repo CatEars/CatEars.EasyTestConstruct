@@ -11,4 +11,6 @@ internal class BasicDependencyLister : IDependencyLister
             ServiceRegistrationContext.FromType(type)
         };
     }
+
+    public bool HasEncounteredType(Type type) => false;
 }

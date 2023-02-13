@@ -6,15 +6,14 @@ using Xunit;
 
 namespace CatEars.HappyBuild.Tests.DependencyListers;
 
-public class SingleEncounterDependencyListerTests
+public class RecursiveSingleEncounterDependencyListerTests
 {
 
     [Fact]
     public void ListDependencies_WithDisregardedTypes_ReturnsNoneOfDisregardedTypes()
     {
         var disregardedTypes = new HashSet<Type> { typeof(BasicRecord) };
-        var walker = new SingleEncounterDependencyListerDecorator(
-            new ConstructorParameterDependencyLister(),
+        var walker = new RecursiveSingleEncounterDependencyLister(
             disregardedTypes);
 
         var result = walker.ListDependencies(typeof(RecordWithInnerRecord));
@@ -29,22 +28,32 @@ public class SingleEncounterDependencyListerTests
     [Fact]
     public void ListDependencies_WhenCalledWithMultiplePartsOfComplexTypeChain_ReturnsTypesOnlyOnce()
     {
-        var walker = new SingleEncounterDependencyListerDecorator(
-            new ConstructorParameterDependencyLister());
+        var walker = new RecursiveSingleEncounterDependencyLister();
 
         var firstResult = walker.ListDependencies(typeof(RecordWithChainedRecord))
             .Select(x => x.ServiceToRegister);
         var secondResult = walker.ListDependencies(typeof(RecordWithInnerRecord))
             .Select(x => x.ServiceToRegister);
-        var thirdResult = walker.ListDependencies(typeof(RecordWithChainedRecord))
-            .Select(x => x.ServiceToRegister);
 
-        var expectedFirst = new List<Type>() { typeof(RecordWithChainedRecord), typeof(RecordWithInnerRecord) };
-        var expectedSecond = new List<Type>() { typeof(BasicRecord) };
-        var expectedThird = new List<Type>();
+        var expectedFirst = new List<Type>() { typeof(RecordWithChainedRecord), typeof(RecordWithInnerRecord), typeof(BasicRecord) };
+        var expectedSecond = new List<Type>();
         
         Assert.Equal(expectedFirst, firstResult.ToList());
         Assert.Equal(expectedSecond, secondResult.ToList());
-        Assert.Equal(expectedThird, thirdResult.ToList());
+    }
+    
+    [Theory]
+    [InlineData(typeof(BasicRecord), typeof(BasicRecord))]
+    [InlineData(typeof(RecordWithInnerRecord), typeof(RecordWithInnerRecord), typeof(BasicRecord))]
+    [InlineData(typeof(SelfReferentialClass), typeof(SelfReferentialClass))]
+    [InlineData(typeof(int))]
+    [InlineData(typeof(string))]
+    public void ListDependencies_WithType_ReturnsExpectedListOfTypes(Type rootType, params Type[] expectedTypes)
+    {
+        var walker = new RecursiveSingleEncounterDependencyLister();
+
+        var result = walker.ListDependencies(rootType);
+
+        Assert.Equal(expectedTypes, result.Select(x => x.ServiceToRegister).ToArray());
     }
 }
