@@ -3,11 +3,11 @@ using CatEars.HappyBuild.Registration;
 
 namespace CatEars.HappyBuild.DependencyListers;
 
-internal class RecursiveSingleEncounterDependencyLister : IDependencyLister
+internal class DependencyTreeWalkingDependencyLister : IDependencyLister
 {
     private ISet<Type> EncounteredTypes { get; }
 
-    public RecursiveSingleEncounterDependencyLister(ISet<Type>? initiallyEncounteredTypes = null)
+    public DependencyTreeWalkingDependencyLister(ISet<Type>? initiallyEncounteredTypes = null)
     {
         EncounteredTypes = initiallyEncounteredTypes == null
             ? new HashSet<Type>()

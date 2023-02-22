@@ -6,14 +6,14 @@ using Xunit;
 
 namespace CatEars.HappyBuild.Tests.DependencyListers;
 
-public class RecursiveSingleEncounterDependencyListerTests
+public class DependencyTreeWalkingDependencyListerTests
 {
 
     [Fact]
     public void ListDependencies_WithDisregardedTypes_ReturnsNoneOfDisregardedTypes()
     {
         var disregardedTypes = new HashSet<Type> { typeof(BasicRecord) };
-        var walker = new RecursiveSingleEncounterDependencyLister(
+        var walker = new DependencyTreeWalkingDependencyLister(
             disregardedTypes);
 
         var result = walker.ListDependencies(typeof(RecordWithInnerRecord));
@@ -28,7 +28,7 @@ public class RecursiveSingleEncounterDependencyListerTests
     [Fact]
     public void ListDependencies_WhenCalledWithMultiplePartsOfComplexTypeChain_ReturnsTypesOnlyOnce()
     {
-        var walker = new RecursiveSingleEncounterDependencyLister();
+        var walker = new DependencyTreeWalkingDependencyLister();
 
         var firstResult = walker.ListDependencies(typeof(RecordWithChainedRecord))
             .Select(x => x.ServiceToRegister);
@@ -50,7 +50,7 @@ public class RecursiveSingleEncounterDependencyListerTests
     [InlineData(typeof(string))]
     public void ListDependencies_WithType_ReturnsExpectedListOfTypes(Type rootType, params Type[] expectedTypes)
     {
-        var walker = new RecursiveSingleEncounterDependencyLister();
+        var walker = new DependencyTreeWalkingDependencyLister();
 
         var result = walker.ListDependencies(rootType);
 

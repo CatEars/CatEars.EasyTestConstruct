@@ -45,7 +45,7 @@ public class BuildContext
     private IDependencyLister GetConfiguredDependencyWalker()
     {
         return BuildOptions.RegistrationMode == RegistrationMode.Dynamic
-            ? new RecursiveSingleEncounterDependencyLister()
+            ? new DependencyTreeWalkingDependencyLister()
             : new BasicDependencyLister();
     }
 

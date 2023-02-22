@@ -13,7 +13,7 @@ internal class DynamicBuildScope : ControlledBuildScope
         BuildContext.Options options) : base(serviceCollection, resolverCollection, options)
     {
         var registeredServices = serviceCollection.Select(descriptor => descriptor.ServiceType);
-        var encounterLister = new RecursiveSingleEncounterDependencyLister(
+        var encounterLister = new DependencyTreeWalkingDependencyLister(
             registeredServices.ToHashSet()
         );
         DependencyLister = encounterLister;
